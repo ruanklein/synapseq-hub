@@ -275,6 +275,58 @@ body.dark tr:hover {
   margin-bottom: 1rem;
 }
 
+/* Tree structure for dependencies */
+.dep-tree {
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  background: var(--code-bg);
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--code-border);
+  margin: 0.5rem 0;
+}
+
+.dep-root {
+  color: var(--accent-color);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.dep-branch {
+  margin-left: 0;
+}
+
+.dep-type {
+  color: var(--text-color);
+  font-weight: 600;
+  margin: 0.3rem 0;
+}
+
+.dep-item {
+  margin-left: 1.5rem;
+  color: var(--muted-color);
+  display: flex;
+  align-items: baseline;
+}
+
+.dep-item .connector {
+  color: var(--border-color);
+  margin-right: 0.3rem;
+  flex-shrink: 0;
+}
+
+.dep-item a {
+  color: var(--accent-color);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.dep-item a:hover {
+  border-bottom-color: var(--accent-color);
+}
+
 #seqDescription {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -442,6 +494,45 @@ body.dark tr:hover {
   50% {
     transform: scale(1.2);
   }
+}
+
+/* =====================
+   Dependencies toggle
+===================== */
+#dependenciesSection {
+  margin: 1.5rem 0;
+}
+
+.toggle-dependencies-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.toggle-dependencies-btn:hover {
+  background: var(--border-color);
+}
+
+.toggle-dependencies-btn .chevron {
+  transition: transform 0.2s ease;
+}
+
+.toggle-dependencies-btn.expanded .chevron {
+  transform: rotate(180deg);
+}
+
+#seqInfo {
+  margin-top: 1rem;
 }
 
 /* =====================

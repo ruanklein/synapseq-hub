@@ -105,8 +105,10 @@ async function showSequence(path) {
   const seqMeta = document.getElementById("seqMeta");
   const seqCodeEl = document.getElementById("seqCode");
   const sourceCodeSection = document.getElementById("sourceCodeSection");
+  const dependenciesSection = document.getElementById("dependenciesSection");
   const buttons = document.getElementById("buttons");
   const toggleBtn = document.getElementById("toggleSourceCode");
+  const toggleDepBtn = document.getElementById("toggleDependencies");
 
   // Show viewer and loading
   viewer.style.display = "block";
@@ -117,15 +119,19 @@ async function showSequence(path) {
   seqMeta.style.display = "none";
   seqCodeEl.style.display = "none";
   sourceCodeSection.style.display = "none";
+  dependenciesSection.style.display = "none";
   buttons.style.display = "none";
 
   seqCode.textContent = "";
   cliCommand.textContent = "";
   seqInfo.innerHTML = "";
+  seqInfo.style.display = "none";
 
-  // Reset toggle button
+  // Reset toggle buttons
   toggleBtn.classList.remove("expanded");
   toggleBtn.querySelector("span").textContent = "Show source code";
+  toggleDepBtn.classList.remove("expanded");
+  toggleDepBtn.querySelector("span").textContent = "Show dependencies";
 
   try {
     const res = await fetch(getUrl(path));
@@ -187,15 +193,48 @@ async function showSequence(path) {
 
     const deps = entry.dependencies || [];
     if (deps.length > 0) {
-      let depList = deps.map((d) => `<li>${d.type}: ${d.name}</li>`).join("");
-      seqInfo.innerHTML = `<p><strong>Dependencies:</strong></p><ul>${depList}</ul>`;
+      // Group dependencies by type
+      const grouped = {};
+      deps.forEach((d) => {
+        if (!grouped[d.type]) {
+          grouped[d.type] = [];
+        }
+        grouped[d.type].push(d);
+      });
+
+      // Build tree structure
+      let tree = '<div class="dep-tree">';
+      tree += '<div class="dep-root">Dependencies</div>';
+
+      Object.keys(grouped).forEach((type) => {
+        tree += `<div class="dep-branch">`;
+        tree += `<div class="dep-type">├─ ${type}</div>`;
+
+        grouped[type].forEach((d, index) => {
+          const isLast = index === grouped[type].length - 1;
+          const connector = isLast ? "└─" : "├─";
+          const depUrl = getUrl(
+            "/" + d.download_url.replace(/^.*?\/(official|community)\//, "$1/")
+          );
+          tree += `<div class="dep-item ${isLast ? "last" : ""}">`;
+          tree += `<span class="connector">${connector}</span> `;
+          tree += `<a href="${depUrl}" target="_blank" rel="noopener noreferrer">${d.name}</a>`;
+          tree += `</div>`;
+        });
+        tree += `</div>`;
+      });
+
+      tree += "</div>";
+      seqInfo.innerHTML = tree;
     } else {
-      seqInfo.innerHTML = "<p><strong>No dependencies.</strong></p>";
+      seqInfo.innerHTML =
+        '<div class="dep-tree"><div class="dep-root">No dependencies</div></div>';
     }
 
     // Hide loading and show content
     loading.classList.remove("active");
     seqMeta.style.display = "block";
+    dependenciesSection.style.display = "block";
     sourceCodeSection.style.display = "block";
     buttons.style.display = "block";
   } catch (err) {
@@ -203,6 +242,23 @@ async function showSequence(path) {
     seqCode.textContent = "Error loading file.";
     loading.classList.remove("active");
     seqCodeEl.style.display = "block";
+  }
+}
+
+// Toggle dependencies visibility
+function toggleDependencies() {
+  const seqInfoEl = document.getElementById("seqInfo");
+  const toggleBtn = document.getElementById("toggleDependencies");
+  const btnText = toggleBtn.querySelector("span");
+
+  if (seqInfoEl.style.display === "none") {
+    seqInfoEl.style.display = "block";
+    toggleBtn.classList.add("expanded");
+    btnText.textContent = "Hide dependencies";
+  } else {
+    seqInfoEl.style.display = "none";
+    toggleBtn.classList.remove("expanded");
+    btnText.textContent = "Show dependencies";
   }
 }
 

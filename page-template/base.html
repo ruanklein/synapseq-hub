@@ -86,8 +86,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
       </div>
 
       <div id="seqMeta">
-        <div id="seqInfo"></div>
-
         <div class="cli-command">
           <p><strong>Run this sequence via CLI:</strong></p>
           <div class="cli-wrapper">
@@ -153,6 +151,32 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
             Read more
           </button>
         </div>
+      </div>
+
+      <div id="dependenciesSection" style="display: none">
+        <button
+          id="toggleDependencies"
+          class="toggle-dependencies-btn"
+          onclick="toggleDependencies()"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            class="chevron"
+          >
+            <path
+              d="M4 6l4 4 4-4"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>Show dependencies</span>
+        </button>
+        <div id="seqInfo" style="display: none"></div>
       </div>
 
       <div id="sourceCodeSection" style="display: none">
