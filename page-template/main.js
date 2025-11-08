@@ -231,6 +231,12 @@ async function showSequence(path) {
   table.style.display = "none";
   search.style.display = "none";
 
+  // Hide advanced filters and toggle button
+  const advancedFilters = document.getElementById("advancedFilters");
+  const toggleFiltersBtn = document.querySelector(".toggle-filters-btn");
+  if (advancedFilters) advancedFilters.style.display = "none";
+  if (toggleFiltersBtn) toggleFiltersBtn.style.display = "none";
+
   loading.classList.add("active");
   seqMeta.style.display = "none";
   seqCodeEl.style.display = "none";
@@ -305,7 +311,7 @@ async function showSequence(path) {
       throw new Error("Sequence not found in manifest");
     }
 
-    cliCommand.textContent = `synapseq -hub-get ${entry.category}.${entry.name} ${entry.name}.wav`;
+    cliCommand.textContent = `synapseq -hub-get ${entry.origin}.${entry.category}.${entry.name} ${entry.name}.wav`;
 
     const deps = entry.dependencies || [];
     if (deps.length > 0) {
@@ -414,6 +420,10 @@ function backToList() {
   viewer.style.display = "none";
   table.style.display = "";
   search.style.display = "";
+
+  // Show advanced filters toggle button
+  const toggleFiltersBtn = document.querySelector(".toggle-filters-btn");
+  if (toggleFiltersBtn) toggleFiltersBtn.style.display = "";
 }
 
 // Copy CLI command to clipboard
