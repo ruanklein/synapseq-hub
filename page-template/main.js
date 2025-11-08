@@ -67,11 +67,29 @@ async function loadManifest() {
 // Filtering table
 search.addEventListener("input", () => {
   const term = search.value.toLowerCase();
+  const clearBtn = document.getElementById("clearSearch");
+
+  // Show/hide clear button
+  clearBtn.style.display = term ? "flex" : "none";
+
   for (const row of table.querySelectorAll("tbody tr")) {
     const text = row.textContent.toLowerCase();
     row.style.display = text.includes(term) ? "" : "none";
   }
 });
+
+// Clear search
+function clearSearch() {
+  search.value = "";
+  document.getElementById("clearSearch").style.display = "none";
+
+  // Show all rows
+  for (const row of table.querySelectorAll("tbody tr")) {
+    row.style.display = "";
+  }
+
+  search.focus();
+}
 
 // Get full URL considering base path
 function getUrl(path) {
