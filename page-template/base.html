@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SynapSeq Hub</title>
+    <link rel="stylesheet" href="static/style.css" />
+  </head>
+  <body class="light">
+    <header>
+      <h1>SynapSeq Hub</h1>
+      <button id="themeToggle" class="theme-toggle">Dark Mode</button>
+    </header>
+
+    <div id="stats">
+      <p><strong>Total sequences:</strong> {{total}}</p>
+      <p><strong>Official:</strong> {{official}}</p>
+      <p><strong>Community:</strong> {{community}}</p>
+      <p>
+        <strong>Last updated:</strong>
+        <span
+          id="lastUpdated"
+          data-timestamp="{{last_updated}}"
+          title="{{last_updated}}"
+        >
+          {{last_updated}}
+        </span>
+      </p>
+    </div>
+
+    <input type="text" id="search" placeholder="Search sequences..." />
+
+    <table id="seqTable">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Name</th>
+          <th>Author</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{rows}}
+      </tbody>
+    </table>
+
+    <div id="viewer" style="display: none">
+      <button class="back-btn" onclick="backToList()">< Back</button>
+
+      <div id="seqMeta">
+        <div id="seqInfo"></div>
+
+        <div class="cli-command">
+          <p><strong>Run this sequence via CLI:</strong></p>
+          <div class="cli-wrapper">
+            <code id="cliCommand"></code>
+            <button
+              id="copyBtnDesktop"
+              class="copy-btn copy-btn-desktop"
+              onclick="copyCommand()"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect
+                  x="4"
+                  y="4"
+                  width="8"
+                  height="10"
+                  rx="1"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M12 4V2.5C12 1.67 11.33 1 10.5 1H5.5C4.67 1 4 1.67 4 2.5V4"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                />
+              </svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <button
+            id="copyBtnMobile"
+            class="copy-btn copy-btn-mobile"
+            onclick="copyCommand()"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect
+                x="4"
+                y="4"
+                width="8"
+                height="10"
+                rx="1"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <path
+                d="M12 4V2.5C12 1.67 11.33 1 10.5 1H5.5C4.67 1 4 1.67 4 2.5V4"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+            </svg>
+            <span>Copy</span>
+          </button>
+        </div>
+      </div>
+
+      <pre id="seqCode"></pre>
+
+      <div id="buttons">
+        <button id="downloadZipBtn" onclick="downloadZip()">
+          Download Sequence
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
+    <script src="static/main.js"></script>
+  </body>
+</html>
