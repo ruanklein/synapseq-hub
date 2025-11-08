@@ -153,8 +153,22 @@ async function showSequence(path) {
     // Set description
     const seqDescription = document.getElementById("seqDescription");
     const descriptionContent = document.getElementById("descriptionContent");
+    const toggleDescBtn = document.getElementById("toggleDescription");
+
     if (descriptionLines.length > 0) {
-      descriptionContent.textContent = descriptionLines.join("\n");
+      const descriptionText = descriptionLines.join("\n");
+      descriptionContent.textContent = descriptionText;
+
+      // Check if description is long (more than 150px height or ~6 lines)
+      // We'll use line count as approximation: if more than 6 lines, show "Read more"
+      if (descriptionLines.length > 6) {
+        descriptionContent.classList.add("collapsed");
+        toggleDescBtn.style.display = "block";
+      } else {
+        descriptionContent.classList.remove("collapsed");
+        toggleDescBtn.style.display = "none";
+      }
+
       seqDescription.style.display = "block";
     } else {
       seqDescription.style.display = "none";
@@ -206,6 +220,20 @@ function toggleSourceCode() {
     seqCodeEl.style.display = "none";
     toggleBtn.classList.remove("expanded");
     btnText.textContent = "Show source code";
+  }
+}
+
+// Toggle description visibility
+function toggleDescription() {
+  const descriptionContent = document.getElementById("descriptionContent");
+  const toggleBtn = document.getElementById("toggleDescription");
+
+  if (descriptionContent.classList.contains("collapsed")) {
+    descriptionContent.classList.remove("collapsed");
+    toggleBtn.textContent = "Read less";
+  } else {
+    descriptionContent.classList.add("collapsed");
+    toggleBtn.textContent = "Read more";
   }
 }
 
