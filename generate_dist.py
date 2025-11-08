@@ -32,14 +32,20 @@ def render_template(template_path, context):
 
 
 def build_static_files():
-    """Copy style.css and main.js from page-template/ to dist/static/ (no minification)."""
+    """Copy style.css, main.js, logo, favicon, and sequence folders from page-template/ to dist/static/."""
     dist_static = os.path.join(DIST_DIR, "static")
     os.makedirs(dist_static, exist_ok=True)
 
+    # Copy CSS, JS, logo and favicon
     src_css = os.path.join(TEMPLATE_DIR, "style.css")
     src_js = os.path.join(TEMPLATE_DIR, "main.js")
+    src_logo = os.path.join(TEMPLATE_DIR, "logo.png")
+    src_favicon = os.path.join(TEMPLATE_DIR, "favicon.ico")
+    
     dst_css = os.path.join(dist_static, "style.css")
     dst_js = os.path.join(dist_static, "main.js")
+    dst_logo = os.path.join(dist_static, "logo.png")
+    dst_favicon = os.path.join(dist_static, "favicon.ico")
 
     if os.path.exists(src_css):
         shutil.copy(src_css, dst_css)
@@ -50,6 +56,34 @@ def build_static_files():
         shutil.copy(src_js, dst_js)
     else:
         print(f"WARNING: {src_js} not found")
+
+    if os.path.exists(src_logo):
+        shutil.copy(src_logo, dst_logo)
+    else:
+        print(f"WARNING: {src_logo} not found")
+
+    if os.path.exists(src_favicon):
+        shutil.copy(src_favicon, dst_favicon)
+    else:
+        print(f"WARNING: {src_favicon} not found")
+
+    # Copy official and community folders
+    official_src = "official"
+    community_src = "community"
+    official_dst = os.path.join(DIST_DIR, "official")
+    community_dst = os.path.join(DIST_DIR, "community")
+
+    if os.path.exists(official_src):
+        shutil.copytree(official_src, official_dst, dirs_exist_ok=True)
+        print(f"-> Copied {official_src}/ to dist/")
+    else:
+        print(f"WARNING: {official_src} folder not found")
+
+    if os.path.exists(community_src):
+        shutil.copytree(community_src, community_dst, dirs_exist_ok=True)
+        print(f"-> Copied {community_src}/ to dist/")
+    else:
+        print(f"WARNING: {community_src} folder not found")
 
     print("-> Static assets copied to dist/static")
 
