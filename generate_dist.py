@@ -58,30 +58,30 @@ def build_static_files():
         print(f"WARNING: {src_js} not found")
 
     if os.path.exists(src_logo):
-        shutil.copy(src_logo, dst_logo)
+        shutil.copy2(src_logo, dst_logo)
     else:
         print(f"WARNING: {src_logo} not found")
 
     if os.path.exists(src_favicon):
-        shutil.copy(src_favicon, dst_favicon)
+        shutil.copy2(src_favicon, dst_favicon)
     else:
         print(f"WARNING: {src_favicon} not found")
 
-    # Copy official and community folders
+    # Copy official and community folders preserving metadata
     official_src = "official"
     community_src = "community"
     official_dst = os.path.join(DIST_DIR, "official")
     community_dst = os.path.join(DIST_DIR, "community")
 
     if os.path.exists(official_src):
-        shutil.copytree(official_src, official_dst, dirs_exist_ok=True)
-        print(f"-> Copied {official_src}/ to dist/")
+        shutil.copytree(official_src, official_dst, dirs_exist_ok=True, copy_function=shutil.copy2)
+        print(f"-> Copied {official_src}/ to dist/ (preserving metadata)")
     else:
         print(f"WARNING: {official_src} folder not found")
 
     if os.path.exists(community_src):
-        shutil.copytree(community_src, community_dst, dirs_exist_ok=True)
-        print(f"-> Copied {community_src}/ to dist/")
+        shutil.copytree(community_src, community_dst, dirs_exist_ok=True, copy_function=shutil.copy2)
+        print(f"-> Copied {community_src}/ to dist/ (preserving metadata)")
     else:
         print(f"WARNING: {community_src} folder not found")
 
@@ -135,7 +135,6 @@ def build_index():
     context = {
         "total": total,
         "last_updated": manifest.get("lastUpdated", ""),
-        "generated_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "rows": rows,
     }
 
