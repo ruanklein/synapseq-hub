@@ -54,6 +54,23 @@ function formatLastUpdated() {
 // Run on page load
 if (typeof dayjs !== "undefined") {
   formatLastUpdated();
+  formatTableDates();
+}
+
+// Format table dates with dayjs
+function formatTableDates() {
+  dayjs.extend(window.dayjs_plugin_relativeTime);
+  
+  const dateCells = document.querySelectorAll("#seqTable tbody td[data-timestamp]");
+  dateCells.forEach(cell => {
+    const timestamp = cell.getAttribute("data-timestamp");
+    if (timestamp) {
+      const relativeTime = dayjs(timestamp).fromNow();
+      const fullDate = dayjs(timestamp).format("MMMM D, YYYY [at] h:mm A");
+      cell.textContent = relativeTime;
+      cell.setAttribute("title", fullDate);
+    }
+  });
 }
 
 // Load manifest for dependency resolution

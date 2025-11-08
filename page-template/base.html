@@ -30,19 +30,53 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
     </header>
 
     <div id="stats">
-      <p><strong>Total sequences:</strong> {{total}}</p>
-      <p><strong>Official:</strong> {{official}}</p>
-      <p><strong>Community:</strong> {{community}}</p>
-      <p>
-        <strong>Last updated:</strong>
-        <span
-          id="lastUpdated"
-          data-timestamp="{{last_updated}}"
-          title="{{last_updated}}"
-        >
-          {{last_updated}}
-        </span>
-      </p>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M3 5h14M3 10h14M3 15h14"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">Total sequences</span>
+          <span class="stat-value">{{total}}</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle
+              cx="10"
+              cy="10"
+              r="7"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path
+              d="M10 6v4l3 2"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+        <div class="stat-content">
+          <span class="stat-label">Last updated</span>
+          <span
+            class="stat-value"
+            id="lastUpdated"
+            data-timestamp="{{last_updated}}"
+            title="{{last_updated}}"
+          >
+            {{last_updated}}
+          </span>
+        </div>
+      </div>
     </div>
 
     <div class="search-wrapper">
@@ -67,9 +101,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
     <table id="seqTable">
       <thead>
         <tr>
+          <th>Origin</th>
           <th>Category</th>
           <th>Name</th>
           <th>Author</th>
+          <th>Updated</th>
         </tr>
       </thead>
       <tbody>

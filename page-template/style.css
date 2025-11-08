@@ -103,12 +103,66 @@ header h1 {
    Stats & spacing
 ===================== */
 #stats {
-  margin-bottom: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
-#stats p {
-  margin: 0.15rem 0;
-  font-size: 0.95rem;
+.stat-card {
+  flex: 1;
+  min-width: 200px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.stat-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+}
+
+body.dark .stat-card:hover {
+  box-shadow: 0 4px 12px rgba(102, 252, 241, 0.15);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--code-bg);
+  color: var(--accent-color);
+  flex-shrink: 0;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--muted-color);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-color);
 }
 
 /* =====================
@@ -117,6 +171,7 @@ header h1 {
 .search-wrapper {
   position: relative;
   margin: 0.8rem 0 1.2rem 0;
+  width: 100%;
 }
 
 #search {
@@ -168,12 +223,16 @@ header h1 {
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
 }
 
 th,
 td {
   padding: 0.6rem;
   border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 th {
@@ -864,6 +923,40 @@ footer {
     padding: 0.4rem 0.8rem;
   }
 
+  #stats {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-direction: column;
+  }
+
+  .stat-card {
+    min-width: 100%;
+    flex: none;
+    padding: 0.85rem 1rem;
+  }
+
+  .stat-card:hover {
+    transform: none;
+  }
+
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stat-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+  }
+
+  .stat-value {
+    font-size: 1.1rem;
+  }
+
   #search {
     font-size: 0.9rem;
   }
@@ -871,6 +964,31 @@ footer {
   th,
   td {
     font-size: 0.85rem;
+    padding: 0.5rem 0.4rem;
+    white-space: normal;
+  }
+
+  th {
+    font-size: 0.8rem;
+  }
+
+  /* Make table scrollable if needed */
+  #seqTable {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #seqTable thead,
+  #seqTable tbody,
+  #seqTable tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  #seqTable thead {
+    width: calc(100% - 0px);
   }
 
   .cli-command code {

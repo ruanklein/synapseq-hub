@@ -110,26 +110,27 @@ def build_index():
 
     entries = manifest.get("entries", [])
     total = len(entries)
-    official = len([e for e in entries if e.get("category", "").startswith("official")])
-    community = len([e for e in entries if e.get("category", "").startswith("community")])
 
     rows = ""
     for e in entries:
         path = e["path"]
+        origin = e.get("origin", "")
         category = e["category"]
         name = e["name"]
         author = e["author"]
+        updated_at = e.get("updated_at", "")
+        
         rows += (
             f"<tr onclick=\"showSequence('/{path}')\">"
+            f"<td>{origin}</td>"
             f"<td>{category}</td>"
             f"<td>{name}</td>"
-            f"<td>{author}</td></tr>\n"
+            f"<td>{author}</td>"
+            f"<td data-timestamp=\"{updated_at}\">{updated_at}</td></tr>\n"
         )
 
     context = {
         "total": total,
-        "official": official,
-        "community": community,
         "last_updated": manifest.get("lastUpdated", ""),
         "generated_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "rows": rows,
