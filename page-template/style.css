@@ -82,15 +82,23 @@ header h1 {
 }
 
 .theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   color: var(--text-color);
-  padding: 0.45rem 0.9rem;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
+}
+
+.theme-toggle .theme-icon {
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
 }
 
 .theme-toggle:hover {
@@ -1103,7 +1111,17 @@ footer {
 
   .theme-toggle {
     font-size: 0.85rem;
-    padding: 0.4rem 0.8rem;
+    padding: 0.4rem 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .theme-toggle .theme-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .theme-text {
+    display: none;
   }
 
   #stats {

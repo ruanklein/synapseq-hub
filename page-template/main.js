@@ -17,11 +17,24 @@ let allSequences = []; // Store all sequences for filtering
 
 // Theme handling
 const themeToggle = document.getElementById("themeToggle");
+const moonIcon = document.querySelector(".moon-icon");
+const bulbIcon = document.querySelector(".bulb-icon");
+const themeText = document.querySelector(".theme-text");
 
 function applyTheme(theme) {
   document.body.classList.toggle("dark", theme === "dark");
   document.body.classList.toggle("light", theme === "light");
-  themeToggle.textContent = theme === "dark" ? "Light Mode" : "Dark Mode";
+
+  if (theme === "dark") {
+    themeText.textContent = "Light Mode";
+    moonIcon.style.display = "none";
+    bulbIcon.style.display = "block";
+  } else {
+    themeText.textContent = "Dark Mode";
+    moonIcon.style.display = "block";
+    bulbIcon.style.display = "none";
+  }
+
   localStorage.setItem("theme", theme);
 }
 
