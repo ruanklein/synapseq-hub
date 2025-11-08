@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# SynapSeq Hub Generator
+# Copyright (C) 2025 SynapSeq Project Contributors
+#
+# This file is part of SynapSeq Hub.
+# Licensed under the GNU General Public License v3.0 or later.
+# See the LICENSE_CODE file for full license text.
+
 import json, os, re, sys
 from datetime import datetime, UTC
 

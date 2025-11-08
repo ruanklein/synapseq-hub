@@ -1,3 +1,9 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later
+ * SynapSeq Hub Frontend
+ * Copyright (C) 2025 SynapSeq Project Contributors
+ * Licensed under GPLv3 or later. See LICENSE_CODE for details.
+ */
+
 const table = document.getElementById("seqTable");
 const search = document.getElementById("search");
 const viewer = document.getElementById("viewer");
