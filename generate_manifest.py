@@ -77,15 +77,19 @@ def extract_dependencies(filepath, category):
     return deps
 
 
-def get_category_and_author(filepath):
+def get_author(filepath):
     """
-    Determines the category and author based on the file path.
+    Determines the author based on the file path.
 
     Expected layouts:
       - official/<category>/<file>.spsq
       - community/<category>/<author>/<file>.spsq
 
     Any deviation from these patterns is treated as an error.
+
+    Returns:
+      "synapseq-official" for official files,
+      <author> (GitHub username) for community files.
     """
     parts = filepath.split(os.sep)
 
@@ -93,22 +97,21 @@ def get_category_and_author(filepath):
         print(f"ERROR: Invalid path '{filepath}'. Could not split into components.")
         sys.exit(1)
 
-    if parts[0] == "official":
+    origin = parts[0]
+    if origin == "official":
         if len(parts) < 2:
             print(f"ERROR: Invalid official path '{filepath}'. Expected 'official/<category>/<file>.spsq'.")
             sys.exit(1)
-        category = "/".join(parts[:2])
-        author = "synapseq-official"
+        return "synapseq-official"
 
-    elif parts[0] == "community":
+    elif origin == "community":
         if len(parts) < 3:
             print(
                 f"ERROR: Invalid community path '{filepath}'. "
                 "Expected 'community/<category>/<author>/<file>.spsq'."
             )
             sys.exit(1)
-        category = "/".join(parts[:2])
-        author = parts[2]
+        return parts[2]
 
     else:
         print(
@@ -116,9 +119,38 @@ def get_category_and_author(filepath):
             "Files must be under 'official/' or 'community/'."
         )
         sys.exit(1)
+        
+def get_origin_and_category(filepath):
+    """
+    Extracts origin ("official" or "community") and category (subfolder name)
+    from the given relative file path.
 
-    return category, author
+    Example inputs:
+      official/samples/focus-one.spsq
+      community/meditation/ruanklein/relaxation.spsq
 
+    Returns:
+      ("official", "samples")
+      ("community", "meditation")
+    """
+    parts = filepath.split(os.sep)
+
+    if len(parts) < 2:
+        print(f"ERROR: Invalid file path '{filepath}'. Expected at least two segments.")
+        sys.exit(1)
+
+    origin = parts[0]
+    if origin not in ("official", "community"):
+        print(f"ERROR: Invalid origin '{origin}' in '{filepath}'. Must be 'official' or 'community'.")
+        sys.exit(1)
+
+    category = parts[1]
+    return origin, category
+
+def get_updated_at(filepath):
+    """Returns file creation/modification time in ISO 8601 (UTC)."""
+    ts = os.path.getmtime(filepath)
+    return datetime.fromtimestamp(ts, UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 def walk_files():
     """
@@ -141,17 +173,23 @@ def walk_files():
                 relpath = os.path.relpath(filepath)
                 validate_file_size(filepath)
 
-                category, author = get_category_and_author(relpath)
+                origin, category = get_origin_and_category(relpath)
+                author = get_author(relpath)
                 deps = extract_dependencies(filepath, os.path.dirname(filepath))
 
                 entries.append({
                     "name": os.path.splitext(file)[0],
                     "author": author,
                     "path": relpath,
-                    "category": category.replace("/", "."),
+                    "origin": origin,
+                    "category": category,
                     "download_url": f"{RAW_BASE}/{relpath}",
+                    "updated_at": get_updated_at(filepath),
                     "dependencies": deps
                 })
+
+    # Sort entries by update date (newest first)
+    entries.sort(key=lambda e: e["updated_at"], reverse=True)
     return entries
                 
                 
