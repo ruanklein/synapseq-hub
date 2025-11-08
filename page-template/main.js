@@ -73,6 +73,14 @@ search.addEventListener("input", () => {
   }
 });
 
+// Get full URL considering base path
+function getUrl(path) {
+  const base = window.location.pathname.includes("/synapseq-hub")
+    ? "/synapseq-hub"
+    : "";
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 // Show sequence and its metadata
 async function showSequence(path) {
   viewer.style.display = "block";
@@ -82,7 +90,7 @@ async function showSequence(path) {
   cliCommand.textContent = "";
   seqInfo.innerHTML = "";
 
-  const res = await fetch(path);
+  const res = await fetch(getUrl(path));
   if (!res.ok) {
     seqCode.textContent = "Error loading file.";
     return;
@@ -158,19 +166,18 @@ async function downloadZip() {
   if (!entry) return;
 
   // Add main sequence
-  const seqResp = await fetch(currentPath);
-  zip.file(entry.name + ".spsq", await seqResp.text());
+  const seqResp = await fetch(getUrl(currentPath));
+  zip.file(`${entry.name}.spsq`, await seqResp.text());
 
   // Add dependencies
   for (const dep of entry.dependencies || []) {
     const depUrl =
       "/" + dep.download_url.replace(/^.*?\/(official|community)\//, "$1/");
-    const res = await fetch(depUrl);
+    const res = await fetch(getUrl(depUrl));
     if (!res.ok) continue;
 
     const fname = dep.download_url.split("/").pop();
 
-    // decide how to read
     if (fname.endsWith(".wav")) {
       const buffer = await res.arrayBuffer();
       zip.file(fname, buffer);
@@ -180,7 +187,7 @@ async function downloadZip() {
     }
   }
 
-  // Generate zip
+  // Generate ZIP file
   const blob = await zip.generateAsync({ type: "blob" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
