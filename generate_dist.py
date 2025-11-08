@@ -120,13 +120,16 @@ def build_index():
         author = e["author"]
         updated_at = e.get("updated_at", "")
         
+        # Add badge class for origin
+        origin_class = "badge-official" if origin == "official" else "badge-community"
+        
         rows += (
             f"<tr onclick=\"showSequence('/{path}')\">"
-            f"<td>{origin}</td>"
+            f"<td><span class=\"origin-badge {origin_class}\">{origin}</span></td>"
             f"<td>{category}</td>"
-            f"<td>{name}</td>"
-            f"<td>{author}</td>"
-            f"<td data-timestamp=\"{updated_at}\">{updated_at}</td></tr>\n"
+            f"<td class=\"sequence-name\">{name}</td>"
+            f"<td class=\"author-name\">{author}</td>"
+            f"<td class=\"updated-time\" data-timestamp=\"{updated_at}\">{updated_at}</td></tr>\n"
         )
 
     context = {

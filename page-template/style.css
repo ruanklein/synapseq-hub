@@ -226,9 +226,16 @@ table {
   table-layout: auto;
 }
 
+thead {
+  background: var(--code-bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
 th,
 td {
-  padding: 0.6rem;
+  padding: 0.75rem 0.8rem;
   border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
   overflow: hidden;
@@ -239,15 +246,82 @@ th {
   color: var(--accent-color);
   font-weight: 600;
   text-align: left;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+tr {
+  transition: background-color 0.15s ease;
 }
 
 tr:hover {
-  background-color: rgba(0, 123, 255, 0.05);
+  background-color: rgba(0, 123, 255, 0.08);
   cursor: pointer;
 }
 
 body.dark tr:hover {
-  background-color: rgba(102, 252, 241, 0.1);
+  background-color: rgba(102, 252, 241, 0.12);
+}
+
+tbody tr {
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+  border-left-color: var(--accent-color);
+}
+
+/* Origin badges */
+.origin-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-official {
+  background: rgba(0, 123, 255, 0.15);
+  color: #007bff;
+  border: 1px solid rgba(0, 123, 255, 0.3);
+}
+
+body.dark .badge-official {
+  background: rgba(66, 153, 225, 0.2);
+  color: #66b3ff;
+  border: 1px solid rgba(66, 153, 225, 0.4);
+}
+
+.badge-community {
+  background: rgba(40, 167, 69, 0.15);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+body.dark .badge-community {
+  background: rgba(72, 187, 120, 0.2);
+  color: #68d391;
+  border: 1px solid rgba(72, 187, 120, 0.4);
+}
+
+/* Column specific styles */
+.sequence-name {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.author-name {
+  color: var(--muted-color);
+  font-size: 0.9rem;
+}
+
+.updated-time {
+  color: var(--muted-color);
+  font-size: 0.85rem;
 }
 
 /* =====================
@@ -964,12 +1038,42 @@ footer {
   th,
   td {
     font-size: 0.85rem;
-    padding: 0.5rem 0.4rem;
+    padding: 0.6rem 0.5rem;
     white-space: normal;
   }
 
   th {
+    font-size: 0.75rem;
+    padding: 0.7rem 0.5rem;
+  }
+
+  tbody tr {
+    border-left: 2px solid transparent;
+  }
+
+  .origin-badge {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  /* Allow first column (origin) to wrap if needed */
+  td:first-child {
+    white-space: normal;
+    min-width: fit-content;
+  }
+
+  .sequence-name {
+    font-size: 0.9rem;
+  }
+
+  .author-name {
     font-size: 0.8rem;
+  }
+
+  .updated-time {
+    font-size: 0.75rem;
   }
 
   /* Make table scrollable if needed */
@@ -989,6 +1093,33 @@ footer {
 
   #seqTable thead {
     width: calc(100% - 0px);
+  }
+
+  /* Column widths for mobile to ensure badges fit */
+  table th:nth-child(1),
+  table td:nth-child(1) {
+    width: 95px;
+    min-width: 95px;
+  }
+
+  table th:nth-child(2),
+  table td:nth-child(2) {
+    width: 75px;
+  }
+
+  table th:nth-child(3),
+  table td:nth-child(3) {
+    width: 100px;
+  }
+
+  table th:nth-child(4),
+  table td:nth-child(4) {
+    width: 85px;
+  }
+
+  table th:nth-child(5),
+  table td:nth-child(5) {
+    width: 85px;
   }
 
   .cli-command code {
