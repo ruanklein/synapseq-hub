@@ -98,6 +98,60 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
       </button>
     </div>
 
+    <button class="toggle-filters-btn" onclick="toggleFilters()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path
+          d="M2 4h14M4 9h10M6 14h6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+      <span>Advanced Filters</span>
+      <svg
+        class="chevron"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+      >
+        <path
+          d="M4 6l4 4 4-4"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+
+    <div id="advancedFilters" class="advanced-filters" style="display: none">
+      <div class="filter-group">
+        <label for="filterOrigin">Origin</label>
+        <select id="filterOrigin" onchange="applyFilters()">
+          <option value="">All</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filterCategory">Category</label>
+        <select id="filterCategory" onchange="applyFilters()">
+          <option value="">All</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filterAuthor">Author</label>
+        <select id="filterAuthor" onchange="applyFilters()">
+          <option value="">All</option>
+        </select>
+      </div>
+
+      <button class="clear-filters-btn" onclick="clearFilters()">
+        Clear All Filters
+      </button>
+    </div>
+
     <table id="seqTable">
       <thead>
         <tr>

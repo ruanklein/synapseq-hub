@@ -13,6 +13,7 @@ const seqInfo = document.getElementById("seqInfo");
 
 let currentPath = "";
 let manifestCache = null;
+let allSequences = []; // Store all sequences for filtering
 
 // Theme handling
 const themeToggle = document.getElementById("themeToggle");
@@ -57,12 +58,123 @@ if (typeof dayjs !== "undefined") {
   formatTableDates();
 }
 
+// Initialize filters on page load
+window.addEventListener("DOMContentLoaded", () => {
+  initializeFilters();
+});
+
+// Initialize advanced filters with unique values
+function initializeFilters() {
+  const rows = table.querySelectorAll("tbody tr");
+  const origins = new Set();
+  const categories = new Set();
+  const authors = new Set();
+
+  rows.forEach((row) => {
+    const cells = row.querySelectorAll("td");
+    if (cells.length >= 4) {
+      // Extract text from badge for origin
+      const originBadge = cells[0].querySelector(".origin-badge");
+      if (originBadge) origins.add(originBadge.textContent.trim());
+
+      categories.add(cells[1].textContent.trim());
+      authors.add(cells[3].textContent.trim());
+    }
+
+    // Store row data for filtering
+    allSequences.push({
+      element: row,
+      origin:
+        cells[0]?.querySelector(".origin-badge")?.textContent.trim() || "",
+      category: cells[1]?.textContent.trim() || "",
+      name: cells[2]?.textContent.trim() || "",
+      author: cells[3]?.textContent.trim() || "",
+    });
+  });
+
+  // Populate filter dropdowns
+  const filterOrigin = document.getElementById("filterOrigin");
+  const filterCategory = document.getElementById("filterCategory");
+  const filterAuthor = document.getElementById("filterAuthor");
+
+  [...origins].sort().forEach((origin) => {
+    const option = document.createElement("option");
+    option.value = origin;
+    option.textContent = origin;
+    filterOrigin.appendChild(option);
+  });
+
+  [...categories].sort().forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    filterCategory.appendChild(option);
+  });
+
+  [...authors].sort().forEach((author) => {
+    const option = document.createElement("option");
+    option.value = author;
+    option.textContent = author;
+    filterAuthor.appendChild(option);
+  });
+}
+
+// Toggle advanced filters
+function toggleFilters() {
+  const filters = document.getElementById("advancedFilters");
+  const btn = document.querySelector(".toggle-filters-btn");
+
+  if (filters.style.display === "none" || !filters.style.display) {
+    filters.style.display = "grid";
+    btn.classList.add("active");
+  } else {
+    filters.style.display = "none";
+    btn.classList.remove("active");
+  }
+}
+
+// Apply all filters
+function applyFilters() {
+  const searchTerm = search.value.toLowerCase();
+  const selectedOrigin = document.getElementById("filterOrigin").value;
+  const selectedCategory = document.getElementById("filterCategory").value;
+  const selectedAuthor = document.getElementById("filterAuthor").value;
+
+  allSequences.forEach((seq) => {
+    const matchesSearch =
+      !searchTerm ||
+      seq.name.toLowerCase().includes(searchTerm) ||
+      seq.category.toLowerCase().includes(searchTerm) ||
+      seq.author.toLowerCase().includes(searchTerm);
+
+    const matchesOrigin = !selectedOrigin || seq.origin === selectedOrigin;
+    const matchesCategory =
+      !selectedCategory || seq.category === selectedCategory;
+    const matchesAuthor = !selectedAuthor || seq.author === selectedAuthor;
+
+    seq.element.style.display =
+      matchesSearch && matchesOrigin && matchesCategory && matchesAuthor
+        ? ""
+        : "none";
+  });
+}
+
+// Clear all filters
+function clearFilters() {
+  document.getElementById("filterOrigin").value = "";
+  document.getElementById("filterCategory").value = "";
+  document.getElementById("filterAuthor").value = "";
+  applyFilters();
+}
+
 // Format table dates with dayjs
 function formatTableDates() {
   dayjs.extend(window.dayjs_plugin_relativeTime);
-  
-  const dateCells = document.querySelectorAll("#seqTable tbody td[data-timestamp]");
-  dateCells.forEach(cell => {
+
+  const dateCells = document.querySelectorAll(
+    "#seqTable tbody td[data-timestamp]"
+  );
+  dateCells.forEach((cell) => {
     const timestamp = cell.getAttribute("data-timestamp");
     if (timestamp) {
       const relativeTime = dayjs(timestamp).fromNow();
@@ -83,29 +195,16 @@ async function loadManifest() {
 
 // Filtering table
 search.addEventListener("input", () => {
-  const term = search.value.toLowerCase();
   const clearBtn = document.getElementById("clearSearch");
-
-  // Show/hide clear button
-  clearBtn.style.display = term ? "flex" : "none";
-
-  for (const row of table.querySelectorAll("tbody tr")) {
-    const text = row.textContent.toLowerCase();
-    row.style.display = text.includes(term) ? "" : "none";
-  }
+  clearBtn.style.display = search.value ? "flex" : "none";
+  applyFilters();
 });
 
 // Clear search
 function clearSearch() {
   search.value = "";
   document.getElementById("clearSearch").style.display = "none";
-
-  // Show all rows
-  for (const row of table.querySelectorAll("tbody tr")) {
-    row.style.display = "";
-  }
-
-  search.focus();
+  applyFilters();
 }
 
 // Get full URL considering base path

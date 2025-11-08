@@ -218,6 +218,109 @@ body.dark .stat-card:hover {
 }
 
 /* =====================
+   Advanced Filters
+===================== */
+.toggle-filters-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.toggle-filters-btn:hover {
+  background: var(--code-bg);
+  border-color: var(--accent-color);
+}
+
+.toggle-filters-btn .chevron {
+  transition: transform 0.3s ease;
+  margin-left: auto;
+}
+
+.toggle-filters-btn.active .chevron {
+  transform: rotate(180deg);
+}
+
+.advanced-filters {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.filter-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-group select {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-group select:hover {
+  border-color: var(--accent-color);
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+body.dark .filter-group select:focus {
+  box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.15);
+}
+
+.clear-filters-btn {
+  grid-column: 1 / -1;
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.clear-filters-btn:hover {
+  background: var(--code-bg);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+/* =====================
    Table
 ===================== */
 table {
@@ -1039,6 +1142,25 @@ footer {
 
   #search {
     font-size: 0.9rem;
+  }
+
+  .toggle-filters-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .advanced-filters {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .filter-group label {
+    font-size: 0.75rem;
+  }
+
+  .filter-group select {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.6rem;
   }
 
   th,
