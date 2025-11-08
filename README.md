@@ -152,18 +152,19 @@ If any rule is violated, the build fails and the PR is rejected.
 
 ---
 
-## License
+## Licensing
 
-All `.spsq` files and accompanying assets are licensed under
-**Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)**.  
-Full text: [LICENSE](LICENSE)
+This repository contains two types of works licensed under different terms:
 
-By submitting a Pull Request, you agree to release your contribution
-under this same license, ensuring every work remains free to use,
-modify, and redistribute with proper attribution.
+| Component                                           | License                                                         | Description                                                                                     |
+| --------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `.spsq` sequences and `.wav` sound files            | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Creative Commons license for all audio and sequence content under `official/` and `community/`. |
+| Python, HTML, CSS, JS (scripts and generator tools) | [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)          | Open source software license covering the generation scripts and web frontend.                  |
 
-More info:  
-<https://creativecommons.org/licenses/by-sa/4.0/>
+In short:
+
+- Creative content -> CC BY-SA 4.0
+- Source code -> GPL v3.0
 
 ---
 
