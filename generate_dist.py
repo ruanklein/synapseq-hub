@@ -30,6 +30,29 @@ def render_template(template_path, context):
         html = html.replace(f"{{{{{key}}}}}", str(value))
     return html
 
+def copy_preserving_metadata(src_dir, dst_dir):
+    if not os.path.exists(src_dir):
+        print(f"WARNING: {src_dir} folder not found")
+        return
+
+    os.makedirs(dst_dir, exist_ok=True)
+
+    for root, _, files in os.walk(src_dir):
+        rel_root = os.path.relpath(root, src_dir)
+        dst_root = os.path.join(dst_dir, rel_root)
+        os.makedirs(dst_root, exist_ok=True)
+
+        for f in files:
+            src_path = os.path.join(root, f)
+            dst_path = os.path.join(dst_root, f)
+
+            shutil.copy2(src_path, dst_path)
+
+            # Preserve original modification time
+            stat = os.stat(src_path)
+            os.utime(dst_path, (stat.st_atime, stat.st_mtime))
+
+    print(f"-> Copied {src_dir}/ to {dst_dir}/ (preserving timestamps)")
 
 def build_static_files():
     """Copy style.css, main.js, logo, favicon, and sequence folders from page-template/ to dist/static/."""
@@ -70,20 +93,9 @@ def build_static_files():
     # Copy official and community folders preserving metadata
     official_src = "official"
     community_src = "community"
-    official_dst = os.path.join(DIST_DIR, "official")
-    community_dst = os.path.join(DIST_DIR, "community")
-
-    if os.path.exists(official_src):
-        shutil.copytree(official_src, official_dst, dirs_exist_ok=True, copy_function=shutil.copy2)
-        print(f"-> Copied {official_src}/ to dist/ (preserving metadata)")
-    else:
-        print(f"WARNING: {official_src} folder not found")
-
-    if os.path.exists(community_src):
-        shutil.copytree(community_src, community_dst, dirs_exist_ok=True, copy_function=shutil.copy2)
-        print(f"-> Copied {community_src}/ to dist/ (preserving metadata)")
-    else:
-        print(f"WARNING: {community_src} folder not found")
+    
+    copy_preserving_metadata(official_src, f"{DIST_DIR}/official")
+    copy_preserving_metadata(community_src, f"{DIST_DIR}/community")
 
     print("-> Static assets copied to dist/static")
 
