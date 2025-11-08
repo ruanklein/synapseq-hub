@@ -8,7 +8,7 @@
 # Licensed under the GNU General Public License v3.0 or later.
 # See the LICENSE_CODE file for full license text.
 
-import json, os, re, sys
+import json, os, re, sys, subprocess
 from datetime import datetime, UTC
 
 # Repository configuration
@@ -148,9 +148,17 @@ def get_origin_and_category(filepath):
     return origin, category
 
 def get_updated_at(filepath):
-    """Returns file creation/modification time in ISO 8601 (UTC)."""
-    ts = os.path.getmtime(filepath)
-    return datetime.fromtimestamp(ts, UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+    """Returns last git commit date (ISO 8601 UTC) for this file."""
+    try:
+        ts = subprocess.check_output(
+            ["git", "log", "-1", "--format=%cI", filepath],
+            text=True
+        ).strip()
+        if ts:
+            return ts
+    except subprocess.CalledProcessError:
+        pass
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 def walk_files():
     """
