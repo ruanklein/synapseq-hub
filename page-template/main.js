@@ -83,35 +83,61 @@ function getUrl(path) {
 
 // Show sequence and its metadata
 async function showSequence(path) {
+  const loading = document.getElementById("loading");
+  const seqMeta = document.getElementById("seqMeta");
+  const seqCodeEl = document.getElementById("seqCode");
+  const buttons = document.getElementById("buttons");
+
+  // Show viewer and loading
   viewer.style.display = "block";
   table.style.display = "none";
   search.style.display = "none";
-  seqCode.textContent = "Loading...";
+
+  loading.classList.add("active");
+  seqMeta.style.display = "none";
+  seqCodeEl.style.display = "none";
+  buttons.style.display = "none";
+
+  seqCode.textContent = "";
   cliCommand.textContent = "";
   seqInfo.innerHTML = "";
 
-  const res = await fetch(getUrl(path));
-  if (!res.ok) {
+  try {
+    const res = await fetch(getUrl(path));
+    if (!res.ok) {
+      throw new Error("Failed to load sequence");
+    }
+
+    const content = await res.text();
+    seqCode.textContent = content;
+    currentPath = path;
+
+    const manifest = await loadManifest();
+    const entry = manifest.entries.find((e) => "/" + e.path === path);
+    if (!entry) {
+      throw new Error("Sequence not found in manifest");
+    }
+
+    cliCommand.textContent = `synapseq -hub-get ${entry.category}.${entry.name} ${entry.name}.wav`;
+
+    const deps = entry.dependencies || [];
+    if (deps.length > 0) {
+      let depList = deps.map((d) => `<li>${d.type}: ${d.name}</li>`).join("");
+      seqInfo.innerHTML = `<p><strong>Dependencies:</strong></p><ul>${depList}</ul>`;
+    } else {
+      seqInfo.innerHTML = "<p><strong>No dependencies.</strong></p>";
+    }
+
+    // Hide loading and show content
+    loading.classList.remove("active");
+    seqMeta.style.display = "block";
+    seqCodeEl.style.display = "block";
+    buttons.style.display = "block";
+  } catch (err) {
+    console.error("Error loading sequence:", err);
     seqCode.textContent = "Error loading file.";
-    return;
-  }
-
-  const content = await res.text();
-  seqCode.textContent = content;
-  currentPath = path;
-
-  const manifest = await loadManifest();
-  const entry = manifest.entries.find((e) => "/" + e.path === path);
-  if (!entry) return;
-
-  cliCommand.textContent = `synapseq -hub-get ${entry.category}.${entry.name} ${entry.name}.wav`;
-
-  const deps = entry.dependencies || [];
-  if (deps.length > 0) {
-    let depList = deps.map((d) => `<li>${d.type}: ${d.name}</li>`).join("");
-    seqInfo.innerHTML = `<p><strong>Dependencies:</strong></p><ul>${depList}</ul>`;
-  } else {
-    seqInfo.innerHTML = "<p><strong>No dependencies.</strong></p>";
+    loading.classList.remove("active");
+    seqCodeEl.style.display = "block";
   }
 }
 
