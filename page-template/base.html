@@ -140,9 +140,38 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
             <span>Copy</span>
           </button>
         </div>
+
+        <div id="seqDescription" style="display: none">
+          <h3>Description</h3>
+          <div id="descriptionContent" class="description-content"></div>
+        </div>
       </div>
 
-      <pre id="seqCode"></pre>
+      <div id="sourceCodeSection" style="display: none">
+        <button
+          id="toggleSourceCode"
+          class="toggle-source-btn"
+          onclick="toggleSourceCode()"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            class="chevron"
+          >
+            <path
+              d="M4 6l4 4 4-4"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>Show source code</span>
+        </button>
+        <pre id="seqCode" style="display: none"></pre>
+      </div>
 
       <div id="buttons">
         <button id="downloadZipBtn" onclick="downloadZip()">

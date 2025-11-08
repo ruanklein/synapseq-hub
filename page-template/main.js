@@ -104,7 +104,9 @@ async function showSequence(path) {
   const loading = document.getElementById("loading");
   const seqMeta = document.getElementById("seqMeta");
   const seqCodeEl = document.getElementById("seqCode");
+  const sourceCodeSection = document.getElementById("sourceCodeSection");
   const buttons = document.getElementById("buttons");
+  const toggleBtn = document.getElementById("toggleSourceCode");
 
   // Show viewer and loading
   viewer.style.display = "block";
@@ -114,11 +116,16 @@ async function showSequence(path) {
   loading.classList.add("active");
   seqMeta.style.display = "none";
   seqCodeEl.style.display = "none";
+  sourceCodeSection.style.display = "none";
   buttons.style.display = "none";
 
   seqCode.textContent = "";
   cliCommand.textContent = "";
   seqInfo.innerHTML = "";
+
+  // Reset toggle button
+  toggleBtn.classList.remove("expanded");
+  toggleBtn.querySelector("span").textContent = "Show source code";
 
   try {
     const res = await fetch(getUrl(path));
@@ -127,8 +134,34 @@ async function showSequence(path) {
     }
 
     const content = await res.text();
-    seqCode.textContent = content;
     currentPath = path;
+
+    // Extract description (lines starting with ##)
+    const lines = content.split("\n");
+    const descriptionLines = [];
+    const codeLines = [];
+
+    lines.forEach((line) => {
+      if (line.trim().startsWith("##")) {
+        // Remove ## and trim
+        descriptionLines.push(line.trim().substring(2).trim());
+      } else {
+        codeLines.push(line);
+      }
+    });
+
+    // Set description
+    const seqDescription = document.getElementById("seqDescription");
+    const descriptionContent = document.getElementById("descriptionContent");
+    if (descriptionLines.length > 0) {
+      descriptionContent.textContent = descriptionLines.join("\n");
+      seqDescription.style.display = "block";
+    } else {
+      seqDescription.style.display = "none";
+    }
+
+    // Set code without description comments
+    seqCode.textContent = codeLines.join("\n");
 
     const manifest = await loadManifest();
     const entry = manifest.entries.find((e) => "/" + e.path === path);
@@ -149,13 +182,30 @@ async function showSequence(path) {
     // Hide loading and show content
     loading.classList.remove("active");
     seqMeta.style.display = "block";
-    seqCodeEl.style.display = "block";
+    sourceCodeSection.style.display = "block";
     buttons.style.display = "block";
   } catch (err) {
     console.error("Error loading sequence:", err);
     seqCode.textContent = "Error loading file.";
     loading.classList.remove("active");
     seqCodeEl.style.display = "block";
+  }
+}
+
+// Toggle source code visibility
+function toggleSourceCode() {
+  const seqCodeEl = document.getElementById("seqCode");
+  const toggleBtn = document.getElementById("toggleSourceCode");
+  const btnText = toggleBtn.querySelector("span");
+
+  if (seqCodeEl.style.display === "none") {
+    seqCodeEl.style.display = "block";
+    toggleBtn.classList.add("expanded");
+    btnText.textContent = "Hide source code";
+  } else {
+    seqCodeEl.style.display = "none";
+    toggleBtn.classList.remove("expanded");
+    btnText.textContent = "Show source code";
   }
 }
 

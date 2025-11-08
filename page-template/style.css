@@ -275,6 +275,28 @@ body.dark tr:hover {
   margin-bottom: 1rem;
 }
 
+#seqDescription {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+}
+
+#seqDescription h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.1rem;
+  color: var(--accent-color);
+}
+
+.description-content {
+  color: var(--text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
 .cli-command {
   margin-top: 1rem;
 }
@@ -385,6 +407,41 @@ body.dark tr:hover {
   50% {
     transform: scale(1.2);
   }
+}
+
+/* =====================
+   Source code toggle
+===================== */
+#sourceCodeSection {
+  margin: 1.5rem 0;
+}
+
+.toggle-source-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.toggle-source-btn:hover {
+  background: var(--border-color);
+}
+
+.toggle-source-btn .chevron {
+  transition: transform 0.2s ease;
+}
+
+.toggle-source-btn.expanded .chevron {
+  transform: rotate(180deg);
 }
 
 /* =====================
