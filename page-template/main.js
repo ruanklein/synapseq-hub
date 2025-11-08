@@ -335,6 +335,113 @@ async function copyCommand() {
 }
 
 // Download sequence + dependencies as ZIP
+let downloadTimer = null;
+let downloadStarted = false;
+
+// Handle download click - modal for desktop/tablet, direct download for mobile
+function handleDownloadClick() {
+  const isMobile = window.innerWidth <= 768;
+
+  if (isMobile) {
+    // Direct download for mobile
+    downloadZip();
+  } else {
+    // Show modal for desktop/tablet
+    openDownloadModal();
+  }
+}
+
+async function openDownloadModal() {
+  if (!currentPath) return;
+
+  const modal = document.getElementById("downloadModal");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const downloadBtnText = document.getElementById("downloadBtnText");
+  const countdownText = document.getElementById("countdownText");
+
+  // Get sequence info
+  const manifest = await loadManifest();
+  const entry = manifest.entries.find((e) => "/" + e.path === currentPath);
+  if (!entry) return;
+
+  const zipName = `${entry.name}.zip`;
+  const folderName = entry.name;
+  const sequenceName = entry.name;
+
+  // Update instructions
+  document.getElementById(
+    "unzipWindows"
+  ).textContent = `Expand-Archive -Path ${zipName} -DestinationPath .`;
+  document.getElementById("unzipUnix").textContent = `unzip ${zipName}`;
+  document.getElementById("cdCommand").textContent = `cd ${folderName}`;
+  document.getElementById(
+    "generateCommand"
+  ).textContent = `synapseq ${sequenceName}.spsq ${sequenceName}.wav`;
+
+  // Reset modal state
+  downloadStarted = false;
+  downloadBtn.disabled = true;
+  downloadBtn.classList.add("countdown");
+  downloadBtnText.innerHTML = `Download starting in <strong id="countdownText">3</strong>...`;
+
+  // Show modal
+  modal.style.display = "flex";
+
+  // Start countdown
+  let count = 3;
+  downloadTimer = setInterval(() => {
+    count--;
+    if (count > 0) {
+      // Update the innerHTML with current count
+      downloadBtnText.innerHTML = `Download starting in <strong id="countdownText">${count}</strong>...`;
+    } else {
+      clearInterval(downloadTimer);
+      downloadTimer = null;
+
+      // Start download
+      downloadZip();
+      downloadStarted = true;
+
+      // Enable button for manual download
+      downloadBtn.disabled = false;
+      downloadBtn.classList.remove("countdown");
+      downloadBtnText.textContent = "Download Again";
+    }
+  }, 1000);
+}
+
+function closeDownloadModal() {
+  const modal = document.getElementById("downloadModal");
+
+  // Cancel countdown if running
+  if (downloadTimer) {
+    clearInterval(downloadTimer);
+    downloadTimer = null;
+  }
+
+  modal.style.display = "none";
+}
+
+// Copy code from modal
+async function copyCode(elementId) {
+  const codeElement = document.getElementById(elementId);
+  const text = codeElement.textContent;
+  const button = event.currentTarget;
+
+  try {
+    await navigator.clipboard.writeText(text);
+
+    // Visual feedback
+    button.classList.add("copied");
+
+    setTimeout(() => {
+      button.classList.remove("copied");
+    }, 2000);
+  } catch (err) {
+    console.error("Failed to copy:", err);
+  }
+}
+
 async function downloadZip() {
   if (!currentPath) return;
 
@@ -343,11 +450,14 @@ async function downloadZip() {
   const entry = manifest.entries.find((e) => "/" + e.path === currentPath);
   if (!entry) return;
 
-  // Add main sequence
-  const seqResp = await fetch(getUrl(currentPath));
-  zip.file(`${entry.name}.spsq`, await seqResp.text());
+  // Create a folder inside the ZIP
+  const folder = zip.folder(entry.name);
 
-  // Add dependencies
+  // Add main sequence to the folder
+  const seqResp = await fetch(getUrl(currentPath));
+  folder.file(`${entry.name}.spsq`, await seqResp.text());
+
+  // Add dependencies to the folder
   for (const dep of entry.dependencies || []) {
     const depUrl =
       "/" + dep.download_url.replace(/^.*?\/(official|community)\//, "$1/");
@@ -358,10 +468,10 @@ async function downloadZip() {
 
     if (fname.endsWith(".wav")) {
       const buffer = await res.arrayBuffer();
-      zip.file(fname, buffer);
+      folder.file(fname, buffer);
     } else {
       const text = await res.text();
-      zip.file(fname, text);
+      folder.file(fname, text);
     }
   }
 
