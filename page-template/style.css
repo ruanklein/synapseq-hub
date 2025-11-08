@@ -328,12 +328,14 @@ body.dark .badge-community {
    Back button
 ===================== */
 .back-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: var(--accent-color);
   color: var(--bg-color);
   font-weight: 600;
   border: none;
-  padding: 0.45rem 0.9rem;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -341,13 +343,17 @@ body.dark .badge-community {
   transition: background 0.2s ease, transform 0.1s ease;
 }
 
+.back-btn svg {
+  flex-shrink: 0;
+}
+
 .back-btn:hover {
   opacity: 0.9;
-  transform: translateY(-1px);
+  transform: translateX(-2px);
 }
 
 .back-btn:active {
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 /* =====================
