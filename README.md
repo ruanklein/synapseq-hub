@@ -110,12 +110,16 @@ This structure ensures each contributor has their own isolated namespace within 
 
 1. **Fork the repository**
 
+   Go to [https://github.com/ruanklein/synapseq-hub](https://github.com/ruanklein/synapseq-hub) and click the **Fork** button to create your own copy.
+
+2. **Clone your fork**
+
    ```bash
    git clone https://github.com/<your-username>/synapseq-hub
    cd synapseq-hub
    ```
 
-2. **Create your directory**
+3. **Create your directory**
 
    Replace `<category>`, `<first-letter>`, and `<your-username>` with your values:
 
@@ -129,13 +133,13 @@ This structure ensures each contributor has their own isolated namespace within 
    mkdir -p packages/focus/j/johndoe
    ```
 
-3. **Add your files**
+4. **Add your files**
 
    Place your `.spsq` sequence(s) in your directory. Include any referenced `presets-*` or `.wav` background files.
 
    **Important:** Only commit files inside **your own username directory**. Do not modify or add files to other users' directories.
 
-4. **Validate locally**
+5. **Validate locally**
 
    Test your sequence with the latest version of SynapSeq:
 
@@ -143,7 +147,7 @@ This structure ensures each contributor has their own isolated namespace within 
    synapseq -test packages/<category>/<first-letter>/<username>/<sequence>.spsq
    ```
 
-5. **Commit and push**
+6. **Commit and push**
 
    ```bash
    git add packages/<category>/<first-letter>/<your-username>/
@@ -151,7 +155,9 @@ This structure ensures each contributor has their own isolated namespace within 
    git push origin main
    ```
 
-6. **Open a Pull Request**
+7. **Open a Pull Request**
+
+   Go to your fork on GitHub and click **"Contribute"** -> **"Open pull request"** to submit your changes to the main repository.
 
    Describe:
 
