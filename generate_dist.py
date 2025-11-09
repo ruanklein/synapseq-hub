@@ -11,7 +11,6 @@
 import os
 import json
 import shutil
-from datetime import datetime, UTC
 
 TEMPLATE_DIR = "page-template"
 DIST_DIR = "dist"
