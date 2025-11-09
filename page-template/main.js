@@ -79,43 +79,36 @@ window.addEventListener("DOMContentLoaded", () => {
 // Initialize advanced filters with unique values
 function initializeFilters() {
   const rows = table.querySelectorAll("tbody tr");
-  const origins = new Set();
   const categories = new Set();
   const authors = new Set();
 
   rows.forEach((row) => {
     const cells = row.querySelectorAll("td");
     if (cells.length >= 4) {
-      // Extract text from badge for origin
-      const originBadge = cells[0].querySelector(".origin-badge");
-      if (originBadge) origins.add(originBadge.textContent.trim());
+      // New order: Name (0), Category (1), Author with badge (2), Updated (3)
+      const name = cells[0].textContent.trim();
+      const category = cells[1].textContent.trim();
+      const authorBadge = cells[2].querySelector(".origin-badge");
+      const author = authorBadge
+        ? authorBadge.textContent.trim()
+        : cells[2].textContent.trim();
 
-      categories.add(cells[1].textContent.trim());
-      authors.add(cells[3].textContent.trim());
+      categories.add(category);
+      authors.add(author);
+
+      // Store row data for filtering
+      allSequences.push({
+        element: row,
+        name: name,
+        category: category,
+        author: author,
+      });
     }
-
-    // Store row data for filtering
-    allSequences.push({
-      element: row,
-      origin:
-        cells[0]?.querySelector(".origin-badge")?.textContent.trim() || "",
-      category: cells[1]?.textContent.trim() || "",
-      name: cells[2]?.textContent.trim() || "",
-      author: cells[3]?.textContent.trim() || "",
-    });
   });
 
   // Populate filter dropdowns
-  const filterOrigin = document.getElementById("filterOrigin");
   const filterCategory = document.getElementById("filterCategory");
   const filterAuthor = document.getElementById("filterAuthor");
-
-  [...origins].sort().forEach((origin) => {
-    const option = document.createElement("option");
-    option.value = origin;
-    option.textContent = origin;
-    filterOrigin.appendChild(option);
-  });
 
   [...categories].sort().forEach((category) => {
     const option = document.createElement("option");
@@ -149,7 +142,6 @@ function toggleFilters() {
 // Apply all filters
 function applyFilters() {
   const searchTerm = search.value.toLowerCase();
-  const selectedOrigin = document.getElementById("filterOrigin").value;
   const selectedCategory = document.getElementById("filterCategory").value;
   const selectedAuthor = document.getElementById("filterAuthor").value;
 
@@ -160,21 +152,17 @@ function applyFilters() {
       seq.category.toLowerCase().includes(searchTerm) ||
       seq.author.toLowerCase().includes(searchTerm);
 
-    const matchesOrigin = !selectedOrigin || seq.origin === selectedOrigin;
     const matchesCategory =
       !selectedCategory || seq.category === selectedCategory;
     const matchesAuthor = !selectedAuthor || seq.author === selectedAuthor;
 
     seq.element.style.display =
-      matchesSearch && matchesOrigin && matchesCategory && matchesAuthor
-        ? ""
-        : "none";
+      matchesSearch && matchesCategory && matchesAuthor ? "" : "none";
   });
 }
 
 // Clear all filters
 function clearFilters() {
-  document.getElementById("filterOrigin").value = "";
   document.getElementById("filterCategory").value = "";
   document.getElementById("filterAuthor").value = "";
   applyFilters();
@@ -324,7 +312,7 @@ async function showSequence(path) {
       throw new Error("Sequence not found in manifest");
     }
 
-    cliCommand.textContent = `synapseq -hub-get ${entry.origin}.${entry.category}.${entry.name} ${entry.name}.wav`;
+    cliCommand.textContent = `synapseq -hub-get ${entry.id} ${entry.name}.wav`;
 
     const deps = entry.dependencies || [];
     if (deps.length > 0) {
@@ -348,9 +336,12 @@ async function showSequence(path) {
         grouped[type].forEach((d, index) => {
           const isLast = index === grouped[type].length - 1;
           const connector = isLast ? "└─" : "├─";
-          const depUrl = getUrl(
-            "/" + d.download_url.replace(/^.*?\/(official|community)\//, "$1/")
+          // Extract path from download_url (e.g., "https://...hub/packages/..." -> "packages/...")
+          const depPath = d.download_url.replace(
+            /^https?:\/\/[^\/]+\/[^\/]+\//,
+            ""
           );
+          const depUrl = getUrl("/" + depPath);
           tree += `<div class="dep-item ${isLast ? "last" : ""}">`;
           tree += `<span class="connector">${connector}</span> `;
           tree += `<a href="${depUrl}" target="_blank" rel="noopener noreferrer">${d.name}</a>`;
@@ -598,8 +589,12 @@ async function downloadZip() {
 
   // Add dependencies to the folder
   for (const dep of entry.dependencies || []) {
-    const depUrl =
-      "/" + dep.download_url.replace(/^.*?\/(official|community)\//, "$1/");
+    // Extract path from download_url (e.g., "https://...hub/packages/..." -> "packages/...")
+    const depPath = dep.download_url.replace(
+      /^https?:\/\/[^\/]+\/[^\/]+\//,
+      ""
+    );
+    const depUrl = "/" + depPath;
     const res = await fetch(getUrl(depUrl));
     if (!res.ok) continue;
 

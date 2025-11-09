@@ -14,8 +14,8 @@ from datetime import datetime, UTC
 # Repository configuration
 RAW_BASE = f"https://ruanklein.github.io/synapseq-hub"
 
-# Main categories to scan
-ROOT_DIRS = ["official", "community"]
+# Package directory
+PACKAGES_DIR = "packages"
 
 # Manifest configuration
 MANIFEST_FILE = "manifest.json"
@@ -79,73 +79,124 @@ def extract_dependencies(filepath, category):
 
 def get_author(filepath):
     """
-    Determines the author based on the file path.
+    Extracts the author (GitHub username) from the given file path.
 
-    Expected layouts:
-      - official/<category>/<file>.spsq
-      - community/<category>/<author>/<file>.spsq
+    Expected layout:
+        packages/<category>/<first-letter>/<username>/<file>.spsq
 
-    Any deviation from these patterns is treated as an error.
-
-    Returns:
-      "synapseq-official" for official files,
-      <author> (GitHub username) for community files.
+    Rules:
+        - The directory must start with 'packages/'
+        - The first letter folder must match the first letter of <username>
+        - Any deviation aborts execution with an error
     """
     parts = filepath.split(os.sep)
 
-    if not parts:
-        print(f"ERROR: Invalid path '{filepath}'. Could not split into components.")
+    if len(parts) < 5:
+        print(f"ERROR: Invalid path '{filepath}'. Expected layout 'packages/<category>/<letter>/<username>/<file>.spsq'.")
         sys.exit(1)
 
-    origin = parts[0]
-    if origin == "official":
-        if len(parts) < 2:
-            print(f"ERROR: Invalid official path '{filepath}'. Expected 'official/<category>/<file>.spsq'.")
-            sys.exit(1)
-        return "synapseq-official"
+    if parts[0] != "packages":
+        print(f"ERROR: Invalid root '{parts[0]}' in '{filepath}'. Must start with 'packages/'.")
+        sys.exit(1)
 
-    elif origin == "community":
-        if len(parts) < 3:
-            print(
-                f"ERROR: Invalid community path '{filepath}'. "
-                "Expected 'community/<category>/<author>/<file>.spsq'."
-            )
-            sys.exit(1)
-        return parts[2]
+    _, first_letter, username = parts[1:4]
 
-    else:
+    if first_letter.lower() != username[0].lower():
         print(
-            f"ERROR: Invalid root directory in path '{filepath}'. "
-            "Files must be under 'official/' or 'community/'."
+            f"ERROR: Mismatch in directory structure '{filepath}'. "
+            f"Expected letter folder '{username[0].lower()}', found '{first_letter}'."
         )
         sys.exit(1)
+
+    return username
         
-def get_origin_and_category(filepath):
+def get_category(filepath):
     """
-    Extracts origin ("official" or "community") and category (subfolder name)
-    from the given relative file path.
+    Extracts the category from the given file path.
 
-    Example inputs:
-      official/samples/focus-one.spsq
-      community/meditation/ruanklein/relaxation.spsq
-
-    Returns:
-      ("official", "samples")
-      ("community", "meditation")
+    Expected layout:
+        packages/<category>/<letter>/<username>/<file>.spsq
     """
     parts = filepath.split(os.sep)
 
-    if len(parts) < 2:
-        print(f"ERROR: Invalid file path '{filepath}'. Expected at least two segments.")
+    if len(parts) < 5:
+        print(f"ERROR: Invalid file path '{filepath}'. Expected layout 'packages/<category>/<letter>/<username>/<file>.spsq'.")
         sys.exit(1)
 
-    origin = parts[0]
-    if origin not in ("official", "community"):
-        print(f"ERROR: Invalid origin '{origin}' in '{filepath}'. Must be 'official' or 'community'.")
+    if parts[0] != "packages":
+        print(f"ERROR: Invalid root '{parts[0]}' in '{filepath}'. Must start with 'packages/'.")
+        sys.exit(1)
+
+    return parts[1]
+
+def get_name(filepath):
+    """
+    Extracts the sequence name from a given file path.
+
+    Expected layout:
+        packages/<category>/<letter>/<author>/<file>.spsq
+    """
+    parts = filepath.split(os.sep)
+
+    if len(parts) < 5:
+        print(f"ERROR: Invalid file path '{filepath}'. Expected layout 'packages/<category>/<letter>/<author>/<file>.spsq'.")
+        sys.exit(1)
+
+    filename = parts[-1]
+
+    if not filename.endswith(".spsq"):
+        print(f"ERROR: File '{filepath}' is not a valid SynapSeq sequence (.spsq).")
+        sys.exit(1)
+
+    name = os.path.splitext(filename)[0]
+
+    if not name or not name.strip():
+        print(f"ERROR: Invalid or empty file name in '{filepath}'.")
+        sys.exit(1)
+
+    return name.strip()
+
+def get_id(filepath):
+    """
+    Derives the SynapSeq Hub ID from a full file path.
+
+    Expected layout:
+        packages/<category>/<letter>/<author>/<file>.spsq
+
+    The resulting ID format:
+        author.category.name
+    """
+    parts = filepath.split(os.sep)
+
+    if len(parts) < 5:
+        print(f"ERROR: Invalid file path '{filepath}'. Expected layout 'packages/<category>/<letter>/<author>/<file>.spsq'.")
+        sys.exit(1)
+
+    if parts[0] != "packages":
+        print(f"ERROR: Invalid root '{parts[0]}' in '{filepath}'. Must start with 'packages/'.")
         sys.exit(1)
 
     category = parts[1]
-    return origin, category
+    first_letter = parts[2]
+    author = parts[3]
+    filename = os.path.splitext(parts[4])[0]
+
+    if first_letter.lower() != author[0].lower():
+        print(
+            f"ERROR: Mismatch in directory structure '{filepath}'. "
+            f"Expected folder '{author[0].lower()}', found '{first_letter}'."
+        )
+        sys.exit(1)
+
+    for field_name, field_value in [("author", author), ("category", category), ("name", filename)]:
+        if not field_value or not field_value.strip():
+            print(f"ERROR: Missing or empty {field_name} in '{filepath}'.")
+            sys.exit(1)
+        if any(c in field_value for c in " /\\"):
+            print(f"ERROR: Invalid character in {field_name} ('{field_value}'). Only alphanumeric, hyphens, or underscores allowed.")
+            sys.exit(1)
+
+    return f"{author.strip()}.{category.strip()}.{filename.strip()}"
 
 def get_updated_at(filepath):
     """Returns last git commit date (ISO 8601 UTC) for this file."""
@@ -169,32 +220,32 @@ def walk_files():
       - Adds a structured entry to the index list
     """
     entries = []
-    
-    for root_dir in ROOT_DIRS:
-        for dirpath, _, filenames in os.walk(root_dir):
+
+    for dirpath, _, filenames in os.walk(PACKAGES_DIR):
+        for file in filenames:
+            if not file.endswith(".spsq") or file.startswith("presets-"):
+                continue
             
-            for file in filenames:
-                if not file.endswith(".spsq") or file.startswith("presets-"):
-                    continue
-                
-                filepath = os.path.join(dirpath, file)
-                relpath = os.path.relpath(filepath)
-                validate_file_size(filepath)
+            filepath = os.path.join(dirpath, file)
+            relpath = os.path.relpath(filepath)
+            validate_file_size(filepath)
 
-                origin, category = get_origin_and_category(relpath)
-                author = get_author(relpath)
-                deps = extract_dependencies(filepath, os.path.dirname(filepath))
+            id = get_id(relpath)
+            name = get_name(relpath)
+            category = get_category(relpath)
+            author = get_author(relpath)
+            deps = extract_dependencies(filepath, os.path.dirname(filepath))
 
-                entries.append({
-                    "name": os.path.splitext(file)[0],
-                    "author": author,
-                    "path": relpath,
-                    "origin": origin,
-                    "category": category,
-                    "download_url": f"{RAW_BASE}/{relpath}",
-                    "updated_at": get_updated_at(filepath),
-                    "dependencies": deps
-                })
+            entries.append({
+                "id": id,
+                "name": name,
+                "author": author,
+                "path": relpath,
+                "category": category,
+                "download_url": f"{RAW_BASE}/{relpath}",
+                "updated_at": get_updated_at(filepath),
+                "dependencies": deps
+            })
 
     # Sort entries: primary by update date (newest first), secondary by name (A-Z)
     # Negate date comparison for DESC, keep name for ASC

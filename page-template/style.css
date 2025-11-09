@@ -1241,11 +1241,11 @@ footer {
     width: calc(100% - 0px);
   }
 
-  /* Column widths for mobile to ensure badges fit */
+  /* Column widths for mobile - Name, Category, Author (badge), Updated */
   table th:nth-child(1),
   table td:nth-child(1) {
-    width: 95px;
-    min-width: 95px;
+    width: 110px;
+    min-width: 110px;
   }
 
   table th:nth-child(2),
@@ -1255,17 +1255,13 @@ footer {
 
   table th:nth-child(3),
   table td:nth-child(3) {
-    width: 100px;
+    width: 95px;
+    min-width: 95px;
   }
 
   table th:nth-child(4),
   table td:nth-child(4) {
-    width: 85px;
-  }
-
-  table th:nth-child(5),
-  table td:nth-child(5) {
-    width: 85px;
+    width: 90px;
   }
 
   .cli-command code {

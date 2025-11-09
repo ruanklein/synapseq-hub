@@ -91,11 +91,8 @@ def build_static_files():
         print(f"WARNING: {src_favicon} not found")
 
     # Copy official and community folders preserving metadata
-    official_src = "official"
-    community_src = "community"
-    
-    copy_preserving_metadata(official_src, f"{DIST_DIR}/official")
-    copy_preserving_metadata(community_src, f"{DIST_DIR}/community")
+    packages_src = "packages"    
+    copy_preserving_metadata(packages_src, f"{DIST_DIR}/packages")
 
     print("-> Static assets copied to dist/static")
 
@@ -125,22 +122,20 @@ def build_index():
 
     rows = ""
     for e in entries:
-        path = e["path"]
-        origin = e.get("origin", "")
-        category = e["category"]
         name = e["name"]
+        path = e["path"]
+        category = e["category"]
         author = e["author"]
         updated_at = e.get("updated_at", "")
         
-        # Add badge class for origin
-        origin_class = "badge-official" if origin == "official" else "badge-community"
+        # Add badge class based on author (synapseq = official)
+        author_class = "badge-official" if author == "synapseq" else "badge-community"
         
         rows += (
             f"<tr onclick=\"showSequence('/{path}')\">"
-            f"<td><span class=\"origin-badge {origin_class}\">{origin}</span></td>"
-            f"<td>{category}</td>"
             f"<td class=\"sequence-name\">{name}</td>"
-            f"<td class=\"author-name\">{author}</td>"
+            f"<td>{category}</td>"
+            f"<td><span class=\"origin-badge {author_class}\">{author}</span></td>"
             f"<td class=\"updated-time\" data-timestamp=\"{updated_at}\">{updated_at}</td></tr>\n"
         )
 
