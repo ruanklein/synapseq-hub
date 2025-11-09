@@ -94,8 +94,15 @@ This structure ensures each contributor has their own isolated namespace within 
    - All dependencies must exist inside this repository.
 
 4. **Licensing**
+
    - All contributions must be released under **CC BY-SA 4.0**.
    - The license must be explicitly mentioned in the sequence header.
+
+5. **Originality and proprietary content**
+   - All submitted sequences must be **original works** or properly licensed derivatives.
+   - **Sequences copied or derived from proprietary sources will be rejected**, even if technically compatible with open formats.
+   - You must have the legal right to license your submission under CC BY-SA 4.0.
+   - If adapting or remixing existing CC-licensed work, proper attribution is required.
 
 ---
 
