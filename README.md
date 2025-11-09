@@ -15,10 +15,18 @@ ensuring full compatibility and reproducibility.
 
 ## Repository Structure
 
-- **`official/`** -> Sequences officially authored and maintained by the SynapSeq project.
-- **`community/`** -> User-contributed sequences submitted via pull requests (PRs).
+All sequences are organized in the `packages/` directory following this structure:
 
-Each directory follows strict structural and validation rules enforced by the repository’s indexing script.
+```
+packages/<category>/<first-letter>/<username>/<files...>
+```
+
+- **`<category>`** -> Type of sequence (e.g., `samples`, `focus`, `relax`, `meditation`)
+- **`<first-letter>`** -> First letter of the username (lowercase)
+- **`<username>`** -> GitHub username or author identifier
+- **`<files...>`** -> `.spsq` sequence files and optional `.wav` backgrounds
+
+Each directory follows strict structural and validation rules enforced by the repository's indexing script.
 
 ---
 
@@ -39,13 +47,26 @@ background sound files by opening a **Pull Request** from your fork of this repo
 
 ### Directory Convention
 
-All community contributions **must** follow this directory pattern:
+All contributions **must** follow this directory pattern:
 
 ```
-community/<category>/<github-username>/<files...>
+packages/<category>/<first-letter>/<github-username>/<files...>
 ```
 
-This ensures each contributor has their own isolated namespace within a defined category, avoiding file collisions or naming conflicts.
+Where:
+
+- **`<category>`** is the type of your sequence (e.g., `focus`, `relax`, `meditation`, `sleep`, `creative`)
+- **`<first-letter>`** is the first letter of your GitHub username (lowercase)
+- **`<github-username>`** is your GitHub username (lowercase)
+- **`<files...>`** are your `.spsq` files and optional `.wav` backgrounds
+
+**Example:** If your username is `johndoe` and you're creating a focus sequence:
+
+```
+packages/focus/j/johndoe/deep-focus.spsq
+```
+
+This structure ensures each contributor has their own isolated namespace within a defined category, avoiding file collisions or naming conflicts.
 
 > Pull Requests that do **not** follow this structure will be rejected.
 
@@ -78,21 +99,6 @@ This ensures each contributor has their own isolated namespace within a defined 
 
 ---
 
-### Header Metadata
-
-Every main sequence file should begin with the following metadata block:
-
-```
-## Title: My Sequence Name
-## Author: Your Name or Alias
-## License: CC BY-SA 4.0
-```
-
-This information appears in the manifest and helps other users identify
-your work.
-
----
-
 ### Steps to Contribute
 
 1. **Fork the repository**
@@ -104,27 +110,37 @@ your work.
 
 2. **Create your directory**
 
+   Replace `<category>`, `<first-letter>`, and `<your-username>` with your values:
+
    ```bash
-   mkdir -p community/<category>/<your-github-username>
+   mkdir -p packages/<category>/<first-letter>/<your-username>
+   ```
+
+   **Example for user `johndoe` contributing a focus sequence:**
+
+   ```bash
+   mkdir -p packages/focus/j/johndoe
    ```
 
 3. **Add your files**
 
-   Include your `.spsq` sequence and any referenced `presets-*` or `.wav` background files.
+   Place your `.spsq` sequence(s) in your directory. Include any referenced `presets-*` or `.wav` background files.
+
+   **Important:** Only commit files inside **your own username directory**. Do not modify or add files to other users' directories.
 
 4. **Validate locally**
 
    Test your sequence with the latest version of SynapSeq:
 
    ```bash
-   synapseq -test community/<category>/<username>/<sequence>.spsq
+   synapseq -test packages/<category>/<first-letter>/<username>/<sequence>.spsq
    ```
 
 5. **Commit and push**
 
    ```bash
-   git add .
-   git commit -m "Add new sequence <name> by <username>"
+   git add packages/<category>/<first-letter>/<your-username>/
+   git commit -m "Add <sequence-name> by <your-username>"
    git push origin main
    ```
 
@@ -135,6 +151,8 @@ your work.
    - The purpose and characteristics of your sequence (e.g. focus, meditation, sleep)
    - The frequency range or waveform style
    - Any preset or background files used
+
+   **Note:** Your PR should only contain changes inside `packages/<category>/<first-letter>/<your-username>/`. PRs modifying other users' files will be rejected.
 
 ---
 
