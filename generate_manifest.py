@@ -196,8 +196,10 @@ def walk_files():
                     "dependencies": deps
                 })
 
-    # Sort entries by update date (newest first)
-    entries.sort(key=lambda e: e["updated_at"], reverse=True)
+    # Sort entries: primary by update date (newest first), secondary by name (A-Z)
+    # Negate date comparison for DESC, keep name for ASC
+    entries.sort(key=lambda e: e["name"])  # First sort by name A-Z
+    entries.sort(key=lambda e: e["updated_at"], reverse=True)  # Then by date (stable sort preserves name order)
     return entries
                 
                 
