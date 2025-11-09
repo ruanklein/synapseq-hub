@@ -108,6 +108,58 @@ header h1 {
 }
 
 /* =====================
+   Contribute Banner
+===================== */
+.contribute-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 123, 255, 0.08),
+    rgba(102, 252, 241, 0.08)
+  );
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  color: var(--muted-color);
+  transition: all 0.2s ease;
+}
+
+body.dark .contribute-banner {
+  background: linear-gradient(
+    135deg,
+    rgba(102, 252, 241, 0.1),
+    rgba(0, 123, 255, 0.1)
+  );
+}
+
+.contribute-banner:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.contribute-icon {
+  flex-shrink: 0;
+  opacity: 0.7;
+  color: var(--text-color);
+}
+
+.contribute-banner a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.contribute-banner a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* =====================
    Stats & spacing
 ===================== */
 #stats {
@@ -1096,8 +1148,13 @@ footer {
   }
 
   header {
-    align-items: center;
+    align-items: flex-start;
     padding-bottom: 0.5rem;
+    gap: 1rem;
+  }
+
+  .header-title {
+    flex: 1;
   }
 
   header h1 {
@@ -1121,6 +1178,20 @@ footer {
   }
 
   .theme-text {
+    display: none;
+  }
+
+  .contribute-banner {
+    font-size: 0.8rem;
+    padding: 0.65rem 0.85rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.4rem;
+    width: 100%;
+    order: 3;
+  }
+
+  .contribute-icon {
     display: none;
   }
 
