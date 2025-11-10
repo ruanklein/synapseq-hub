@@ -584,6 +584,7 @@ async function trackDownload(id) {
         headers: {
           "Content-Type": "application/json",
           "X-SYNAPSEQ-SOURCE": "WEB",
+          "X-SYNAPSEQ-ACTION": "DOWNLOAD",
         },
         body: JSON.stringify({ id }),
         signal: controller.signal,
