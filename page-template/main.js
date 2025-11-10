@@ -572,6 +572,44 @@ async function copyCode(elementId) {
   }
 }
 
+async function trackDownload(id) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3000);
+
+  try {
+    const res = await fetch(
+      "https://us-central1-synapseq-hub.cloudfunctions.net/trackDownload",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-SYNAPSEQ-SOURCE": "WEB",
+        },
+        body: JSON.stringify({ id }),
+        signal: controller.signal,
+      }
+    );
+
+    if (!res.ok) {
+      console.warn(`Tracking failed: HTTP ${res.status}`);
+      return;
+    }
+
+    const data = await res.json();
+    if (!data.success) {
+      console.warn("Tracking returned non-success:", data);
+    }
+  } catch (err) {
+    if (err.name === "AbortError") {
+      console.warn("Tracking request timed out");
+    } else {
+      console.error("Tracking request failed:", err);
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function downloadZip() {
   if (!currentPath) return;
 
@@ -615,4 +653,13 @@ async function downloadZip() {
   link.href = URL.createObjectURL(blob);
   link.download = `${entry.name}.zip`;
   link.click();
+
+  // Track download
+  trackDownload(entry.id)
+    .then(() => {
+      console.log("Download tracked successfully");
+    })
+    .catch((err) => {
+      console.error("Error tracking download:", err);
+    });
 }
