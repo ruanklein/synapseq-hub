@@ -106,6 +106,36 @@ This structure ensures each contributor has their own isolated namespace within 
 
 ---
 
+### About sequence headers
+
+Every `.spsq` file **must** include a header section using double hash comments (`##`) at the top.  
+This section describes your sequence and will be displayed on the Hub when users view details.
+
+Example:
+
+```spsq
+## Title: Focus Session
+## Author: Jane Doe
+## License: CC BY-SA 4.0
+##
+## This sequence is designed to improve focus and mental clarity.
+## It uses a light binaural beat in the alpha range (10 Hz)
+## and a soft pink-noise background for relaxation.
+```
+
+Keep it concise: 3 - 10 lines describing what your sequence does is ideal.
+
+If your sequence uses **background sounds (.wav)** that are not your own recordings,  
+you **must** include a comment indicating the **copyright or license** of the source, for example:
+
+```spsq
+## Background: "Calm Ocean" by freesound.org/user/username (CC BY 3.0)
+```
+
+This ensures full transparency and compliance with the SynapSeq Hub’s open licensing policy.
+
+---
+
 ### Steps to Contribute
 
 1. **Fork the repository**
