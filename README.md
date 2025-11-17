@@ -25,7 +25,6 @@ compositions, ensuring both technical integrity and artistic freedom.
 
 ## Contributing
 
-Thank you for your interest in contributing to SynapSeq Hub!
 Please read the full [Contributing Guidelines](CONTRIBUTING.md)
 
 ---
@@ -54,4 +53,3 @@ They can be rendered locally or streamed via SynapSeq HTTP streaming endpoint.
 - [SynapSeq Project](https://github.com/ruanklein/synapseq)
 - [Usage Guide](https://github.com/ruanklein/synapseq/blob/main/docs/USAGE.md)
 - [FAQ](https://github.com/ruanklein/synapseq/blob/main/docs/FAQ.md)
-- [Contributing Guidelines](https://github.com/ruanklein/synapseq/blob/main/CONTRIBUTING.md)
