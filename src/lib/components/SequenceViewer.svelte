@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ArrowLeft, Copy, ChevronDown } from 'lucide-svelte';
 	import type { ManifestEntry } from '$lib/types';
+	import DownloadModal from './DownloadModal.svelte';
 
 	let {
 		sequence,
@@ -19,6 +20,7 @@
 	let codeWithoutDescription = $state<string>('');
 	let isLoadingSource = $state(false);
 	let copyButtonText = $state('Copy');
+	let isDownloadModalOpen = $state(false);
 
 	const cliCommand = $derived(`synapseq -hub-get ${sequence.id} ${sequence.name}.wav`);
 
@@ -90,6 +92,17 @@
 
 	// Check if description is long (more than 6 lines)
 	const shouldShowReadMore = $derived(descriptionLines.length > 6);
+
+	function handleDownloadClick() {
+		// Direct download for mobile, modal for desktop
+		const isMobile = window.innerWidth <= 768;
+		if (isMobile) {
+			// Mobile users can use the modal too, but it will auto-download
+			isDownloadModalOpen = true;
+		} else {
+			isDownloadModalOpen = true;
+		}
+	}
 </script>
 
 <div class="sequence-viewer">
@@ -178,10 +191,12 @@
 
 		<!-- Download Button -->
 		<div class="actions">
-			<button class="download-button">Download Sequence</button>
+			<button class="download-button" onclick={handleDownloadClick}>Download Sequence</button>
 		</div>
 	</div>
 </div>
+
+<DownloadModal {sequence} bind:isOpen={isDownloadModalOpen} />
 
 <style>
 	.sequence-viewer {
