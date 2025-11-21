@@ -113,87 +113,94 @@
 		<span>Back</span>
 	</button>
 
-	<div class="viewer-content">
-		<!-- CLI Command Section -->
-		<div class="cli-section">
-			<p class="cli-label">Run this sequence via CLI:</p>
-			<div class="cli-command-wrapper">
-				<code class="cli-command">{cliCommand}</code>
-				<button class="copy-button" onclick={copyCommand}>
-					<div class="icon">
-						<Copy size={16} />
-					</div>
-					<span>{copyButtonText}</span>
-				</button>
-			</div>
+	{#if isLoadingSource}
+		<div class="loading-container">
+			<div class="spinner"></div>
+			<p>Loading sequence...</p>
 		</div>
-
-		<!-- Description Section -->
-		{#if description}
-			<div class="description-section">
-				<h3>Description</h3>
-				<div
-					class="description-content"
-					class:collapsed={!descriptionExpanded && shouldShowReadMore}
-				>
-					{description}
-				</div>
-				{#if shouldShowReadMore}
-					<button class="read-more-button" onclick={toggleDescription}>
-						{descriptionExpanded ? 'Read less' : 'Read more'}
-					</button>
-				{/if}
-			</div>
-		{/if}
-
-		<!-- Dependencies Section -->
-		{#if sequence.dependencies && sequence.dependencies.length > 0}
-			<div class="collapsible-section">
-				<button class="section-toggle" onclick={toggleDependencies}>
-					<div class="icon chevron" class:expanded={dependenciesExpanded}>
-						<ChevronDown size={16} />
-					</div>
-					<span>{dependenciesExpanded ? 'Hide' : 'Show'} dependencies</span>
-				</button>
-				{#if dependenciesExpanded}
-					<div class="section-content">
-						<div class="dependencies-list">
-							{#each sequence.dependencies as dep}
-								<div class="dependency-item">
-									<span class="dependency-type">{dep.type}</span>
-									<span class="dependency-name">{dep.name}</span>
-								</div>
-							{/each}
+	{:else}
+		<div class="viewer-content">
+			<!-- CLI Command Section -->
+			<div class="cli-section">
+				<p class="cli-label">Run this sequence via CLI:</p>
+				<div class="cli-command-wrapper">
+					<code class="cli-command">{cliCommand}</code>
+					<button class="copy-button" onclick={copyCommand}>
+						<div class="icon">
+							<Copy size={16} />
 						</div>
-					</div>
-				{/if}
-			</div>
-		{/if}
-
-		<!-- Source Code Section -->
-		<div class="collapsible-section">
-			<button class="section-toggle" onclick={toggleSourceCode}>
-				<div class="icon chevron" class:expanded={sourceCodeExpanded}>
-					<ChevronDown size={16} />
+						<span>{copyButtonText}</span>
+					</button>
 				</div>
-				<span>{sourceCodeExpanded ? 'Hide' : 'Show'} source code</span>
-			</button>
-			{#if sourceCodeExpanded}
-				<div class="section-content">
-					{#if isLoadingSource}
-						<div class="loading-source">Loading source code...</div>
-					{:else}
-						<pre class="source-code">{codeWithoutDescription}</pre>
+			</div>
+
+			<!-- Description Section -->
+			{#if description}
+				<div class="description-section">
+					<h3>Description</h3>
+					<div
+						class="description-content"
+						class:collapsed={!descriptionExpanded && shouldShowReadMore}
+					>
+						{description}
+					</div>
+					{#if shouldShowReadMore}
+						<button class="read-more-button" onclick={toggleDescription}>
+							{descriptionExpanded ? 'Read less' : 'Read more'}
+						</button>
 					{/if}
 				</div>
 			{/if}
-		</div>
 
-		<!-- Download Button -->
-		<div class="actions">
-			<button class="download-button" onclick={handleDownloadClick}>Download Sequence</button>
+			<!-- Dependencies Section -->
+			{#if sequence.dependencies && sequence.dependencies.length > 0}
+				<div class="collapsible-section">
+					<button class="section-toggle" onclick={toggleDependencies}>
+						<div class="icon chevron" class:expanded={dependenciesExpanded}>
+							<ChevronDown size={16} />
+						</div>
+						<span>{dependenciesExpanded ? 'Hide' : 'Show'} dependencies</span>
+					</button>
+					{#if dependenciesExpanded}
+						<div class="section-content">
+							<div class="dependencies-list">
+								{#each sequence.dependencies as dep}
+									<div class="dependency-item">
+										<span class="dependency-type">{dep.type}</span>
+										<span class="dependency-name">{dep.name}</span>
+									</div>
+								{/each}
+							</div>
+						</div>
+					{/if}
+				</div>
+			{/if}
+
+			<!-- Source Code Section -->
+			<div class="collapsible-section">
+				<button class="section-toggle" onclick={toggleSourceCode}>
+					<div class="icon chevron" class:expanded={sourceCodeExpanded}>
+						<ChevronDown size={16} />
+					</div>
+					<span>{sourceCodeExpanded ? 'Hide' : 'Show'} source code</span>
+				</button>
+				{#if sourceCodeExpanded}
+					<div class="section-content">
+						{#if isLoadingSource}
+							<div class="loading-source">Loading source code...</div>
+						{:else}
+							<pre class="source-code">{codeWithoutDescription}</pre>
+						{/if}
+					</div>
+				{/if}
+			</div>
+
+			<!-- Download Button -->
+			<div class="actions">
+				<button class="download-button" onclick={handleDownloadClick}>Download Sequence</button>
+			</div>
 		</div>
-	</div>
+	{/if}
 </div>
 
 <DownloadModal {sequence} bind:isOpen={isDownloadModalOpen} />
@@ -241,6 +248,46 @@
 	}
 
 	:global(.dark) .back-button .icon {
+		color: rgb(156 163 175);
+	}
+
+	/* Loading State */
+	.loading-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 4rem 2rem;
+		gap: 1.5rem;
+	}
+
+	.spinner {
+		width: 3rem;
+		height: 3rem;
+		border: 4px solid rgb(229 231 235);
+		border-top-color: rgb(59 130 246);
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	:global(.dark) .spinner {
+		border-color: rgb(55 65 81);
+		border-top-color: rgb(147 197 253);
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.loading-container p {
+		color: rgb(107 114 128);
+		font-size: 0.9375rem;
+		font-weight: 500;
+	}
+
+	:global(.dark) .loading-container p {
 		color: rgb(156 163 175);
 	}
 
