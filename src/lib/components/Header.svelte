@@ -33,15 +33,15 @@
 	}
 </script>
 
-<header
-	class="border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-950 backdrop-blur-sm"
->
-	<div class="container mx-auto px-4 py-4">
-		<div class="flex items-center justify-between flex-wrap gap-4">
+<header class="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
+	<nav
+		class="container mx-auto max-w-7xl px-6 py-3 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-lg shadow-gray-200/20 dark:shadow-gray-950/40"
+	>
+		<div class="flex items-center justify-between">
 			<div class="flex items-center gap-3">
-				<img src="/logo.png" alt="SynapSeq Logo" class="w-12 h-12 rounded-lg object-cover" />
+				<img src="/logo.png" alt="SynapSeq Logo" class="w-9 h-9 rounded-lg object-cover" />
 				<h1
-					class="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent"
+					class="text-xl md:text-2xl font-bold bg-linear-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent"
 				>
 					SynapSeq Hub
 				</h1>
@@ -49,16 +49,20 @@
 
 			<button
 				onclick={toggleTheme}
-				class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-950 transition-all duration-200"
+				class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200/70 dark:border-gray-700/70 bg-linear-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-850 text-gray-700 dark:text-gray-200 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all duration-200"
+				aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
 			>
 				{#if theme === 'light'}
-					<Moon class="w-5 h-5" />
-					<span class="hidden sm:inline">Dark Mode</span>
+					<Moon class="w-4 h-4" />
+					<span class="hidden sm:inline text-sm font-medium">Dark Mode</span>
 				{:else}
-					<Lightbulb class="w-5 h-5" />
-					<span class="hidden sm:inline">Light Mode</span>
+					<Lightbulb class="w-4 h-4" />
+					<span class="hidden sm:inline text-sm font-medium">Light Mode</span>
 				{/if}
 			</button>
 		</div>
-	</div>
+	</nav>
 </header>
+
+<!-- Spacer to prevent content from hiding under fixed header -->
+<div class="h-20"></div>
