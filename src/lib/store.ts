@@ -78,3 +78,5 @@ export function formatRelativeTime(date: Date | string): string {
 export function formatFullDate(date: Date | string): string {
 	return dayjs(date).format('MMMM D, YYYY [at] h:mm A');
 }
+
+export const selectedSequence = writable<ManifestEntry | null>(null);

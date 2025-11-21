@@ -1,6 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { Clock } from 'lucide-svelte';
 	import { filteredSequences, formatRelativeTime, formatFullDate } from '$lib/store';
+
+	function handleRowClick(sequenceId: string) {
+		goto(`/${sequenceId}`);
+	}
 </script>
 
 <div class="overflow-hidden border border-gray-200 dark:border-gray-800 rounded-xl">
@@ -41,6 +46,15 @@
 					{#each $filteredSequences as sequence}
 						<tr
 							class="hover:bg-blue-50 dark:hover:bg-gray-800/50 cursor-pointer border-l-4 border-transparent hover:border-blue-500 dark:hover:border-cyan-500 transition-all duration-150"
+							onclick={() => handleRowClick(sequence.id)}
+							role="button"
+							tabindex="0"
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									e.preventDefault();
+									handleRowClick(sequence.id);
+								}
+							}}
 						>
 							<td class="px-6 py-4">
 								<div class="font-semibold text-gray-900 dark:text-gray-100">
