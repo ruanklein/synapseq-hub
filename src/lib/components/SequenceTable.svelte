@@ -40,7 +40,7 @@
 				{:else}
 					{#each $filteredSequences as sequence}
 						<tr
-							class="hover:bg-blue-50 dark:hover:bg-blue-950/30 cursor-pointer border-l-4 border-transparent hover:border-blue-500 dark:hover:border-cyan-500 transition-all duration-150"
+							class="hover:bg-blue-50 dark:hover:bg-gray-800/50 cursor-pointer border-l-4 border-transparent hover:border-blue-500 dark:hover:border-cyan-500 transition-all duration-150"
 						>
 							<td class="px-6 py-4">
 								<div class="font-semibold text-gray-900 dark:text-gray-100">
@@ -59,8 +59,8 @@
 								<span
 									class={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wide border ${
 										sequence.author === 'synapseq'
-											? 'bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-700'
-											: 'bg-green-100 text-green-700 border-green-300 dark:bg-green-900/30 dark:text-green-400 dark:border-green-700'
+											? 'bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700'
+											: 'bg-green-100 text-green-700 border-green-300 dark:bg-green-900/40 dark:text-green-200 dark:border-green-700'
 									}`}
 								>
 									{sequence.author}

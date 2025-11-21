@@ -1,21 +1,47 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { Moon, Lightbulb } from 'lucide-svelte';
 
 	let theme = $state<'light' | 'dark'>('light');
 
+	onMount(() => {
+		const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+		const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+		if (savedTheme) {
+			theme = savedTheme;
+		} else if (systemPrefersDark) {
+			theme = 'dark';
+		}
+
+		applyTheme(theme);
+	});
+
+	function applyTheme(newTheme: 'light' | 'dark') {
+		const html = document.documentElement;
+		if (newTheme === 'dark') {
+			html.classList.add('dark');
+		} else {
+			html.classList.remove('dark');
+		}
+	}
+
 	function toggleTheme() {
 		theme = theme === 'light' ? 'dark' : 'light';
-		document.documentElement.classList.toggle('dark');
+		applyTheme(theme);
+		localStorage.setItem('theme', theme);
 	}
 </script>
 
-<header class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+<header
+	class="border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-950 backdrop-blur-sm"
+>
 	<div class="container mx-auto px-4 py-4">
 		<div class="flex items-center justify-between flex-wrap gap-4">
 			<div class="flex items-center gap-3">
 				<img src="/logo.png" alt="SynapSeq Logo" class="w-12 h-12 rounded-lg object-cover" />
 				<h1
-					class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent"
+					class="text-2xl md:text-3xl font-bold bg-linear-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent"
 				>
 					SynapSeq Hub
 				</h1>

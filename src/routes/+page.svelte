@@ -25,7 +25,9 @@
 	});
 </script>
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-200">
+<div
+	class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-cyan-50/30 dark:bg-gradient-to-br dark:from-gray-950 dark:via-gray-950 dark:to-gray-900 transition-colors duration-200"
+>
 	<Header />
 
 	<main class="container mx-auto px-4 py-8 max-w-6xl space-y-6">
