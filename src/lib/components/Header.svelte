@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Moon, Lightbulb } from 'lucide-svelte';
+	import { page } from '$app/stores';
+	import { Moon, Lightbulb, Home, List } from 'lucide-svelte';
 
 	let theme = $state<'light' | 'dark'>('light');
 
@@ -37,29 +38,56 @@
 	<nav
 		class="container mx-auto max-w-7xl px-6 py-3 rounded-2xl border border-gray-200/50 dark:border-gray-700/50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-lg shadow-gray-200/20 dark:shadow-gray-950/40"
 	>
-		<div class="flex items-center justify-between">
-			<div class="flex items-center gap-3">
+		<div class="flex items-center justify-between gap-6">
+			<a href="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
 				<img src="/logo.png" alt="SynapSeq Logo" class="w-9 h-9 rounded-lg object-cover" />
 				<h1
 					class="text-xl md:text-2xl font-bold bg-linear-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent"
 				>
 					SynapSeq Hub
 				</h1>
-			</div>
+			</a>
 
-			<button
-				onclick={toggleTheme}
-				class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200/70 dark:border-gray-700/70 bg-linear-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-850 text-gray-700 dark:text-gray-200 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all duration-200"
-				aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-			>
-				{#if theme === 'light'}
-					<Moon class="w-4 h-4" />
-					<span class="hidden sm:inline text-sm font-medium">Dark Mode</span>
-				{:else}
-					<Lightbulb class="w-4 h-4" />
-					<span class="hidden sm:inline text-sm font-medium">Light Mode</span>
-				{/if}
-			</button>
+			<div class="flex items-center gap-3">
+				<!-- Navigation Links -->
+				<nav class="hidden md:flex items-center gap-2">
+					<a
+						href="/"
+						class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors {$page
+							.url.pathname === '/'
+							? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+							: 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+					>
+						<Home class="w-4 h-4" />
+						Home
+					</a>
+					<a
+						href="/sequences"
+						class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors {$page
+							.url.pathname === '/sequences'
+							? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+							: 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+					>
+						<List class="w-4 h-4" />
+						Sequences
+					</a>
+				</nav>
+
+				<!-- Theme Toggle -->
+				<button
+					onclick={toggleTheme}
+					class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200/70 dark:border-gray-700/70 bg-linear-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-850 text-gray-700 dark:text-gray-200 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md transition-all duration-200"
+					aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+				>
+					{#if theme === 'light'}
+						<Moon class="w-4 h-4" />
+						<span class="hidden sm:inline text-sm font-medium">Dark Mode</span>
+					{:else}
+						<Lightbulb class="w-4 h-4" />
+						<span class="hidden sm:inline text-sm font-medium">Light Mode</span>
+					{/if}
+				</button>
+			</div>
 		</div>
 	</nav>
 </header>

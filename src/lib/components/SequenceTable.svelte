@@ -4,7 +4,7 @@
 	import { filteredSequences, formatRelativeTime, formatFullDate } from '$lib/store';
 
 	function handleRowClick(sequenceId: string) {
-		goto(`/${sequenceId}`);
+		goto(`/sequence/${sequenceId}`);
 	}
 </script>
 

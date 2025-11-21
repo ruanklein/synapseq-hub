@@ -7,7 +7,7 @@
 	let { data }: { data: PageData } = $props();
 
 	function handleBack() {
-		goto('/');
+		goto('/sequences');
 	}
 </script>
 
