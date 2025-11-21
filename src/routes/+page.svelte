@@ -4,6 +4,7 @@
 	import { Brain, Zap, Github, ArrowRight, Clock } from 'lucide-svelte';
 
 	import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import { loadManifest, sequences, formatRelativeTime } from '$lib/store';
 	import type { ManifestEntry } from '$lib/types';
 
@@ -243,4 +244,6 @@
 			</section>
 		{/if}
 	</main>
+
+	<Footer />
 </div>

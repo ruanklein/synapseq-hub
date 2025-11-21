@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import SequenceViewer from '$lib/components/SequenceViewer.svelte';
 	import type { PageData } from './$types';
 
@@ -31,4 +32,6 @@
 			</div>
 		{/if}
 	</main>
+
+	<Footer />
 </div>

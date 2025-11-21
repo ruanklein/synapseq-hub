@@ -3,6 +3,7 @@
 	import { List, Clock } from 'lucide-svelte';
 
 	import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	// import ContributeBanner from '$lib/components/ContributeBanner.svelte';
 	import StatsCard from '$lib/components/StatsCard.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
@@ -84,4 +85,6 @@
 			<SequenceTable />
 		{/if}
 	</main>
+
+	<Footer />
 </div>
