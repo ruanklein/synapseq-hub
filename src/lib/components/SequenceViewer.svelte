@@ -167,7 +167,14 @@
 								{#each sequence.dependencies as dep}
 									<div class="dependency-item">
 										<span class="dependency-type">{dep.type}</span>
-										<span class="dependency-name">{dep.name}</span>
+										<a
+											href={dep.download_url}
+											class="dependency-name"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											{dep.name}
+										</a>
 									</div>
 								{/each}
 							</div>
@@ -550,12 +557,23 @@
 
 	.dependency-name {
 		font-size: 0.875rem;
-		color: rgb(55 65 81);
+		color: rgb(16 185 129);
 		font-weight: 500;
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.dependency-name:hover {
+		color: rgb(5 150 105);
+		text-decoration: underline;
 	}
 
 	:global(.dark) .dependency-name {
-		color: rgb(209 213 219);
+		color: rgb(52 211 153);
+	}
+
+	:global(.dark) .dependency-name:hover {
+		color: rgb(110 231 183);
 	}
 
 	/* Source Code */
