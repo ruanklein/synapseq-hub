@@ -14,6 +14,9 @@
 	let dependenciesExpanded = $state(false);
 	let sourceCodeExpanded = $state(false);
 	let sourceCode = $state<string>('');
+	let description = $state<string>('');
+	let descriptionLines = $state<string[]>([]);
+	let codeWithoutDescription = $state<string>('');
 	let isLoadingSource = $state(false);
 	let copyButtonText = $state('Copy');
 
@@ -24,14 +27,39 @@
 		isLoadingSource = true;
 		try {
 			const response = await fetch(sequence.download_url);
-			sourceCode = await response.text();
+			const fullContent = await response.text();
+			sourceCode = fullContent;
+
+			// Extract description and clean code
+			const lines = fullContent.split('\n');
+			const descLines: string[] = [];
+			const codeLines: string[] = [];
+
+			lines.forEach((line) => {
+				if (line.trim().startsWith('##')) {
+					// Remove ## and trim
+					descLines.push(line.trim().substring(2).trim());
+				} else {
+					codeLines.push(line);
+				}
+			});
+
+			descriptionLines = descLines;
+			description = descLines.join('\n');
+			codeWithoutDescription = codeLines.join('\n');
 		} catch (error) {
 			console.error('Failed to load source code:', error);
 			sourceCode = 'Failed to load source code';
+			codeWithoutDescription = 'Failed to load source code';
 		} finally {
 			isLoadingSource = false;
 		}
 	}
+
+	// Load source code immediately when component mounts
+	$effect(() => {
+		loadSourceCode();
+	});
 
 	function toggleSourceCode() {
 		sourceCodeExpanded = !sourceCodeExpanded;
@@ -60,13 +88,8 @@
 		}
 	}
 
-	// Parse description from source code if needed
-	const description = $derived.by(() => {
-		// You can extract description from sequence metadata if available
-		return 'This sequence provides an immersive audio experience designed to help you focus, relax, or achieve your desired mental state.';
-	});
-
-	const shouldShowReadMore = $derived(description.length > 200);
+	// Check if description is long (more than 6 lines)
+	const shouldShowReadMore = $derived(descriptionLines.length > 6);
 </script>
 
 <div class="sequence-viewer">
@@ -96,7 +119,10 @@
 		{#if description}
 			<div class="description-section">
 				<h3>Description</h3>
-				<div class="description-content" class:expanded={descriptionExpanded}>
+				<div
+					class="description-content"
+					class:collapsed={!descriptionExpanded && shouldShowReadMore}
+				>
 					{description}
 				</div>
 				{#if shouldShowReadMore}
@@ -144,7 +170,7 @@
 					{#if isLoadingSource}
 						<div class="loading-source">Loading source code...</div>
 					{:else}
-						<pre class="source-code">{sourceCode}</pre>
+						<pre class="source-code">{codeWithoutDescription}</pre>
 					{/if}
 				</div>
 			{/if}
@@ -312,13 +338,28 @@
 		color: rgb(55 65 81);
 		line-height: 1.6;
 		font-size: 0.9375rem;
-		max-height: 6rem;
-		overflow: hidden;
-		transition: max-height 0.3s ease;
+		position: relative;
+		white-space: pre-wrap;
 	}
 
-	.description-content.expanded {
-		max-height: none;
+	.description-content.collapsed {
+		max-height: 4.5rem;
+		overflow: hidden;
+	}
+
+	.description-content.collapsed::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 2rem;
+		background: linear-gradient(to bottom, transparent, white);
+		pointer-events: none;
+	}
+
+	:global(.dark) .description-content.collapsed::after {
+		background: linear-gradient(to bottom, transparent, rgb(31 41 55));
 	}
 
 	:global(.dark) .description-content {
