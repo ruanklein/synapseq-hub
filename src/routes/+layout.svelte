@@ -7,6 +7,11 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<title>SynapSeq Hub</title>
+	<meta
+		name="description"
+		content="The official repository of sequences, presets, and soundscapes for SynapSeq"
+	/>
 </svelte:head>
 
 {@render children()}
