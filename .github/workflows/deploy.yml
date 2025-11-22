@@ -26,15 +26,25 @@ jobs:
               with:
                   python-version: "3.14"
 
-            - name: Generate manifest and site
-              run: |
-                  python3 generate_manifest.py
-                  python3 generate_dist.py
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
+                  cache: "yarn"
+
+            - name: Generate manifest
+              run: python3 generate_manifest.py
+
+            - name: Install dependencies
+              run: yarn install --frozen-lockfile
+
+            - name: Build SvelteKit app
+              run: yarn build
 
             - name: Upload build artifacts
               uses: actions/upload-pages-artifact@v3
               with:
-                  path: dist/
+                  path: build/
 
     deploy:
         needs: build
