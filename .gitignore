@@ -10,6 +10,9 @@ dist
 /.svelte-kit
 /build
 
+# Copied packages for build
+/static/packages
+
 # OS
 .DS_Store
 Thumbs.db
