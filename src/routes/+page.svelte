@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { Brain, Zap, Github, ArrowRight, Clock } from 'lucide-svelte';
+	import { Brain, Zap, Github, ArrowRight, Clock, Download, Copy } from 'lucide-svelte';
 
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
@@ -10,6 +10,7 @@
 
 	let isLoading = $state(true);
 	let lastSequences = $state<ManifestEntry[]>([]);
+	let copiedCommand = $state<string | null>(null);
 
 	onMount(async () => {
 		await loadManifest();
@@ -26,6 +27,18 @@
 
 	function goToSequences() {
 		goto('/sequences');
+	}
+
+	async function copyCommand(command: string) {
+		try {
+			await navigator.clipboard.writeText(command);
+			copiedCommand = command;
+			setTimeout(() => {
+				copiedCommand = null;
+			}, 2000);
+		} catch (err) {
+			console.error('Failed to copy:', err);
+		}
 	}
 </script>
 
@@ -98,6 +111,113 @@
 			</div>
 		</section>
 
+		<!-- How to Install SynapSeq -->
+		<section
+			class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg"
+		>
+			<div class="flex items-center gap-3 mb-6">
+				<div
+					class="p-2 bg-green-100 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800"
+				>
+					<Download class="w-6 h-6 text-green-600 dark:text-green-400" />
+				</div>
+				<h2 class="text-3xl font-bold text-gray-900 dark:text-white">How to Install SynapSeq?</h2>
+			</div>
+
+			<div class="space-y-6">
+				<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+					Get started with SynapSeq by installing it on your system using your preferred package
+					manager:
+				</p>
+
+				<!-- Windows Installation -->
+				<div class="space-y-3">
+					<div class="flex items-center gap-2">
+						<div
+							class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950 flex items-center justify-center"
+						>
+							<span class="text-lg font-bold text-blue-600 dark:text-blue-400">W</span>
+						</div>
+						<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Windows (Winget)</h3>
+					</div>
+					<div class="relative">
+						<pre
+							class="bg-gray-900 dark:bg-black text-gray-100 dark:text-gray-200 rounded-lg p-4 pr-12 overflow-x-auto text-sm font-mono border border-gray-700"><code
+								>winget install synapseq</code
+							></pre>
+						<button
+							onclick={() => copyCommand('winget install synapseq')}
+							class="absolute top-3 right-3 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
+							aria-label="Copy command"
+						>
+							{#if copiedCommand === 'winget install synapseq'}
+								<span class="text-green-400 text-xs font-medium">Copied!</span>
+							{:else}
+								<Copy class="w-4 h-4" />
+							{/if}
+						</button>
+					</div>
+				</div>
+
+				<!-- macOS/Linux Installation -->
+				<div class="space-y-3">
+					<div class="flex items-center gap-2">
+						<div
+							class="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-950 flex items-center justify-center"
+						>
+							<span class="text-lg font-bold text-orange-600 dark:text-orange-400">🍺</span>
+						</div>
+						<h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+							macOS / Linux (Homebrew)
+						</h3>
+					</div>
+					<div class="space-y-2">
+						<div class="relative">
+							<pre
+								class="bg-gray-900 dark:bg-black text-gray-100 dark:text-gray-200 rounded-lg p-4 pr-12 overflow-x-auto text-sm font-mono border border-gray-700"><code
+									>brew tap ruanklein/synapseq</code
+								></pre>
+							<button
+								onclick={() => copyCommand('brew tap ruanklein/synapseq')}
+								class="absolute top-3 right-3 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
+								aria-label="Copy command"
+							>
+								{#if copiedCommand === 'brew tap ruanklein/synapseq'}
+									<span class="text-green-400 text-xs font-medium">Copied!</span>
+								{:else}
+									<Copy class="w-4 h-4" />
+								{/if}
+							</button>
+						</div>
+						<div class="relative">
+							<pre
+								class="bg-gray-900 dark:bg-black text-gray-100 dark:text-gray-200 rounded-lg p-4 pr-12 overflow-x-auto text-sm font-mono border border-gray-700"><code
+									>brew install synapseq</code
+								></pre>
+							<button
+								onclick={() => copyCommand('brew install synapseq')}
+								class="absolute top-3 right-3 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
+								aria-label="Copy command"
+							>
+								{#if copiedCommand === 'brew install synapseq'}
+									<span class="text-green-400 text-xs font-medium">Copied!</span>
+								{:else}
+									<Copy class="w-4 h-4" />
+								{/if}
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<p class="text-sm text-gray-600 dark:text-gray-400 italic">
+					💡 After installation, verify by running <code
+						class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono"
+						>synapseq --version</code
+					>
+				</p>
+			</div>
+		</section>
+
 		<!-- How to Use -->
 		<section
 			class="bg-linear-to-br from-blue-50 to-cyan-50 dark:from-gray-800/80 dark:to-gray-900/80 rounded-2xl border border-blue-200 dark:border-gray-700 p-8 backdrop-blur-sm"
@@ -124,10 +244,10 @@
 					>
 						2
 					</div>
-					<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Download & Install</h3>
+					<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Generate Audio</h3>
 					<p class="text-gray-700 dark:text-gray-300">
-						Download sequences and their dependencies. Install them using the SynapSeq CLI with
-						simple commands.
+						Click on a sequence and copy the CLI command. Run it in your terminal to automatically
+						download the sequence, all dependencies, and generate the WAV file instantly.
 					</p>
 				</div>
 
