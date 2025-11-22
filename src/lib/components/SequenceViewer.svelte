@@ -28,7 +28,19 @@
 		if (sourceCode) return;
 		isLoadingSource = true;
 		try {
-			const response = await fetch(sequence.download_url);
+			// Try local path first to avoid CORS issues
+			const localPath = '/' + sequence.path;
+			let response = await fetch(localPath);
+
+			// If local fails, try the original download_url
+			if (!response.ok) {
+				response = await fetch(sequence.download_url);
+			}
+
+			if (!response.ok) {
+				throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+			}
+
 			const fullContent = await response.text();
 			sourceCode = fullContent;
 
