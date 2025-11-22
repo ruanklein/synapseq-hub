@@ -33,13 +33,23 @@ Please read the full [Contributing Guidelines](CONTRIBUTING.md)
 
 This repository contains two types of works that follow different licensing rules:
 
-| Component                                            | License                                                         | Description                                                                                                                                                  |
-| ---------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `.spsq` sequence files                               | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | All sequence files contributed to the Hub must be licensed under CC BY-SA 4.0.                                                                               |
-| `.wav` background audio files                        | Original license of the audio source                            | Background audio may carry its own license (e.g., CC0, CC BY, CC BY-NC, or other terms). Third-party audio must retain its original license and attribution. |
-| Python, HTML, CSS, JS (generator tools and frontend) | [GPL v3](https://www.gnu.org/licenses/gpl-3.0.html)             | Open-source tools used to generate the Hub metadata and web interface.                                                                                       |
+| Component                                            | License                                                         | Description                                                                                                                                                       |
+| ---------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.spsq` sequence files                               | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | All sequence files must be licensed under CC BY-SA 4.0. This ensures open reuse, modification, and commercial compatibility across the entire SynapSeq ecosystem. |
+| `.wav` background audio files                        | Any commercially compatible open license (CC0, CC BY, CC BY-SA) | Background audio must retain its **original** open license and attribution. Only licenses that explicitly permit commercial use are allowed.                      |
+| Python, HTML, CSS, JS (generator tools and frontend) | [GPL v3](https://www.gnu.org/licenses/gpl-3.0.html)             | Open-source tools used to generate the Hub metadata and web interface, distributed under GPL v3.                                                                  |
 
----
+### Reporting Copyright Concerns
+
+The SynapSeq Hub is built on openly licensed contributions and community trust.  
+If you are an author and believe that one of your works has been published or reused in the Hub without permission or in violation of its license, please contact us immediately.
+
+You can report the issue through:
+
+- **GitHub Issues:** https://github.com/ruanklein/synapseq/issues
+- **GitHub Discussions:** https://github.com/ruanklein/synapseq/discussions
+
+Proper attribution and license compliance are core principles of the project, and any misuse will be addressed as quickly as possible.
 
 ## Compatibility
 

@@ -65,9 +65,9 @@ samples
 focus
 user
 aa
-developer_123   # underscore not allowed
-9creator        # cannot start with number
-MyName          # uppercase not allowed
+developer_123
+9creator
+MyName
 ```
 
 ---
@@ -90,8 +90,6 @@ Brainwave audio **cannot** reproduce the effects of drugs, medications, or chemi
 - Fictional or artistic names without medical connotations
 - Creative sessions built around real brainwave frequency ranges
 
-These rules exist to keep the Hub clear, trustworthy, and free from misleading or exaggerated content.
-
 ---
 
 ## Submission Rules
@@ -109,34 +107,36 @@ These rules exist to keep the Hub clear, trustworthy, and free from misleading o
 ### 3. Dependency rules
 
 - All `@presetlist` files must start with `presets-`
-- Backgrounds must be local `.wav` files—**external URLs are not allowed**
+- Backgrounds must be local `.wav` files. External URLs are not allowed
 - All referenced files must exist inside your contribution directory
 
 ### 4. Licensing
 
 - All contributions must be licensed under **CC BY-SA 4.0**
 - `.spsq` header must explicitly state the license
-- Background `.wav` files may have their own license:
-  - Your own recordings → any license
-  - Third‑party audio → must respect original license terms
-  - FreeSound & CC libraries → require attribution
+- Background `.wav` files must include proper attribution in the `.spsq` header
+
+**Note:** Non-Commercial licenses (CC-BY-NC, CC-BY-NC-SA, etc.) are not allowed for background audio, as they are incompatible with the commercial-permissive nature of the Hub and its CC BY-SA 4.0 licensing.
 
 **You may NOT relicense third‑party audio as CC BY-SA 4.0.**
 
-Examples:
+Examples of valid background audio attribution in `.spsq` files:
 
 ```
-## Background: "Ocean Waves" by freesound.org/user/example (CC BY 3.0)
-## Background: Original field recording by John Doe (All rights reserved)
-## Background: "Soft Wind" by Alice - Licensed under CC0 (Public Domain)
+## Background: "Ocean Waves" by user example (CC BY 3.0)
+## Source: https://freesound.org/people/example/sounds/12345/
 ```
 
-### 5. Originality and Allowed Sources
+```
+## Background: Original field recording by John Doe
+## License: CC BY-SA 4.0
+## Source: https://archive.org/details/john-doe-ocean-recording
+```
 
-- All submitted sequences must be original works created by you
-- No proprietary, commercial, or restricted content
-- No conversions from paywalled or closed‑license material
-- Openly licensed material must include correct attribution
+```
+## Background: "Soft Wind" by Alice (CC0 - Public Domain)
+## Source: https://freesound.org/people/alice/sounds/67890/
+```
 
 ---
 
@@ -149,11 +149,9 @@ Each `.spsq` file must include a header using `##` comment lines:
 ## Author: Jane Doe
 ## License: CC BY-SA 4.0
 ##
-## A moderate-intensity focus session using alpha-range
-## binaural beats blended with pink-noise background.
+## Background: "Ocean Waves" by freesound.org/user/example (CC BY 3.0)
+## Source: https://freesound.org/people/example/sounds/12345/
 ```
-
-Include attribution if you use third‑party background WAV files.
 
 ---
 
@@ -171,14 +169,12 @@ Include attribution if you use third‑party background WAV files.
 
 ## Support, Issues, and Discussions
 
-If you need clarification or want to propose improvements:
+For questions or suggestions:
 
 - **Issues:**  
   https://github.com/ruanklein/synapseq/issues
 
 - **Discussions:**  
   https://github.com/ruanklein/synapseq/discussions
-
-Your feedback helps improve the Hub and the broader SynapSeq ecosystem.
 
 Thank you for contributing and helping maintain a clean, reliable, and well‑structured library of sequences.
