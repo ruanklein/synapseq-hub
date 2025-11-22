@@ -289,10 +289,10 @@ def main():
         "entries": entries
     }
 
-    with open(MANIFEST_FILE, "w", encoding="utf-8") as f:
+    with open(f"static/{MANIFEST_FILE}", "w", encoding="utf-8") as f:
         json.dump(manifest_data, f, ensure_ascii=False, indent=2)
 
-    print(f"Manifest built successfully with {len(entries)} entries -> {MANIFEST_FILE}")
+    print(f"Manifest built successfully with {len(entries)} entries -> static/{MANIFEST_FILE}")
     print(f"   Version: {manifest_data['version']} | Updated: {manifest_data['lastUpdated']}")
 
 
