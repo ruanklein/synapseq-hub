@@ -67,15 +67,6 @@
 						Hub Repository
 						<ExternalLink class="w-3 h-3" />
 					</a>
-					<a
-						href="https://ruan.sh"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors"
-					>
-						<ExternalLink class="w-4 h-4" />
-						ruan.sh
-					</a>
 				</nav>
 			</div>
 		</div>
@@ -88,12 +79,11 @@
 				© {new Date().getFullYear()} SynapSeq Hub
 			</p>
 			<p class="text-sm text-gray-500 dark:text-gray-400">
-				Made by
 				<a
 					href="https://ruan.sh"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-blue-600 dark:text-cyan-400 hover:underline font-medium">Ruan</a
+					class="text-blue-600 dark:text-cyan-400 hover:underline font-medium">ruan.sh</a
 				>
 			</p>
 		</div>
