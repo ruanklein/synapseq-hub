@@ -1,22 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { List, Clock } from 'lucide-svelte';
 
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	// import ContributeBanner from '$lib/components/ContributeBanner.svelte';
-	import StatsCard from '$lib/components/StatsCard.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import FilterPanel from '$lib/components/FilterPanel.svelte';
 	import SequenceTable from '$lib/components/SequenceTable.svelte';
 
-	import {
-		loadManifest,
-		sequences,
-		lastUpdated,
-		formatRelativeTime,
-		formatFullDate
-	} from '$lib/store';
+	import { loadManifest } from '$lib/store';
 
 	let isLoading = $state(true);
 
@@ -61,28 +52,32 @@
 				</p>
 			</div>
 
-			<!-- Stats -->
-			<div class="grid sm:grid-cols-2 gap-4">
-				<StatsCard icon={List} label="Total Sequences" value={$sequences.length} />
-				<StatsCard
-					icon={Clock}
-					label="Last Updated"
-					value={$lastUpdated ? formatRelativeTime($lastUpdated) : 'N/A'}
-					title={$lastUpdated ? formatFullDate($lastUpdated) : undefined}
-				/>
+			<!-- Unified Sequences Browser -->
+			<div
+				class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden"
+			>
+				<!-- Search and Filters Header -->
+				<div class="p-6 border-b border-gray-200 dark:border-gray-700">
+					<!-- Desktop: Search and Filters in one row -->
+					<div class="hidden md:grid md:grid-cols-3 gap-4">
+						<div class="md:col-span-2">
+							<SearchBar />
+						</div>
+						<div>
+							<FilterPanel />
+						</div>
+					</div>
+
+					<!-- Mobile: Search and Filters stacked -->
+					<div class="md:hidden space-y-4">
+						<SearchBar />
+						<FilterPanel />
+					</div>
+				</div>
+
+				<!-- Table -->
+				<SequenceTable />
 			</div>
-
-			<!-- Contribute Banner -->
-			<!-- <ContributeBanner /> -->
-
-			<!-- Search -->
-			<SearchBar />
-
-			<!-- Filters -->
-			<FilterPanel />
-
-			<!-- Table -->
-			<SequenceTable />
 		{/if}
 	</main>
 
