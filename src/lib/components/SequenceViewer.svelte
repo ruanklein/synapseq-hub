@@ -110,7 +110,7 @@
 		<div class="icon">
 			<ArrowLeft size={20} />
 		</div>
-		<span>Back</span>
+		<span>Back to Sequences</span>
 	</button>
 
 	{#if isLoadingSource}
@@ -119,10 +119,29 @@
 			<p>Loading sequence...</p>
 		</div>
 	{:else}
-		<div class="viewer-content">
+		<!-- Header Card -->
+		<div class="header-card">
+			<div class="header-content">
+				<div class="title-section">
+					<h1 class="sequence-title">{sequence.name}</h1>
+					<div class="metadata">
+						<span class="category-badge">{sequence.category}</span>
+						<span class="divider">•</span>
+						<span class="author">by {sequence.author}</span>
+					</div>
+				</div>
+				<button class="download-button-primary" onclick={handleDownloadClick}>
+					Download Sequence
+				</button>
+			</div>
+		</div>
+
+		<!-- Main Content Card -->
+		<div class="content-card">
 			<!-- CLI Command Section -->
 			<div class="cli-section">
-				<p class="cli-label">Run this sequence via CLI:</p>
+				<h3 class="section-title">Run via CLI</h3>
+				<p class="section-subtitle">Execute this command to generate the audio file:</p>
 				<div class="cli-command-wrapper">
 					<code class="cli-command">{cliCommand}</code>
 					<button class="copy-button" onclick={copyCommand}>
@@ -136,8 +155,9 @@
 
 			<!-- Description Section -->
 			{#if description}
+				<div class="section-divider"></div>
 				<div class="description-section">
-					<h3>Description</h3>
+					<h3 class="section-title">Description</h3>
 					<div
 						class="description-content"
 						class:collapsed={!descriptionExpanded && shouldShowReadMore}
@@ -154,12 +174,13 @@
 
 			<!-- Dependencies Section -->
 			{#if sequence.dependencies && sequence.dependencies.length > 0}
+				<div class="section-divider"></div>
 				<div class="collapsible-section">
 					<button class="section-toggle" onclick={toggleDependencies}>
+						<h3 class="section-title">Dependencies</h3>
 						<div class="icon chevron" class:expanded={dependenciesExpanded}>
-							<ChevronDown size={16} />
+							<ChevronDown size={20} />
 						</div>
-						<span>{dependenciesExpanded ? 'Hide' : 'Show'} dependencies</span>
 					</button>
 					{#if dependenciesExpanded}
 						<div class="section-content">
@@ -184,12 +205,13 @@
 			{/if}
 
 			<!-- Source Code Section -->
+			<div class="section-divider"></div>
 			<div class="collapsible-section">
 				<button class="section-toggle" onclick={toggleSourceCode}>
+					<h3 class="section-title">Source Code</h3>
 					<div class="icon chevron" class:expanded={sourceCodeExpanded}>
-						<ChevronDown size={16} />
+						<ChevronDown size={20} />
 					</div>
-					<span>{sourceCodeExpanded ? 'Hide' : 'Show'} source code</span>
 				</button>
 				{#if sourceCodeExpanded}
 					<div class="section-content">
@@ -201,11 +223,6 @@
 					</div>
 				{/if}
 			</div>
-
-			<!-- Download Button -->
-			<div class="actions">
-				<button class="download-button" onclick={handleDownloadClick}>Download Sequence</button>
-			</div>
 		</div>
 	{/if}
 </div>
@@ -215,6 +232,8 @@
 <style>
 	.sequence-viewer {
 		padding: 2rem 0;
+		max-width: 56rem;
+		margin: 0 auto;
 	}
 
 	.back-button {
@@ -224,7 +243,7 @@
 		padding: 0.625rem 1rem;
 		background: white;
 		border: 1px solid rgb(229 231 235);
-		border-radius: 0.5rem;
+		border-radius: 0.75rem;
 		color: rgb(55 65 81);
 		font-size: 0.875rem;
 		font-weight: 500;
@@ -254,93 +273,175 @@
 		border-color: rgb(75 85 99);
 	}
 
-	:global(.dark) .back-button .icon {
-		color: rgb(156 163 175);
+	/* Header Card */
+	.header-card {
+		background: white;
+		border: 1px solid rgb(229 231 235);
+		border-radius: 1rem;
+		padding: 2rem;
+		margin-bottom: 1.5rem;
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
 	}
 
-	/* Loading State */
-	.loading-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		padding: 4rem 2rem;
-		gap: 1.5rem;
-	}
-
-	.spinner {
-		width: 3rem;
-		height: 3rem;
-		border: 4px solid rgb(229 231 235);
-		border-top-color: rgb(59 130 246);
-		border-radius: 50%;
-		animation: spin 0.8s linear infinite;
-	}
-
-	:global(.dark) .spinner {
+	:global(.dark) .header-card {
+		background: rgb(31 41 55);
 		border-color: rgb(55 65 81);
-		border-top-color: rgb(147 197 253);
 	}
 
-	@keyframes spin {
-		to {
-			transform: rotate(360deg);
-		}
+	.header-content {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 2rem;
+		flex-wrap: wrap;
 	}
 
-	.loading-container p {
+	.title-section {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.sequence-title {
+		font-size: 2rem;
+		font-weight: 700;
+		color: rgb(17 24 39);
+		margin: 0 0 0.75rem 0;
+		background: linear-gradient(135deg, rgb(37 99 235), rgb(6 182 212));
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	:global(.dark) .sequence-title {
+		background: linear-gradient(135deg, rgb(96 165 250), rgb(34 211 238));
+		-webkit-background-clip: text;
+		background-clip: text;
+	}
+
+	.metadata {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.category-badge {
+		display: inline-flex;
+		padding: 0.375rem 0.75rem;
+		background: rgb(219 234 254);
+		color: rgb(30 64 175);
+		border-radius: 0.5rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		border: 1px solid rgb(191 219 254);
+	}
+
+	:global(.dark) .category-badge {
+		background: rgb(30 58 138 / 0.3);
+		color: rgb(147 197 253);
+		border-color: rgb(59 130 246 / 0.3);
+	}
+
+	.divider {
+		color: rgb(209 213 219);
+	}
+
+	:global(.dark) .divider {
+		color: rgb(75 85 99);
+	}
+
+	.author {
 		color: rgb(107 114 128);
-		font-size: 0.9375rem;
-		font-weight: 500;
+		font-size: 0.875rem;
 	}
 
-	:global(.dark) .loading-container p {
+	:global(.dark) .author {
 		color: rgb(156 163 175);
 	}
 
-	.viewer-content {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
+	.download-button-primary {
+		padding: 0.75rem 1.5rem;
+		background: linear-gradient(135deg, rgb(34 197 94), rgb(22 163 74));
+		color: white;
+		border: none;
+		border-radius: 0.75rem;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+		box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
+		white-space: nowrap;
+	}
+
+	.download-button-primary:hover {
+		background: linear-gradient(135deg, rgb(22 163 74), rgb(21 128 61));
+		box-shadow: 0 6px 8px rgb(0 0 0 / 0.15);
+		transform: translateY(-2px);
+	}
+
+	/* Main Content Card */
+	.content-card {
+		background: white;
+		border: 1px solid rgb(229 231 235);
+		border-radius: 1rem;
+		padding: 2rem;
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+	}
+
+	:global(.dark) .content-card {
+		background: rgb(31 41 55);
+		border-color: rgb(55 65 81);
+	}
+
+	.section-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: rgb(17 24 39);
+		margin: 0;
+	}
+
+	:global(.dark) .section-title {
+		color: rgb(243 244 246);
+	}
+
+	.section-subtitle {
+		color: rgb(107 114 128);
+		font-size: 0.875rem;
+		margin: 0.5rem 0 1rem 0;
+	}
+
+	:global(.dark) .section-subtitle {
+		color: rgb(156 163 175);
+	}
+
+	.section-divider {
+		height: 1px;
+		background: rgb(229 231 235);
+		margin: 2rem 0;
+	}
+
+	:global(.dark) .section-divider {
+		background: rgb(55 65 81);
 	}
 
 	/* CLI Section */
 	.cli-section {
-		background: linear-gradient(135deg, rgb(219 234 254) 0%, rgb(191 219 254) 100%);
-		border: 1px solid rgb(147 197 253);
-		border-radius: 0.75rem;
-		padding: 1.5rem;
-	}
-
-	:global(.dark) .cli-section {
-		background: linear-gradient(135deg, rgb(30 58 138 / 0.3) 0%, rgb(29 78 216 / 0.3) 100%);
-		border-color: rgb(59 130 246 / 0.5);
-	}
-
-	.cli-label {
-		font-weight: 600;
-		color: rgb(30 64 175);
-		margin-bottom: 0.75rem;
-		font-size: 0.875rem;
-	}
-
-	:global(.dark) .cli-label {
-		color: rgb(147 197 253);
+		margin-bottom: 0;
 	}
 
 	.cli-command-wrapper {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		background: white;
-		border: 1px solid rgb(191 219 254);
-		border-radius: 0.5rem;
-		padding: 0.75rem 1rem;
+		background: rgb(249 250 251);
+		border: 1px solid rgb(229 231 235);
+		border-radius: 0.75rem;
+		padding: 1rem 1.25rem;
 	}
 
 	:global(.dark) .cli-command-wrapper {
 		background: rgb(17 24 39);
-		border-color: rgb(59 130 246 / 0.3);
+		border-color: rgb(55 65 81);
 	}
 
 	.cli-command {
@@ -363,7 +464,7 @@
 		background: rgb(59 130 246);
 		color: white;
 		border: none;
-		border-radius: 0.375rem;
+		border-radius: 0.5rem;
 		font-size: 0.875rem;
 		font-weight: 500;
 		cursor: pointer;
@@ -381,38 +482,20 @@
 
 	/* Description Section */
 	.description-section {
-		background: white;
-		border: 1px solid rgb(229 231 235);
-		border-radius: 0.75rem;
-		padding: 1.5rem;
-	}
-
-	:global(.dark) .description-section {
-		background: rgb(31 41 55);
-		border-color: rgb(55 65 81);
-	}
-
-	.description-section h3 {
-		font-size: 1.125rem;
-		font-weight: 600;
-		color: rgb(17 24 39);
-		margin-bottom: 0.75rem;
-	}
-
-	:global(.dark) .description-section h3 {
-		color: rgb(243 244 246);
+		margin-bottom: 0;
 	}
 
 	.description-content {
 		color: rgb(55 65 81);
-		line-height: 1.6;
+		line-height: 1.7;
 		font-size: 0.9375rem;
 		position: relative;
 		white-space: pre-wrap;
+		margin-top: 0.75rem;
 	}
 
 	.description-content.collapsed {
-		max-height: 4.5rem;
+		max-height: 6rem;
 		overflow: hidden;
 	}
 
@@ -449,58 +532,35 @@
 
 	.read-more-button:hover {
 		color: rgb(37 99 235);
+		text-decoration: underline;
 	}
 
 	:global(.dark) .read-more-button {
 		color: rgb(147 197 253);
 	}
 
-	:global(.dark) .read-more-button:hover {
-		color: rgb(191 219 254);
-	}
-
 	/* Collapsible Sections */
 	.collapsible-section {
-		background: white;
-		border: 1px solid rgb(229 231 235);
-		border-radius: 0.75rem;
-		overflow: hidden;
-	}
-
-	:global(.dark) .collapsible-section {
-		background: rgb(31 41 55);
-		border-color: rgb(55 65 81);
+		margin-bottom: 0;
 	}
 
 	.section-toggle {
 		width: 100%;
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		padding: 1rem 1.5rem;
+		justify-content: space-between;
+		padding: 0;
 		background: none;
 		border: none;
-		color: rgb(17 24 39);
-		font-size: 0.9375rem;
-		font-weight: 500;
 		cursor: pointer;
-		transition: background-color 0.2s;
-		text-align: left;
+		transition: opacity 0.2s;
 	}
 
 	.section-toggle:hover {
-		background: rgb(249 250 251);
+		opacity: 0.7;
 	}
 
-	:global(.dark) .section-toggle {
-		color: rgb(243 244 246);
-	}
-
-	:global(.dark) .section-toggle:hover {
-		background: rgb(55 65 81 / 0.3);
-	}
-
-	.section-toggle .icon {
+	.section-toggle .icon.chevron {
 		display: flex;
 		color: rgb(107 114 128);
 		transition: transform 0.2s;
@@ -510,15 +570,15 @@
 		transform: rotate(180deg);
 	}
 
-	:global(.dark) .section-toggle .icon {
+	:global(.dark) .section-toggle .icon.chevron {
 		color: rgb(156 163 175);
 	}
 
 	.section-content {
-		padding: 0 1.5rem 1.5rem;
+		padding-top: 1rem;
 	}
 
-	/* Dependencies List */
+	/* Dependencies */
 	.dependencies-list {
 		display: flex;
 		flex-direction: column;
@@ -592,51 +652,66 @@
 		background: rgb(17 24 39);
 		color: rgb(229 231 235);
 		padding: 1.25rem;
-		border-radius: 0.5rem;
+		border-radius: 0.75rem;
 		overflow-x: auto;
 		font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 		font-size: 0.875rem;
 		line-height: 1.6;
 		margin: 0;
-	}
-
-	:global(.dark) .source-code {
-		background: rgb(17 24 39);
 		border: 1px solid rgb(55 65 81);
 	}
 
-	/* Actions */
-	.actions {
+	/* Loading */
+	.loading-container {
 		display: flex;
+		flex-direction: column;
+		align-items: center;
 		justify-content: center;
-		padding-top: 1rem;
+		padding: 4rem 2rem;
+		gap: 1.5rem;
 	}
 
-	.download-button {
-		padding: 0.875rem 2rem;
-		background: linear-gradient(135deg, rgb(59 130 246) 0%, rgb(37 99 235) 100%);
-		color: white;
-		border: none;
-		border-radius: 0.5rem;
-		font-size: 1rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: all 0.2s;
-		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+	.spinner {
+		width: 3rem;
+		height: 3rem;
+		border: 4px solid rgb(229 231 235);
+		border-top-color: rgb(59 130 246);
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
 	}
 
-	.download-button:hover {
-		background: linear-gradient(135deg, rgb(37 99 235) 0%, rgb(29 78 216) 100%);
-		box-shadow: 0 6px 8px -1px rgb(0 0 0 / 0.15);
-		transform: translateY(-1px);
+	:global(.dark) .spinner {
+		border-color: rgb(55 65 81);
+		border-top-color: rgb(147 197 253);
 	}
 
-	.download-button:active {
-		transform: translateY(0);
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.loading-container p {
+		color: rgb(107 114 128);
+		font-size: 0.9375rem;
+		font-weight: 500;
+	}
+
+	:global(.dark) .loading-container p {
+		color: rgb(156 163 175);
 	}
 
 	/* Responsive */
 	@media (max-width: 640px) {
+		.header-content {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.download-button-primary {
+			width: 100%;
+		}
+
 		.cli-command-wrapper {
 			flex-direction: column;
 			align-items: stretch;
@@ -647,12 +722,8 @@
 			justify-content: center;
 		}
 
-		.sequence-viewer {
-			padding: 1rem 0;
-		}
-
-		.back-button {
-			margin-bottom: 1.5rem;
+		.sequence-title {
+			font-size: 1.5rem;
 		}
 	}
 </style>
