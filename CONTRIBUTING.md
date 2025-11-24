@@ -16,9 +16,10 @@ packages/<category>-<namespace>-<name>.spsq
 
 Where:
 
-- **`<category>`** -> Sequence category (`samples`, `focus`, `relax`, `meditation`, `sleep`, `creative`, etc.)
-- **`<namespace>`** -> Identifier chosen by the contributor (see rules below)
-- **`<name>`** -> The name of your sequence
+- **`<category>`** → Sequence category (`focus`, `relax`, `meditation`, `sleep`, `creative`, etc.)
+  - **Note:** The `samples` category is reserved for official SynapSeq example sequences only
+- **`<namespace>`** → Identifier chosen by the contributor (see rules below)
+- **`<name>`** → The name of your sequence
 
 All files (`.spsq` sequences and `.wav` backgrounds) are stored in the `packages/` directory at the root level.
 
@@ -31,13 +32,20 @@ All files (`.spsq` sequences and `.wav` backgrounds) are stored in the `packages
 ### Examples
 
 ```
-packages/samples-synapseq-binaural.spsq
 packages/focus-janedoe-deep-work.spsq
 packages/relax-neurofocus-ocean-waves.spsq
+packages/meditation-johndoe-mindfulness.spsq
 packages/presets-janedoe-focus-collection.spsq
 packages/presets-neurofocus-relax-set.spsq
-packages/synapseq-pink-noise.wav
 packages/janedoe-ocean-waves.wav
+packages/neurofocus-rain-ambience.wav
+```
+
+**Official examples (samples category - reserved):**
+```
+packages/samples-synapseq-binaural.spsq
+packages/samples-synapseq-focus-one.spsq
+packages/synapseq-pink-noise.wav
 ```
 
 Pull Requests that do **not** follow this naming convention will be rejected.
