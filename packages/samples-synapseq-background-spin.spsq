@@ -32,7 +32,7 @@
 ## the background spin to make the effect more pronounced or more gentle, according
 ## to your preference.
 
-@background pink-noise.wav
+@background synapseq-pink-noise.wav
 
 spin-one
   background spin 400 rate 10 intensity 45 amplitude 50

@@ -8,20 +8,39 @@ This document describes how to contribute new `.spsq` sequences, preset lists, o
 
 ## Repository Structure
 
-All contributions must follow this directory pattern:
+All contributions must follow this file naming pattern:
 
 ```
-packages/<category>/<first-letter>/<namespace>/<files...>
+packages/<category>-<namespace>-<name>.spsq
 ```
 
 Where:
 
-- **`<category>`** → Sequence category (`focus`, `relax`, `meditation`, `sleep`, `creative`, etc.)
-- **`<first-letter>`** → First letter of your **namespace** (lowercase)
-- **`<namespace>`** → Identifier chosen by the contributor (see rules below)
-- **`<files...>`** → Your `.spsq` files and optional `.wav` backgrounds
+- **`<category>`** -> Sequence category (`samples`, `focus`, `relax`, `meditation`, `sleep`, `creative`, etc.)
+- **`<namespace>`** -> Identifier chosen by the contributor (see rules below)
+- **`<name>`** -> The name of your sequence
 
-Pull Requests that do **not** follow this structure will be rejected.
+All files (`.spsq` sequences and `.wav` backgrounds) are stored in the `packages/` directory at the root level.
+
+**Naming conventions for different file types:**
+
+- **Sequences:** `<category>-<namespace>-<name>.spsq`
+- **Preset lists:** `presets-<namespace>-<name>.spsq`
+- **Background audio:** `<namespace>-<name>.wav`
+
+### Examples
+
+```
+packages/samples-synapseq-binaural.spsq
+packages/focus-janedoe-deep-work.spsq
+packages/relax-neurofocus-ocean-waves.spsq
+packages/presets-janedoe-focus-collection.spsq
+packages/presets-neurofocus-relax-set.spsq
+packages/synapseq-pink-noise.wav
+packages/janedoe-ocean-waves.wav
+```
+
+Pull Requests that do **not** follow this naming convention will be rejected.
 
 ---
 
@@ -106,9 +125,12 @@ Brainwave audio **cannot** reproduce the effects of drugs, medications, or chemi
 
 ### 3. Dependency rules
 
-- All `@presetlist` files must start with `presets-`
-- Backgrounds must be local `.wav` files. External URLs are not allowed
-- All referenced files must exist inside your contribution directory
+- All `@presetlist` files must follow the pattern `presets-<namespace>-<name>.spsq`
+- All `@background` files must follow the pattern `<namespace>-<name>.wav`
+- All files must be stored in `packages/` directory
+- External URLs are not allowed
+- All referenced files must exist in the `packages/` directory
+- Your namespace must be consistent across all your files (sequences, presets, and backgrounds)
 
 ### 4. Licensing
 
@@ -159,9 +181,9 @@ Each `.spsq` file must include a header using `##` comment lines:
 
 1. Fork the repository
 2. Clone your fork
-3. Create your directory following the required structure
-4. Add your files
-5. Validate locally
+3. Add your `.spsq` file(s) to the `packages/` directory following the naming convention
+4. Add any background `.wav` files to the `packages/` directory
+5. Validate locally by running `python3 generate_manifest.py`
 6. Commit and push
 7. Open a Pull Request
 

@@ -2,8 +2,8 @@
 ## Goal: start with relaxation, then rise into focus and alertness
 
 # Options
-@presetlist presets-relax.spsq
-@presetlist presets-focus.spsq
+@presetlist presets-synapseq-relax.spsq
+@presetlist presets-synapseq-focus.spsq
 
 # Timeline
 00:00:00 silence

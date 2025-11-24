@@ -32,7 +32,7 @@
 ## the background pulse to make the effect more pronounced or more gentle, according
 ## to your preference.
 
-@background pink-noise.wav
+@background synapseq-pink-noise.wav
 
 pulse-one
   background pulse 10 intensity 50 amplitude 50
