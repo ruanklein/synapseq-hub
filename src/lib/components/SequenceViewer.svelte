@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowLeft, Copy, ChevronDown } from 'lucide-svelte';
+	import { ArrowLeft, Copy, ChevronDown, Play, Download } from 'lucide-svelte';
 	import type { ManifestEntry } from '$lib/types';
 	import DownloadModal from './DownloadModal.svelte';
 
@@ -115,6 +115,47 @@
 			isDownloadModalOpen = true;
 		}
 	}
+
+	// Track play action
+	function playBrowser(id: string) {
+		const controller = new AbortController();
+		const timeout = setTimeout(() => controller.abort(), 3000);
+
+		fetch('https://us-central1-synapseq-hub.cloudfunctions.net/trackDownload', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-SYNAPSEQ-SOURCE': 'WEB',
+				'X-SYNAPSEQ-ACTION': 'PLAY'
+			},
+			body: JSON.stringify({ id }),
+			signal: controller.signal
+		})
+			.then(async (res) => {
+				if (!res.ok) {
+					console.warn(`Tracking failed: HTTP ${res.status}`);
+					return;
+				}
+
+				res.json().then((data) => {
+					if (!data.success) {
+						console.warn('Tracking returned non-success:', data);
+					}
+				});
+			})
+			.catch((err) => {
+				if (err.name === 'AbortError') {
+					console.warn('Tracking request timed out');
+				} else {
+					console.error('Tracking request failed:', err);
+				}
+			})
+			.finally(() => {
+				clearTimeout(timeout);
+			});
+
+		window.open(`https://synapseq.ruan.sh/?id=${id}`, '_blank');
+	}
 </script>
 
 <div class="sequence-viewer">
@@ -142,9 +183,12 @@
 						<span class="author">by {sequence.author}</span>
 					</div>
 				</div>
-				<button class="download-button-primary" onclick={handleDownloadClick}>
-					Download Sequence
-				</button>
+				<div class="action-buttons">
+					<button class="play-button" onclick={() => playBrowser(sequence.id)}>
+						<Play size={18} strokeWidth={2} />
+						<span>Play in Browser</span>
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -234,6 +278,13 @@
 						{/if}
 					</div>
 				{/if}
+			</div>
+			<div class="section-divider"></div>
+			<div class="download-section">
+				<button class="download-button-primary" onclick={handleDownloadClick}>
+					<Download size={18} strokeWidth={2} />
+					Download Sequence
+				</button>
 			</div>
 		</div>
 	{/if}
@@ -371,11 +422,47 @@
 		color: rgb(156 163 175);
 	}
 
+	.action-buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.action-buttons button {
+		width: 100%; /* opcional, mas fica perfeito no mobile */
+	}
+
 	.download-button-primary {
-		padding: 0.75rem 1.5rem;
-		background: linear-gradient(135deg, rgb(34 197 94), rgb(22 163 74));
+		background: transparent;
+		border: 1px solid transparent;
+		color: rgb(59 130 246);
+		padding: 0.5rem 0.75rem;
+		border-radius: 0.5rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.download-button-primary:hover {
+		border-color: rgb(59 130 246 / 0.3);
+		background: rgb(59 130 246 / 0.05);
+	}
+
+	.download-section {
+		margin-top: 1.25rem;
+		display: flex;
+	}
+
+	.play-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.75rem 1.4rem;
+		background: linear-gradient(135deg, rgb(37 99 235), rgb(6 182 212));
 		color: white;
-		border: none;
+		border: 0;
 		border-radius: 0.75rem;
 		font-size: 1rem;
 		font-weight: 600;
@@ -384,11 +471,18 @@
 		box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
 		white-space: nowrap;
 	}
-
-	.download-button-primary:hover {
-		background: linear-gradient(135deg, rgb(22 163 74), rgb(21 128 61));
-		box-shadow: 0 6px 8px rgb(0 0 0 / 0.15);
+	.play-button:hover {
 		transform: translateY(-2px);
+		box-shadow: 0 8px 10px rgb(0 0 0 / 0.15);
+	}
+
+	:global(.dark) .play-button {
+		background: linear-gradient(135deg, rgb(96 165 250), rgb(45 212 191));
+		color: rgb(243 244 246);
+	}
+
+	:global(.dark) .play-button:hover {
+		background: linear-gradient(135deg, rgb(59 130 246), rgb(20 184 166));
 	}
 
 	/* Main Content Card */
@@ -736,6 +830,12 @@
 
 		.sequence-title {
 			font-size: 1.5rem;
+		}
+
+		.play-button,
+		.download-button-primary {
+			width: 100%;
+			justify-content: center;
 		}
 	}
 </style>
