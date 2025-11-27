@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { Brain, Zap, Github, ArrowRight, Clock, Download, Copy } from 'lucide-svelte';
+	import { Brain, Zap, Github, ArrowRight, Clock, AudioWaveform } from 'lucide-svelte';
 
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
@@ -111,110 +111,57 @@
 			</div>
 		</section>
 
-		<!-- How to Install SynapSeq -->
+		<!-- SynapSeq Playground -->
 		<section
 			class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg"
 		>
 			<div class="flex items-center gap-3 mb-6">
 				<div
-					class="p-2 bg-green-100 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800"
+					class="p-2 bg-blue-100 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800"
 				>
-					<Download class="w-6 h-6 text-green-600 dark:text-green-400" />
+					<AudioWaveform class="w-6 h-6 text-blue-600 dark:text-cyan-400" />
 				</div>
-				<h2 class="text-3xl font-bold text-gray-900 dark:text-white">How to Install SynapSeq?</h2>
+				<h2 class="text-3xl font-bold text-gray-900 dark:text-white">SynapSeq Playground</h2>
 			</div>
 
-			<div class="space-y-6">
-				<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
-					Get started with SynapSeq by installing it on your system using your preferred package
-					manager:
+			<div class="space-y-6 text-gray-700 dark:text-gray-300 leading-relaxed">
+				<p>
+					Try sequences instantly in your browser with the SynapSeq Playground, a live editor and
+					realtime audio that lets you tweak parameters and hear results immediately.
 				</p>
 
-				<!-- Windows Installation -->
-				<div class="space-y-3">
-					<div class="flex items-center gap-2">
-						<div
-							class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-950 flex items-center justify-center"
-						>
-							<span class="text-lg font-bold text-blue-600 dark:text-blue-400">W</span>
-						</div>
-						<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Windows (Winget)</h3>
-					</div>
-					<div class="relative">
-						<pre
-							class="bg-gray-900 dark:bg-black text-gray-100 dark:text-gray-200 rounded-lg p-4 pr-12 overflow-x-auto text-sm font-mono border border-gray-700"><code
-								>winget install synapseq</code
-							></pre>
-						<button
-							onclick={() => copyCommand('winget install synapseq')}
-							class="absolute top-3 right-3 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
-							aria-label="Copy command"
-						>
-							{#if copiedCommand === 'winget install synapseq'}
-								<span class="text-green-400 text-xs font-medium">Copied!</span>
-							{:else}
-								<Copy class="w-4 h-4" />
-							{/if}
-						</button>
-					</div>
-				</div>
-
-				<!-- macOS/Linux Installation -->
-				<div class="space-y-3">
-					<div class="flex items-center gap-2">
-						<div
-							class="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-950 flex items-center justify-center"
-						>
-							<span class="text-lg font-bold text-orange-600 dark:text-orange-400">🍺</span>
-						</div>
-						<h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-							macOS / Linux (Homebrew)
-						</h3>
-					</div>
+				<div class="grid md:grid-cols-3 gap-4">
 					<div class="space-y-2">
-						<div class="relative">
-							<pre
-								class="bg-gray-900 dark:bg-black text-gray-100 dark:text-gray-200 rounded-lg p-4 pr-12 overflow-x-auto text-sm font-mono border border-gray-700"><code
-									>brew tap ruanklein/synapseq</code
-								></pre>
-							<button
-								onclick={() => copyCommand('brew tap ruanklein/synapseq')}
-								class="absolute top-3 right-3 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
-								aria-label="Copy command"
-							>
-								{#if copiedCommand === 'brew tap ruanklein/synapseq'}
-									<span class="text-green-400 text-xs font-medium">Copied!</span>
-								{:else}
-									<Copy class="w-4 h-4" />
-								{/if}
-							</button>
-						</div>
-						<div class="relative">
-							<pre
-								class="bg-gray-900 dark:bg-black text-gray-100 dark:text-gray-200 rounded-lg p-4 pr-12 overflow-x-auto text-sm font-mono border border-gray-700"><code
-									>brew install synapseq</code
-								></pre>
-							<button
-								onclick={() => copyCommand('brew install synapseq')}
-								class="absolute top-3 right-3 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
-								aria-label="Copy command"
-							>
-								{#if copiedCommand === 'brew install synapseq'}
-									<span class="text-green-400 text-xs font-medium">Copied!</span>
-								{:else}
-									<Copy class="w-4 h-4" />
-								{/if}
-							</button>
-						</div>
+						<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Live Editor</h3>
+						<p class="text-sm">Edit sequence parameters and see changes in real time.</p>
+					</div>
+
+					<div class="space-y-2">
+						<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Realtime Playback</h3>
+						<p class="text-sm">
+							Instantly preview binaural, isochronic and monaural mixes in the browser.
+						</p>
+					</div>
+
+					<div class="space-y-2">
+						<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Play Hub Sequences</h3>
+						<p class="text-sm">
+							Open sequences from the Hub directly in the Playground for immediate playback.
+						</p>
 					</div>
 				</div>
 
-				<p class="text-sm text-gray-600 dark:text-gray-400 italic">
-					💡 After installation, verify by running <code
-						class="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-sm font-mono"
-						>synapseq --version</code
+				<div class="pt-2">
+					<a
+						href="https://synapseq.ruan.sh"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex items-center gap-3 px-5 py-3 bg-indigo-600 dark:text-white rounded-xl font-semibold dark:hover:bg-indigo-700 transition-colors"
 					>
-				</p>
+						Open Playground
+						<ArrowRight class="w-4 h-4" />
+					</a>
+				</div>
 			</div>
 		</section>
 
@@ -244,10 +191,10 @@
 					>
 						2
 					</div>
-					<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Generate Audio</h3>
+					<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Play & Generate Audio</h3>
 					<p class="text-gray-700 dark:text-gray-300">
-						Click on a sequence and copy the CLI command. Run it in your terminal to automatically
-						download the sequence, all dependencies, and generate the WAV file instantly.
+						Play sequences instantly in the SynapSeq Playground or generate WAV files using the
+						provided CLI command.
 					</p>
 				</div>
 
