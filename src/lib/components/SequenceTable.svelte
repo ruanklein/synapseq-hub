@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Clock, ListFilter } from 'lucide-svelte';
+	import { Clock, ListFilter, ArrowRight } from 'lucide-svelte';
 	import { filteredSequences, formatRelativeTime, formatFullDate } from '$lib/store';
 
-	function handleRowClick(sequenceId: string) {
+	function handleCardClick(sequenceId: string) {
 		goto(`/sequence/${sequenceId}`);
 	}
 </script>
@@ -23,69 +23,38 @@
 	</div>
 {/if}
 
-<div class="overflow-x-auto">
-	<table class="w-full">
-		<thead class="bg-gray-50 dark:bg-gray-900/50">
-			<tr>
-				<th
-					class="px-6 py-4 text-left text-xs font-bold text-blue-600 dark:text-cyan-400 uppercase tracking-wider"
+<!-- Cards Grid -->
+<div class="p-6">
+	{#if $filteredSequences.length === 0}
+		<div class="text-center py-16">
+			<p class="text-gray-500 dark:text-gray-400 text-lg">No sequences found</p>
+			<p class="text-gray-400 dark:text-gray-500 text-sm mt-2">
+				Try adjusting your search or filters
+			</p>
+		</div>
+	{:else}
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+			{#each $filteredSequences as sequence}
+				<button
+					onclick={() => handleCardClick(sequence.id)}
+					class="sequence-card group relative bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl p-5 text-left hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-cyan-500/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
 				>
-					Name
-				</th>
-				<th
-					class="px-6 py-4 text-left text-xs font-bold text-blue-600 dark:text-cyan-400 uppercase tracking-wider hidden sm:table-cell"
-				>
-					Category
-				</th>
-				<th
-					class="px-6 py-4 text-left text-xs font-bold text-blue-600 dark:text-cyan-400 uppercase tracking-wider"
-				>
-					Author
-				</th>
-				<th
-					class="px-6 py-4 text-left text-xs font-bold text-blue-600 dark:text-cyan-400 uppercase tracking-wider hidden md:table-cell"
-				>
-					Updated
-				</th>
-			</tr>
-		</thead>
-		<tbody class="divide-y divide-gray-200 dark:divide-gray-800">
-			{#if $filteredSequences.length === 0}
-				<tr>
-					<td colspan="4" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
-						No sequences found
-					</td>
-				</tr>
-			{:else}
-				{#each $filteredSequences as sequence}
-					<tr
-						class="group relative hover:bg-blue-50/50 dark:hover:bg-gray-800/30 cursor-pointer border-l-4 border-transparent hover:border-blue-500 dark:hover:border-cyan-500 transition-all duration-200 hover:shadow-sm"
-						onclick={() => handleRowClick(sequence.id)}
-						role="button"
-						tabindex="0"
-						onkeydown={(e) => {
-							if (e.key === 'Enter' || e.key === ' ') {
-								e.preventDefault();
-								handleRowClick(sequence.id);
-							}
-						}}
-					>
-						<td class="px-6 py-4">
-							<div
-								class="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors duration-200"
-							>
-								{sequence.name}
-							</div>
-							<div class="sm:hidden text-xs text-gray-500 dark:text-gray-400 mt-1 capitalize">
-								{sequence.category}
-							</div>
-						</td>
-						<td class="px-6 py-4 text-gray-700 dark:text-gray-300 hidden sm:table-cell capitalize">
-							{sequence.category}
-						</td>
-						<td class="px-6 py-4">
+					<!-- Gradient overlay on hover -->
+					<div
+						class="absolute inset-0 bg-linear-to-br from-blue-500/5 via-cyan-500/5 to-indigo-500/5 dark:from-blue-500/10 dark:via-cyan-500/10 dark:to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
+					></div>
+
+					<!-- Content -->
+					<div class="relative z-10 space-y-4">
+						<!-- Header with category and author -->
+						<div class="flex items-start justify-between gap-3">
 							<span
-								class={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wide border ${
+								class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold uppercase tracking-wide bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+							>
+								{sequence.category}
+							</span>
+							<span
+								class={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold uppercase tracking-wide border ${
 									sequence.author === 'synapseq'
 										? 'bg-blue-100 text-blue-700 border-blue-300 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-700'
 										: 'bg-green-100 text-green-700 border-green-300 dark:bg-green-900/40 dark:text-green-200 dark:border-green-700'
@@ -93,16 +62,35 @@
 							>
 								{sequence.author}
 							</span>
-						</td>
-						<td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
-							<div class="flex items-center gap-1.5" title={formatFullDate(sequence.updated_at)}>
+						</div>
+
+						<!-- Sequence Name -->
+						<div>
+							<h3
+								class="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors duration-300 line-clamp-2"
+							>
+								{sequence.name}
+							</h3>
+						</div>
+
+						<!-- Footer with timestamp and arrow -->
+						<div class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+							<div
+								class="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400"
+								title={formatFullDate(sequence.updated_at)}
+							>
 								<Clock class="w-3.5 h-3.5" />
-								{formatRelativeTime(sequence.updated_at)}
+								<span class="text-xs">{formatRelativeTime(sequence.updated_at)}</span>
 							</div>
-						</td>
-					</tr>
-				{/each}
-			{/if}
-		</tbody>
-	</table>
+							<div
+								class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-cyan-400 group-hover:bg-blue-500 dark:group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300"
+							>
+								<ArrowRight class="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300" />
+							</div>
+						</div>
+					</div>
+				</button>
+			{/each}
+		</div>
+	{/if}
 </div>
