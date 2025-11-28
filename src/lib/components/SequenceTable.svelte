@@ -74,7 +74,9 @@
 						</div>
 
 						<!-- Footer with timestamp and arrow -->
-						<div class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+						<div
+							class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700"
+						>
 							<div
 								class="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400"
 								title={formatFullDate(sequence.updated_at)}
@@ -85,7 +87,9 @@
 							<div
 								class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-cyan-400 group-hover:bg-blue-500 dark:group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300"
 							>
-								<ArrowRight class="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300" />
+								<ArrowRight
+									class="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300"
+								/>
 							</div>
 						</div>
 					</div>
