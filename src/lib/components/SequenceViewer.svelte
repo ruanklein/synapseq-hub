@@ -176,19 +176,25 @@
 		<div class="header-card">
 			<div class="header-content">
 				<div class="title-section">
-					<h1 class="sequence-title">{sequence.name}</h1>
-					<div class="metadata">
+					<div class="metadata-top">
 						<span class="category-badge">{sequence.category}</span>
-						<span class="divider">•</span>
 						<span class="author">by {sequence.author}</span>
 					</div>
+					<h1 class="sequence-title">{sequence.name}</h1>
 				</div>
-				<div class="action-buttons">
-					<button class="play-button" onclick={() => playBrowser(sequence.id)}>
-						<Play size={18} strokeWidth={2} />
-						<span>Play in Browser</span>
-					</button>
-				</div>
+			</div>
+
+			<!-- Primary CTA Section -->
+			<div class="cta-section">
+				<button class="play-button-primary" onclick={() => playBrowser(sequence.id)}>
+					<div class="play-icon-wrapper">
+						<Play size={24} strokeWidth={2.5} fill="currentColor" />
+					</div>
+					<div class="play-text">
+						<span class="play-label">Play in Browser</span>
+						<span class="play-subtitle">Experience instantly in the Playground</span>
+					</div>
+				</button>
 			</div>
 		</div>
 
@@ -207,6 +213,17 @@
 						<span>{copyButtonText}</span>
 					</button>
 				</div>
+
+				<!-- OR Divider -->
+				<div class="or-divider">
+					<span class="or-text">OR</span>
+				</div>
+
+				<!-- Download Ghost Button -->
+				<button class="download-ghost-button" onclick={handleDownloadClick}>
+					<Download size={18} strokeWidth={2} />
+					<span>Download sequence in .spsq</span>
+				</button>
 			</div>
 
 			<!-- Description Section -->
@@ -279,13 +296,6 @@
 					</div>
 				{/if}
 			</div>
-			<div class="section-divider"></div>
-			<div class="download-section">
-				<button class="download-button-primary" onclick={handleDownloadClick}>
-					<Download size={18} strokeWidth={2} />
-					Download Sequence
-				</button>
-			</div>
 		</div>
 	{/if}
 </div>
@@ -338,151 +348,175 @@
 
 	/* Header Card */
 	.header-card {
-		background: white;
+		background: linear-gradient(135deg, rgb(249 250 251) 0%, white 100%);
 		border: 1px solid rgb(229 231 235);
-		border-radius: 1rem;
-		padding: 2rem;
+		border-radius: 1.5rem;
+		padding: 2.5rem;
 		margin-bottom: 1.5rem;
-		box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+		box-shadow:
+			0 4px 6px rgb(0 0 0 / 0.05),
+			0 1px 3px rgb(0 0 0 / 0.1);
 	}
 
 	:global(.dark) .header-card {
-		background: rgb(31 41 55);
+		background: linear-gradient(135deg, rgb(31 41 55) 0%, rgb(17 24 39) 100%);
 		border-color: rgb(55 65 81);
 	}
 
 	.header-content {
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
-		gap: 2rem;
-		flex-wrap: wrap;
+		margin-bottom: 2rem;
 	}
 
 	.title-section {
-		flex: 1;
-		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 
-	.sequence-title {
-		font-size: 2rem;
-		font-weight: 700;
-		color: rgb(17 24 39);
-		margin: 0 0 0.75rem 0;
-		background: linear-gradient(135deg, rgb(37 99 235), rgb(6 182 212));
-		-webkit-background-clip: text;
-		background-clip: text;
-		-webkit-text-fill-color: transparent;
-	}
-
-	:global(.dark) .sequence-title {
-		background: linear-gradient(135deg, rgb(96 165 250), rgb(34 211 238));
-		-webkit-background-clip: text;
-		background-clip: text;
-	}
-
-	.metadata {
+	.metadata-top {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
 		flex-wrap: wrap;
 	}
 
+	.sequence-title {
+		font-size: 2.5rem;
+		font-weight: 800;
+		color: rgb(17 24 39);
+		margin: 0;
+		line-height: 1.2;
+		letter-spacing: -0.02em;
+	}
+
+	:global(.dark) .sequence-title {
+		color: rgb(243 244 246);
+	}
+
 	.category-badge {
 		display: inline-flex;
-		padding: 0.375rem 0.75rem;
-		background: rgb(219 234 254);
+		padding: 0.5rem 1rem;
+		background: linear-gradient(135deg, rgb(219 234 254), rgb(191 219 254));
 		color: rgb(30 64 175);
-		border-radius: 0.5rem;
+		border-radius: 0.75rem;
 		font-size: 0.875rem;
-		font-weight: 600;
+		font-weight: 700;
 		border: 1px solid rgb(191 219 254);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 
 	:global(.dark) .category-badge {
-		background: rgb(30 58 138 / 0.3);
+		background: linear-gradient(135deg, rgb(30 58 138 / 0.4), rgb(30 64 175 / 0.2));
 		color: rgb(147 197 253);
 		border-color: rgb(59 130 246 / 0.3);
 	}
 
-	.divider {
-		color: rgb(209 213 219);
-	}
-
-	:global(.dark) .divider {
-		color: rgb(75 85 99);
-	}
-
 	.author {
 		color: rgb(107 114 128);
-		font-size: 0.875rem;
+		font-size: 0.9375rem;
+		font-weight: 500;
 	}
 
 	:global(.dark) .author {
 		color: rgb(156 163 175);
 	}
 
-	.action-buttons {
+	/* CTA Section */
+	.cta-section {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.play-button-primary {
+		flex: 1;
+		min-width: 280px;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1.25rem 1.75rem;
+		background: linear-gradient(135deg, rgb(79 70 229), rgb(59 130 246));
+		color: white;
+		border: none;
+		border-radius: 1rem;
+		font-size: 1rem;
+		font-weight: 700;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		box-shadow:
+			0 10px 15px -3px rgb(79 70 229 / 0.3),
+			0 4px 6px -4px rgb(79 70 229 / 0.3);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.play-button-primary::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.play-button-primary:hover::before {
+		opacity: 1;
+	}
+
+	.play-button-primary:hover {
+		transform: translateY(-2px);
+		box-shadow:
+			0 20px 25px -5px rgb(79 70 229 / 0.4),
+			0 8px 10px -6px rgb(79 70 229 / 0.4);
+	}
+
+	:global(.dark) .play-button-primary {
+		background: linear-gradient(135deg, rgb(99 102 241), rgb(59 130 246));
+		box-shadow:
+			0 10px 15px -3px rgb(99 102 241 / 0.4),
+			0 4px 6px -4px rgb(99 102 241 / 0.4);
+	}
+
+	:global(.dark) .play-button-primary:hover {
+		box-shadow:
+			0 20px 25px -5px rgb(99 102 241 / 0.5),
+			0 8px 10px -6px rgb(99 102 241 / 0.5);
+	}
+
+	.play-icon-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 0.5rem;
+		flex-shrink: 0;
+	}
+
+	.play-text {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		align-items: flex-start;
+		gap: 0.125rem;
+		text-align: left;
 	}
 
-	.action-buttons button {
-		width: 100%; /* opcional, mas fica perfeito no mobile */
+	.play-label {
+		font-size: 1.125rem;
+		font-weight: 800;
+		line-height: 1.2;
 	}
 
-	.download-button-primary {
-		background: transparent;
-		border: 1px solid transparent;
-		color: rgb(59 130 246);
-		padding: 0.5rem 0.75rem;
-		border-radius: 0.5rem;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4rem;
-		cursor: pointer;
-		transition: all 0.15s ease;
-	}
-
-	.download-button-primary:hover {
-		border-color: rgb(59 130 246 / 0.3);
-		background: rgb(59 130 246 / 0.05);
-	}
-
-	.download-section {
-		margin-top: 1.25rem;
-		display: flex;
-	}
-
-	.play-button {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem 1.4rem;
-		background: linear-gradient(135deg, rgb(37 99 235), rgb(6 182 212));
-		color: white;
-		border: 0;
-		border-radius: 0.75rem;
-		font-size: 1rem;
-		font-weight: 600;
-		cursor: pointer;
-		transition: all 0.2s;
-		box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
-		white-space: nowrap;
-	}
-	.play-button:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 10px rgb(0 0 0 / 0.15);
-	}
-
-	:global(.dark) .play-button {
-		background: linear-gradient(135deg, rgb(96 165 250), rgb(45 212 191));
-		color: rgb(243 244 246);
-	}
-
-	:global(.dark) .play-button:hover {
-		background: linear-gradient(135deg, rgb(59 130 246), rgb(20 184 166));
+	.play-subtitle {
+		font-size: 0.8125rem;
+		font-weight: 400;
+		opacity: 0.85;
 	}
 
 	/* Main Content Card */
@@ -584,6 +618,76 @@
 
 	.copy-button .icon {
 		display: flex;
+	}
+
+	/* OR Divider */
+	.or-divider {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin: 1.5rem 0 1rem 0;
+	}
+
+	.or-divider::before,
+	.or-divider::after {
+		content: '';
+		flex: 1;
+		height: 1px;
+		background: rgb(229 231 235);
+	}
+
+	:global(.dark) .or-divider::before,
+	:global(.dark) .or-divider::after {
+		background: rgb(55 65 81);
+	}
+
+	.or-text {
+		color: rgb(156 163 175);
+		font-size: 0.875rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	:global(.dark) .or-text {
+		color: rgb(107 114 128);
+	}
+
+	/* Download Ghost Button */
+	.download-ghost-button {
+		width: 100%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.875rem 1.25rem;
+		background: transparent;
+		border: 1.5px dashed rgb(209 213 219);
+		color: rgb(107 114 128);
+		border-radius: 0.75rem;
+		font-size: 0.9375rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.download-ghost-button:hover {
+		border-color: rgb(59 130 246);
+		border-style: solid;
+		color: rgb(59 130 246);
+		background: rgb(239 246 255);
+	}
+
+	:global(.dark) .download-ghost-button {
+		border-color: rgb(75 85 99);
+		color: rgb(156 163 175);
+	}
+
+	:global(.dark) .download-ghost-button:hover {
+		border-color: rgb(99 102 241);
+		border-style: solid;
+		color: rgb(147 197 253);
+		background: rgb(30 58 138 / 0.15);
 	}
 
 	/* Description Section */
@@ -809,13 +913,12 @@
 
 	/* Responsive */
 	@media (max-width: 640px) {
-		.header-content {
+		.cta-section {
 			flex-direction: column;
-			align-items: stretch;
 		}
 
-		.download-button-primary {
-			width: 100%;
+		.play-button-primary {
+			min-width: 100%;
 		}
 
 		.cli-command-wrapper {
@@ -829,13 +932,7 @@
 		}
 
 		.sequence-title {
-			font-size: 1.5rem;
-		}
-
-		.play-button,
-		.download-button-primary {
-			width: 100%;
-			justify-content: center;
+			font-size: 1.75rem;
 		}
 	}
 </style>
