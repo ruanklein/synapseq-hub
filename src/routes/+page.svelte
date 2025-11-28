@@ -1,7 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { Brain, Zap, Github, ArrowRight, Clock, AudioWaveform } from 'lucide-svelte';
+	import {
+		Brain,
+		Zap,
+		Github,
+		ArrowRight,
+		Clock,
+		AudioWaveform,
+		Play,
+		Wand2,
+		Users,
+		Download
+	} from 'lucide-svelte';
 
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
@@ -10,7 +21,6 @@
 
 	let isLoading = $state(true);
 	let lastSequences = $state<ManifestEntry[]>([]);
-	let copiedCommand = $state<string | null>(null);
 
 	onMount(async () => {
 		await loadManifest();
@@ -28,18 +38,6 @@
 	function goToSequences() {
 		goto('/sequences');
 	}
-
-	async function copyCommand(command: string) {
-		try {
-			await navigator.clipboard.writeText(command);
-			copiedCommand = command;
-			setTimeout(() => {
-				copiedCommand = null;
-			}, 2000);
-		} catch (err) {
-			console.error('Failed to copy:', err);
-		}
-	}
 </script>
 
 <svelte:head>
@@ -55,238 +53,279 @@
 >
 	<Header />
 
-	<main class="container mx-auto px-4 py-12 max-w-6xl space-y-16">
-		<!-- Hero Section -->
-		<section class="text-center space-y-6 py-8">
-			<div class="inline-block mb-4">
+	<main class="container mx-auto px-4 py-8 max-w-7xl space-y-24">
+		<!-- Hero Section - Compact & Focused -->
+		<section class="text-center space-y-6 py-12">
+			<div class="inline-block">
 				<div
-					class="p-4 bg-linear-to-br from-blue-100 to-cyan-100 dark:from-blue-950 dark:to-cyan-950 rounded-2xl"
+					class="p-5 bg-linear-to-br from-blue-500/10 to-cyan-500/10 dark:from-blue-500/20 dark:to-cyan-500/20 rounded-3xl backdrop-blur-sm border border-blue-200/50 dark:border-cyan-500/30"
 				>
-					<Brain class="w-16 h-16 text-blue-600 dark:text-cyan-400" />
+					<Brain class="w-20 h-20 text-blue-600 dark:text-cyan-400" />
 				</div>
 			</div>
 
 			<h1
-				class="text-5xl md:text-6xl font-bold bg-linear-to-r from-blue-600 via-cyan-500 to-blue-600 dark:from-blue-400 dark:via-cyan-400 dark:to-blue-400 bg-clip-text text-transparent"
+				class="text-6xl md:text-7xl font-black bg-linear-to-r from-blue-600 via-cyan-500 to-blue-600 dark:from-blue-400 dark:via-cyan-300 dark:to-blue-400 bg-clip-text text-transparent leading-tight"
 			>
 				SynapSeq Hub
 			</h1>
 
-			<p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-				Your gateway to brainwave entrainment sequences for enhanced focus, deep relaxation, and
-				mental clarity
+			<p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-light">
+				Discover powerful brainwave entrainment sequences for focus, relaxation, and mental clarity
 			</p>
-		</section>
 
-		<!-- What is SynapSeq -->
-		<section
-			class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg"
-		>
-			<div class="flex items-center gap-3 mb-6">
-				<div
-					class="p-2 bg-blue-100 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800"
+			<div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+				<a
+					href="/sequences"
+					class="group inline-flex items-center gap-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-cyan-500 dark:hover:bg-cyan-600 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
 				>
-					<Zap class="w-6 h-6 text-blue-600 dark:text-cyan-400" />
-				</div>
-				<h2 class="text-3xl font-bold text-gray-900 dark:text-white">What is SynapSeq?</h2>
-			</div>
-
-			<div class="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
-				<p>
-					SynapSeq is a powerful engine for creating brainwave entrainment sequences that combine
-					binaural beats, isochronic tones, monaural beats, and various waveforms to influence
-					mental states and enhance cognitive performance.
-				</p>
-
-				<p>
-					Each sequence is carefully designed to guide your brain into specific frequency ranges
-					associated with different mental states. From deep relaxation (Delta waves) to intense
-					focus (Gamma waves).
-				</p>
-
-				<p class="font-semibold text-gray-900 dark:text-white">
-					The SynapSeq Hub is your central repository for discovering, downloading, and sharing
-					these powerful audio sequences.
-				</p>
+					Browse Sequences
+					<ArrowRight class="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+				</a>
+				<a
+					href="https://github.com/ruanklein/synapseq-hub"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="inline-flex items-center gap-3 px-8 py-4 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-2xl font-semibold text-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-all duration-200"
+				>
+					<Github class="w-5 h-5" />
+					Contribute
+				</a>
 			</div>
 		</section>
 
-		<!-- SynapSeq Playground -->
+		<!-- Playground Spotlight -->
 		<section
-			class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg"
+			class="relative overflow-hidden bg-linear-to-br from-indigo-600 via-blue-600 to-cyan-600 dark:from-indigo-700 dark:via-blue-700 dark:to-cyan-700 rounded-3xl p-12 md:p-16 shadow-2xl"
 		>
-			<div class="flex items-center gap-3 mb-6">
+			<div
+				class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40"
+			></div>
+
+			<div class="relative z-10 max-w-4xl mx-auto text-center space-y-8 text-white">
 				<div
-					class="p-2 bg-blue-100 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800"
+					class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm border border-white/30"
 				>
-					<AudioWaveform class="w-6 h-6 text-blue-600 dark:text-cyan-400" />
+					<Zap class="w-4 h-4" />
+					<span class="text-sm font-semibold">Try it Now</span>
 				</div>
-				<h2 class="text-3xl font-bold text-gray-900 dark:text-white">SynapSeq Playground</h2>
-			</div>
 
-			<div class="space-y-6 text-gray-700 dark:text-gray-300 leading-relaxed">
-				<p>
-					Try sequences instantly in your browser with the SynapSeq Playground, a live editor and
-					realtime audio that lets you tweak parameters and hear results immediately.
+				<h2 class="text-4xl md:text-5xl font-black leading-tight">SynapSeq Playground</h2>
+
+				<p class="text-xl md:text-2xl text-blue-50 font-light max-w-3xl mx-auto leading-relaxed">
+					Experience sequences instantly in your browser with our live editor and realtime audio
+					playback, no installation required
 				</p>
-
-				<div class="grid md:grid-cols-3 gap-4">
-					<div class="space-y-2">
-						<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Live Editor</h3>
-						<p class="text-sm">Edit sequence parameters and see changes in real time.</p>
-					</div>
-
-					<div class="space-y-2">
-						<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Realtime Playback</h3>
-						<p class="text-sm">
-							Instantly preview binaural, isochronic and monaural mixes in the browser.
+				<div class="grid md:grid-cols-3 gap-6 pt-6 text-left">
+					<div
+						class="p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/15 transition-colors"
+					>
+						<Wand2 class="w-8 h-8 mb-4" />
+						<h3 class="text-lg font-bold mb-2">Live Editor</h3>
+						<p class="text-blue-100 text-sm leading-relaxed">
+							Tweak parameters and see changes in real time
 						</p>
 					</div>
 
-					<div class="space-y-2">
-						<h3 class="text-lg font-semibold text-gray-900 dark:text-white">Play Hub Sequences</h3>
-						<p class="text-sm">
-							Open sequences from the Hub directly in the Playground for immediate playback.
+					<div
+						class="p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/15 transition-colors"
+					>
+						<Play class="w-8 h-8 mb-4" />
+						<h3 class="text-lg font-bold mb-2">Instant Playback</h3>
+						<p class="text-blue-100 text-sm leading-relaxed">
+							Preview binaural, isochronic, and monaural beats instantly
+						</p>
+					</div>
+
+					<div
+						class="p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/15 transition-colors"
+					>
+						<AudioWaveform class="w-8 h-8 mb-4" />
+						<h3 class="text-lg font-bold mb-2">Hub Integration</h3>
+						<p class="text-blue-100 text-sm leading-relaxed">
+							Open any Hub sequence directly in the Playground
 						</p>
 					</div>
 				</div>
 
-				<div class="pt-2">
+				<div class="pt-4">
 					<a
 						href="https://synapseq.ruan.sh"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="inline-flex items-center gap-3 px-5 py-3 bg-indigo-600 dark:text-white rounded-xl font-semibold dark:hover:bg-indigo-700 transition-colors"
+						class="group inline-flex items-center gap-4 px-10 py-5 bg-white text-blue-600 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-3xl transition-all duration-200 hover:scale-105"
 					>
+						<Play class="w-6 h-6" />
 						Open Playground
-						<ArrowRight class="w-4 h-4" />
+						<ArrowRight class="w-5 h-5 group-hover:translate-x-1 transition-transform" />
 					</a>
 				</div>
 			</div>
 		</section>
 
-		<!-- How to Use -->
-		<section
-			class="bg-linear-to-br from-blue-50 to-cyan-50 dark:from-gray-800/80 dark:to-gray-900/80 rounded-2xl border border-blue-200 dark:border-gray-700 p-8 backdrop-blur-sm"
-		>
-			<h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">How to Use</h2>
+		<!-- Features Grid -->
+		<section class="space-y-12">
+			<div class="text-center space-y-4">
+				<h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
+					Powerful Brainwave Technology
+				</h2>
+				<p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+					SynapSeq combines cutting-edge audio techniques to guide your brain into optimal mental
+					states
+				</p>
+			</div>
 
-			<div class="grid md:grid-cols-3 gap-6">
-				<div class="space-y-3">
+			<div class="grid md:grid-cols-3 gap-8">
+				<div
+					class="group p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-cyan-600 hover:shadow-xl transition-all duration-200"
+				>
 					<div
-						class="w-12 h-12 rounded-full bg-blue-600 dark:bg-cyan-500 text-white flex items-center justify-center font-bold text-xl"
+						class="w-14 h-14 rounded-xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
 					>
-						1
+						<Zap class="w-7 h-7 text-blue-600 dark:text-cyan-400" />
 					</div>
-					<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Browse Sequences</h3>
-					<p class="text-gray-700 dark:text-gray-300">
-						Explore our collection of sequences categorized by purpose - focus, relaxation,
-						meditation, and more.
+					<h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Multiple Techniques</h3>
+					<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+						Binaural beats, isochronic tones, monaural beats, and custom waveforms combined for
+						maximum effect
 					</p>
 				</div>
 
-				<div class="space-y-3">
+				<div
+					class="group p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-cyan-600 hover:shadow-xl transition-all duration-200"
+				>
 					<div
-						class="w-12 h-12 rounded-full bg-blue-600 dark:bg-cyan-500 text-white flex items-center justify-center font-bold text-xl"
+						class="w-14 h-14 rounded-xl bg-gray-500 dark:bg-gray-600/50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
 					>
-						2
+						<Brain class="w-7 h-7 text-gray-300 dark:text-gray-400" />
 					</div>
-					<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Play & Generate Audio</h3>
-					<p class="text-gray-700 dark:text-gray-300">
-						Play sequences instantly in the SynapSeq Playground or generate WAV files using the
-						provided CLI command.
+					<h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Precisely Crafted</h3>
+					<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+						Each sequence targets specific brainwave frequencies, from deep Delta relaxation to
+						focused Gamma states
 					</p>
 				</div>
 
-				<div class="space-y-3">
+				<div
+					class="group p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-cyan-600 hover:shadow-xl transition-all duration-200"
+				>
 					<div
-						class="w-12 h-12 rounded-full bg-blue-600 dark:bg-cyan-500 text-white flex items-center justify-center font-bold text-xl"
+						class="w-14 h-14 rounded-xl bg-green-100 dark:bg-green-950 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
 					>
-						3
+						<Users class="w-7 h-7 text-green-600 dark:text-green-400" />
 					</div>
-					<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Experience & Share</h3>
-					<p class="text-gray-700 dark:text-gray-300">
-						Use sequences for your desired mental state, and contribute your own creations back to
-						the community.
+					<h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Community Driven</h3>
+					<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+						Open-source repository where creators share sequences and the community benefits from
+						collective knowledge
 					</p>
 				</div>
 			</div>
 		</section>
 
-		<!-- How to Contribute -->
+		<!-- How to Use - Simplified -->
 		<section
-			class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg"
+			class="bg-linear-to-br from-blue-50 to-cyan-50/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-3xl p-12 md:p-16 border border-blue-100 dark:border-gray-700"
 		>
-			<div class="flex items-center gap-3 mb-6">
-				<div
-					class="p-2 bg-green-100 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800"
-				>
-					<Github class="w-6 h-6 text-green-600 dark:text-green-400" />
+			<h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-12 text-center">
+				Get Started in 3 Steps
+			</h2>
+
+			<div class="grid md:grid-cols-3 gap-8">
+				<div class="relative text-center space-y-4">
+					<div
+						class="w-16 h-16 mx-auto rounded-2xl bg-blue-600 dark:bg-cyan-500 text-white flex items-center justify-center font-black text-2xl shadow-lg"
+					>
+						1
+					</div>
+					<h3 class="text-2xl font-bold text-gray-900 dark:text-white">Browse</h3>
+					<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+						Explore sequences by category: focus, relaxation, meditation, and more
+					</p>
 				</div>
-				<h2 class="text-3xl font-bold text-gray-900 dark:text-white">How to Contribute</h2>
-			</div>
 
-			<div class="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
-				<p>
-					SynapSeq Hub is an open-source project, and we welcome contributions from the community!
-					Whether you're creating new sequences or enhancing the hub itself, your input is valuable.
-				</p>
+				<div class="relative text-center space-y-4">
+					<div
+						class="w-16 h-16 mx-auto rounded-2xl bg-blue-600 dark:bg-cyan-500 text-white flex items-center justify-center font-black text-2xl shadow-lg"
+					>
+						2
+					</div>
+					<h3 class="text-2xl font-bold text-gray-900 dark:text-white">Play or Generate</h3>
+					<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+						Click "Play in Browser" for instant playback, or use the CLI to generate WAV files
+					</p>
+				</div>
 
-				<a
-					href="https://github.com/ruanklein/synapseq-hub"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-xl font-semibold hover:shadow-lg transition-all duration-200 hover:scale-105 hover:bg-gray-800 dark:hover:bg-white"
-				>
-					<Github class="w-5 h-5" />
-					Visit GitHub Repository
-					<ArrowRight class="w-4 h-4" />
-				</a>
+				<div class="relative text-center space-y-4">
+					<div
+						class="w-16 h-16 mx-auto rounded-2xl bg-blue-600 dark:bg-cyan-500 text-white flex items-center justify-center font-black text-2xl shadow-lg"
+					>
+						3
+					</div>
+					<h3 class="text-2xl font-bold text-gray-900 dark:text-white">Experience</h3>
+					<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+						Use sequences for your goals and share your own creations with the community
+					</p>
+				</div>
 			</div>
 		</section>
 
 		<!-- Last Sequences Added -->
 		{#if isLoading}
-			<div class="flex items-center justify-center py-12">
-				<div class="text-gray-500 dark:text-gray-400">Loading sequences...</div>
+			<div class="flex items-center justify-center py-20">
+				<div class="text-gray-500 dark:text-gray-400 text-lg">Loading sequences...</div>
 			</div>
 		{:else if lastSequences.length > 0}
-			<section class="space-y-6">
-				<div class="flex items-center justify-between">
-					<h2 class="text-3xl font-bold text-gray-900 dark:text-white">Last Sequences Added</h2>
+			<section class="space-y-10">
+				<div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+					<div class="space-y-3">
+						<h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
+							Recently Added
+						</h2>
+						<p class="text-lg text-gray-600 dark:text-gray-400">
+							Discover the latest sequences from our community
+						</p>
+					</div>
 					<button
 						onclick={goToSequences}
-						class="inline-flex items-center gap-2 px-4 py-2 text-blue-600 dark:text-cyan-400 hover:text-blue-700 dark:hover:text-cyan-300 font-semibold transition-colors"
+						class="group inline-flex items-center gap-2 px-6 py-3 text-blue-600 dark:text-cyan-400 hover:text-blue-700 dark:hover:text-cyan-300 font-bold text-lg transition-colors"
 					>
-						View All
-						<ArrowRight class="w-4 h-4" />
+						View All Sequences
+						<ArrowRight class="w-5 h-5 group-hover:translate-x-1 transition-transform" />
 					</button>
 				</div>
 
-				<div class="grid md:grid-cols-3 gap-6">
+				<div class="grid md:grid-cols-3 gap-8">
 					{#each lastSequences as sequence}
 						<button
 							onclick={() => goToSequence(sequence.id)}
-							class="group bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-blue-300 dark:hover:border-cyan-600 hover:shadow-xl transition-all duration-200 text-left"
+							class="group relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-cyan-500 p-8 hover:shadow-2xl transition-all duration-300 text-left overflow-hidden"
 						>
-							<div class="space-y-4">
-								<!-- Header -->
+							<!-- Gradient overlay on hover -->
+							<div
+								class="absolute inset-0 bg-linear-to-br from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 dark:group-hover:from-blue-500/10 dark:group-hover:to-cyan-500/10 transition-all duration-300 rounded-2xl"
+							></div>
+
+							<div class="relative z-10 space-y-5">
+								<!-- Category Badge -->
 								<div class="flex items-start justify-between gap-3">
-									<h3
-										class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2"
-									>
-										{sequence.name}
-									</h3>
 									<span
-										class="shrink-0 px-2 py-1 text-xs font-semibold bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-cyan-300 rounded-lg border border-blue-200 dark:border-cyan-700"
+										class="px-3 py-1.5 text-xs font-bold bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-cyan-300 rounded-lg border border-blue-200 dark:border-cyan-700/50 uppercase tracking-wide"
 									>
 										{sequence.category}
 									</span>
 								</div>
 
+								<!-- Title -->
+								<h3
+									class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2 leading-tight"
+								>
+									{sequence.name}
+								</h3>
+
 								<!-- Author -->
 								<p class="text-sm text-gray-600 dark:text-gray-400">
-									by <span class="font-medium text-gray-900 dark:text-gray-200"
+									by <span class="font-semibold text-gray-900 dark:text-gray-200"
 										>{sequence.author}</span
 									>
 								</p>
@@ -294,15 +333,15 @@
 								<!-- Updated -->
 								<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
 									<Clock class="w-4 h-4" />
-									{formatRelativeTime(sequence.updated_at)}
+									<span>{formatRelativeTime(sequence.updated_at)}</span>
 								</div>
 
-								<!-- View Button -->
+								<!-- CTA -->
 								<div
-									class="flex items-center gap-2 text-blue-600 dark:text-cyan-400 font-semibold text-sm group-hover:gap-3 transition-all"
+									class="flex items-center gap-2 text-blue-600 dark:text-cyan-400 font-bold text-base pt-2 group-hover:gap-3 transition-all"
 								>
 									View Details
-									<ArrowRight class="w-4 h-4" />
+									<ArrowRight class="w-5 h-5" />
 								</div>
 							</div>
 						</button>
