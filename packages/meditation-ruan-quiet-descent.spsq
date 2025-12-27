@@ -1,0 +1,45 @@
+## Title: Quiet Descent
+## Author: Ruan
+## License: CC BY-SA 4.0
+##
+## Description: Quiet Descent is a deep, immersive sequence designed to facilitate profound relaxation and meditative states.
+## It employs low-frequency rhythms and gentle modulations to help quiet the mind and promote a sense of inner stillness.
+##
+## Background: "Relaxation music #59" by ZHRØ (https://freesound.org/people/ZHR%C3%98)
+## Source: https://freesound.org/people/ZHR%C3%98/sounds/611626/
+
+# Options
+@background freesound-611626.wav
+
+# Presets
+alpha-preparation
+  background spin 300 rate 10.5 intensity 0 amplitude 70
+  noise pink amplitude 2.0
+  tone 250 binaural 10.5 amplitude 10
+
+alpha-state
+  background spin 300 rate 8.5 intensity 40 amplitude 70
+  noise pink amplitude 1.0
+  tone 250 binaural 8.5 amplitude 5
+
+theta-state-one
+  background spin 300 rate 6.5 intensity 45 amplitude 70
+  noise pink amplitude 1.0
+  tone 180 binaural 6.5 amplitude 5
+
+theta-state-two
+  background spin 300 rate 4.5 intensity 50 amplitude 70
+  noise pink amplitude 1.0
+  tone 180 binaural 4.5 amplitude 5
+
+# Timeline
+00:00:00 silence
+00:00:15 alpha-preparation
+00:01:00 alpha-preparation
+00:05:00 alpha-state ease-out
+00:08:00 theta-state-one
+00:13:00 theta-state-one
+00:14:00 theta-state-two
+00:19:00 theta-state-two ease-in
+00:24:00 alpha-state
+00:25:00 silence
