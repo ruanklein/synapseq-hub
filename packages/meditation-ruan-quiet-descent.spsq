@@ -2,11 +2,12 @@
 ## Author: Ruan
 ## License: CC BY-SA 4.0
 ##
-## Description: Quiet Descent is a deep, immersive sequence designed to facilitate profound relaxation and meditative states.
+## Quiet Descent is a deep, immersive sequence designed to facilitate profound relaxation and meditative states.
 ## It employs low-frequency rhythms and gentle modulations to help quiet the mind and promote a sense of inner stillness.
 ##
 ## Background: "Relaxation music #59" by ZHRØ (https://freesound.org/people/ZHR%C3%98)
 ## Source: https://freesound.org/people/ZHR%C3%98/sounds/611626/
+## Note: Background audio (freesound-611626.wav) was edited for looping and duration.
 
 # Options
 @background freesound-611626.wav

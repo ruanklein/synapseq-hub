@@ -2,13 +2,14 @@
 ## Author: Ruan
 ## License: CC BY-SA 4.0
 ##
-## Description: Neutral Relax is a minimal, low-intensity sequence designed to
+## Neutral Relax is a minimal, low-intensity sequence designed to
 ## gently reduce mental arousal and support a calm, stable state. It avoids
 ## dramatic transitions and strong modulation, making it suitable for background
 ## use during rest, light meditation, or quiet activities.
 ##
 ## Background: "Relaxation music #67" by ZHRØ (https://freesound.org/people/ZHR%C3%98)
 ## Source: https://freesound.org/people/ZHR%C3%98/sounds/697608/
+## Note: Background audio (freesound-697608.wav) was edited for looping and duration.
 
 # Options
 @background freesound-697608.wav
