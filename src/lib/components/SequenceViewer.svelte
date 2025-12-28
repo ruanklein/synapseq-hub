@@ -19,10 +19,14 @@
 	let descriptionLines = $state<string[]>([]);
 	let codeWithoutDescription = $state<string>('');
 	let isLoadingSource = $state(false);
-	let copyButtonText = $state('Copy');
+	let copyPlayButtonText = $state('Copy');
+	let copyWavButtonText = $state('Copy');
+	let copyMp3ButtonText = $state('Copy');
 	let isDownloadModalOpen = $state(false);
 
-	const cliCommand = $derived(`synapseq -hub-get ${sequence.id} ${sequence.name}.wav`);
+	const playCommand = $derived(`synapseq -play -hub-get ${sequence.id}`);
+	const wavCommand = $derived(`synapseq -hub-get ${sequence.id}`);
+	const mp3Command = $derived(`synapseq -mp3 -hub-get ${sequence.id}`);
 
 	async function loadSourceCode() {
 		if (sourceCode) return;
@@ -90,12 +94,36 @@
 		descriptionExpanded = !descriptionExpanded;
 	}
 
-	async function copyCommand() {
+	async function copyPlayCommand() {
 		try {
-			await navigator.clipboard.writeText(cliCommand);
-			copyButtonText = 'Copied!';
+			await navigator.clipboard.writeText(playCommand);
+			copyPlayButtonText = 'Copied!';
 			setTimeout(() => {
-				copyButtonText = 'Copy';
+				copyPlayButtonText = 'Copy';
+			}, 2000);
+		} catch (error) {
+			console.error('Failed to copy:', error);
+		}
+	}
+
+	async function copyWavCommand() {
+		try {
+			await navigator.clipboard.writeText(wavCommand);
+			copyWavButtonText = 'Copied!';
+			setTimeout(() => {
+				copyWavButtonText = 'Copy';
+			}, 2000);
+		} catch (error) {
+			console.error('Failed to copy:', error);
+		}
+	}
+
+	async function copyMp3Command() {
+		try {
+			await navigator.clipboard.writeText(mp3Command);
+			copyMp3ButtonText = 'Copied!';
+			setTimeout(() => {
+				copyMp3ButtonText = 'Copy';
 			}, 2000);
 		} catch (error) {
 			console.error('Failed to copy:', error);
@@ -215,15 +243,52 @@
 			<!-- CLI Command Section -->
 			<div class="cli-section">
 				<h3 class="section-title">Run via CLI</h3>
-				<p class="section-subtitle">Execute this command to generate the audio file:</p>
-				<div class="cli-command-wrapper">
-					<code class="cli-command">{cliCommand}</code>
-					<button class="copy-button" onclick={copyCommand}>
-						<div class="icon">
-							<Copy size={16} />
+				<p class="section-subtitle">
+					Choose one of the following commands (requires SynapSeq v3.5+):
+				</p>
+
+				<div class="cli-commands-grid">
+					<!-- Play Command -->
+					<div class="cli-command-item">
+						<h4 class="command-title">Play Sequence</h4>
+						<div class="cli-command-wrapper">
+							<code class="cli-command">{playCommand}</code>
+							<button class="copy-button" onclick={copyPlayCommand}>
+								<div class="icon">
+									<Copy size={16} />
+								</div>
+								<span>{copyPlayButtonText}</span>
+							</button>
 						</div>
-						<span>{copyButtonText}</span>
-					</button>
+					</div>
+
+					<!-- WAV Export Command -->
+					<div class="cli-command-item">
+						<h4 class="command-title">Export to WAV</h4>
+						<div class="cli-command-wrapper">
+							<code class="cli-command">{wavCommand}</code>
+							<button class="copy-button" onclick={copyWavCommand}>
+								<div class="icon">
+									<Copy size={16} />
+								</div>
+								<span>{copyWavButtonText}</span>
+							</button>
+						</div>
+					</div>
+
+					<!-- MP3 Export Command -->
+					<div class="cli-command-item">
+						<h4 class="command-title">Export to MP3</h4>
+						<div class="cli-command-wrapper">
+							<code class="cli-command">{mp3Command}</code>
+							<button class="copy-button" onclick={copyMp3Command}>
+								<div class="icon">
+									<Copy size={16} />
+								</div>
+								<span>{copyMp3ButtonText}</span>
+							</button>
+						</div>
+					</div>
 				</div>
 
 				<!-- OR Divider -->
@@ -579,6 +644,31 @@
 	/* CLI Section */
 	.cli-section {
 		margin-bottom: 0;
+	}
+
+	.cli-commands-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.cli-command-item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.command-title {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: rgb(75 85 99);
+		margin: 0;
+		text-transform: uppercase;
+		letter-spacing: 0.025em;
+	}
+
+	:global(.dark) .command-title {
+		color: rgb(156 163 175);
 	}
 
 	.cli-command-wrapper {
@@ -971,6 +1061,10 @@
 		.cli-command-wrapper {
 			flex-direction: column;
 			align-items: stretch;
+		}
+
+		.cli-commands-grid {
+			gap: 1.25rem;
 		}
 
 		.copy-button {
