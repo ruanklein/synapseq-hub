@@ -105,6 +105,18 @@
 	// Check if description is long (more than 6 lines)
 	const shouldShowReadMore = $derived(descriptionLines.length > 6);
 
+	// Convert URLs in description to clickable links
+	function formatDescriptionWithLinks(text: string): string {
+		// Regex to match URLs starting with http:// or https://
+		const urlRegex = /(https?:\/\/[^\s]+)/g;
+		return text.replace(
+			urlRegex,
+			'<a href="$1" target="_blank" rel="noopener noreferrer" class="description-link">$1</a>'
+		);
+	}
+
+	const formattedDescription = $derived(formatDescriptionWithLinks(description));
+
 	function handleDownloadClick() {
 		// Direct download for mobile, modal for desktop
 		const isMobile = window.innerWidth <= 768;
@@ -235,7 +247,7 @@
 						class="description-content"
 						class:collapsed={!descriptionExpanded && shouldShowReadMore}
 					>
-						{description}
+						{@html formattedDescription}
 					</div>
 					{#if shouldShowReadMore}
 						<button class="read-more-button" onclick={toggleDescription}>
@@ -702,6 +714,9 @@
 		position: relative;
 		white-space: pre-wrap;
 		margin-top: 0.75rem;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		word-break: break-word;
 	}
 
 	.description-content.collapsed {
@@ -747,6 +762,38 @@
 
 	:global(.dark) .read-more-button {
 		color: rgb(147 197 253);
+	}
+
+	/* Description Links */
+	.description-content :global(.description-link) {
+		color: rgb(59 130 246);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		transition: all 0.2s ease;
+		word-break: break-all;
+	}
+
+	.description-content :global(.description-link:visited) {
+		color: rgb(139 92 246);
+	}
+
+	.description-content :global(.description-link:hover) {
+		color: rgb(37 99 235);
+	}
+
+	:global(.dark) .description-content :global(.description-link) {
+		color: rgb(147 197 253);
+	}
+
+	:global(.dark) .description-content :global(.description-link:visited) {
+		color: rgb(196 181 253);
+	}
+
+	:global(.dark) .description-content :global(.description-link:hover) {
+		color: rgb(96 165 250);
+	}
+
+	/* lor: rgb(147 197 253);
 	}
 
 	/* Collapsible Sections */
