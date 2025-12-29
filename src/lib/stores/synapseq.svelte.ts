@@ -76,6 +76,10 @@ class SynapSeqPlayer {
 			};
 
 			this.instance.onended = () => {
+				// Update current time one last time before stopping tracking
+				if (this.instance) {
+					this.currentTime = this.instance.getCurrentTime();
+				}
 				this.state = 'idle';
 				this.stopTimeTracking();
 			};
@@ -186,7 +190,7 @@ class SynapSeqPlayer {
 			clearInterval(this.timeInterval);
 			this.timeInterval = null;
 		}
-		this.currentTime = 0;
+		// Don't reset currentTime here to show final position
 	}
 
 	destroy() {
