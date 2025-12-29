@@ -200,6 +200,8 @@
 
 		// Process dependencies and load into player
 		await processSequenceDependencies();
+
+		// Set flag to show player (player will handle initialization and playback)
 		isPlayingInBrowser = true;
 	}
 
@@ -222,23 +224,10 @@
 			}
 
 			processedSequenceContent = processed;
-
-			// Initialize player if not ready
-			console.log('Player isReady:', synapseqPlayer.isReady);
-			if (!synapseqPlayer.isReady) {
-				console.log('Initializing player...');
-				await synapseqPlayer.initialize();
-				console.log('Player initialized, isReady:', synapseqPlayer.isReady);
-			}
-
-			// Load into player (spsq format is text-based)
-			console.log('Loading sequence into player...');
-			await synapseqPlayer.loadSequence(processedSequenceContent, 'text');
-			console.log('Sequence loaded successfully');
 		} catch (error) {
-			console.error('Failed to process and load sequence:', error);
+			console.error('Failed to process sequence:', error);
 			alert(
-				'Failed to load sequence: ' + (error instanceof Error ? error.message : 'Unknown error')
+				'Failed to process sequence: ' + (error instanceof Error ? error.message : 'Unknown error')
 			);
 		}
 	}
@@ -288,154 +277,169 @@
 						</div>
 					</button>
 				</div>
-			{:else}
-				<div class="player-section">
-					<SynapSeqPlayer showControls={true} />
-					<button class="close-player-button" onclick={closePlayer}> Close Player </button>
-				</div>
 			{/if}
 		</div>
 
-		<!-- Main Content Card -->
-		<div class="content-card">
-			<!-- CLI Command Section -->
-			<div class="cli-section">
-				<h3 class="section-title">Run via CLI</h3>
-				<p class="section-subtitle">
-					Choose one of the following commands (requires SynapSeq v3.5+):
-				</p>
+		{#if !isPlayingInBrowser}
+			<!-- Main Content Card -->
+			<div class="content-card">
+				<!-- CLI Command Section -->
+				<div class="cli-section">
+					<h3 class="section-title">Run via CLI</h3>
+					<p class="section-subtitle">
+						Choose one of the following commands (requires SynapSeq v3.5+):
+					</p>
 
-				<div class="cli-commands-grid">
-					<!-- Play Command -->
-					<div class="cli-command-item">
-						<h4 class="command-title">Play Sequence</h4>
-						<div class="cli-command-wrapper">
-							<code class="cli-command">{playCommand}</code>
-							<button class="copy-button" onclick={copyPlayCommand}>
-								<div class="icon">
-									<Copy size={16} />
-								</div>
-								<span>{copyPlayButtonText}</span>
-							</button>
-						</div>
-					</div>
-
-					<!-- WAV Export Command -->
-					<div class="cli-command-item">
-						<h4 class="command-title">Export to WAV</h4>
-						<div class="cli-command-wrapper">
-							<code class="cli-command">{wavCommand}</code>
-							<button class="copy-button" onclick={copyWavCommand}>
-								<div class="icon">
-									<Copy size={16} />
-								</div>
-								<span>{copyWavButtonText}</span>
-							</button>
-						</div>
-					</div>
-
-					<!-- MP3 Export Command -->
-					<div class="cli-command-item">
-						<h4 class="command-title">Export to MP3</h4>
-						<div class="cli-command-wrapper">
-							<code class="cli-command">{mp3Command}</code>
-							<button class="copy-button" onclick={copyMp3Command}>
-								<div class="icon">
-									<Copy size={16} />
-								</div>
-								<span>{copyMp3ButtonText}</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<!-- OR Divider -->
-				<div class="or-divider">
-					<span class="or-text">OR</span>
-				</div>
-
-				<!-- Download Ghost Button -->
-				<button class="download-ghost-button" onclick={handleDownloadClick}>
-					<Download size={18} strokeWidth={2} />
-					<span>Download sequence in .spsq</span>
-				</button>
-			</div>
-
-			<!-- Description Section -->
-			{#if description}
-				<div class="section-divider"></div>
-				<div class="description-section">
-					<h3 class="section-title">Description</h3>
-					<div
-						class="description-content"
-						class:collapsed={!descriptionExpanded && shouldShowReadMore}
-					>
-						{@html formattedDescription}
-					</div>
-					{#if shouldShowReadMore}
-						<button class="read-more-button" onclick={toggleDescription}>
-							{descriptionExpanded ? 'Read less' : 'Read more'}
-						</button>
-					{/if}
-				</div>
-			{/if}
-
-			<!-- Dependencies Section -->
-			{#if sequence.dependencies && sequence.dependencies.length > 0}
-				<div class="section-divider"></div>
-				<div class="collapsible-section">
-					<button class="section-toggle" onclick={toggleDependencies}>
-						<h3 class="section-title">Dependencies</h3>
-						<div class="icon chevron" class:expanded={dependenciesExpanded}>
-							<ChevronDown size={20} />
-						</div>
-					</button>
-					{#if dependenciesExpanded}
-						<div class="section-content">
-							<div class="dependencies-list">
-								{#each sequence.dependencies as dep}
-									<div class="dependency-item">
-										<span class="dependency-type">{dep.type}</span>
-										<a
-											href={dep.download_url}
-											class="dependency-name"
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											{dep.name}
-										</a>
+					<div class="cli-commands-grid">
+						<!-- Play Command -->
+						<div class="cli-command-item">
+							<h4 class="command-title">Play Sequence</h4>
+							<div class="cli-command-wrapper">
+								<code class="cli-command">{playCommand}</code>
+								<button class="copy-button" onclick={copyPlayCommand}>
+									<div class="icon">
+										<Copy size={16} />
 									</div>
-								{/each}
+									<span>{copyPlayButtonText}</span>
+								</button>
 							</div>
 						</div>
-					{/if}
-				</div>
-			{/if}
 
-			<!-- Source Code Section -->
-			<div class="section-divider"></div>
-			<div class="collapsible-section">
-				<button class="section-toggle" onclick={toggleSourceCode}>
-					<h3 class="section-title">Source Code</h3>
-					<div class="icon chevron" class:expanded={sourceCodeExpanded}>
-						<ChevronDown size={20} />
+						<!-- WAV Export Command -->
+						<div class="cli-command-item">
+							<h4 class="command-title">Export to WAV</h4>
+							<div class="cli-command-wrapper">
+								<code class="cli-command">{wavCommand}</code>
+								<button class="copy-button" onclick={copyWavCommand}>
+									<div class="icon">
+										<Copy size={16} />
+									</div>
+									<span>{copyWavButtonText}</span>
+								</button>
+							</div>
+						</div>
+
+						<!-- MP3 Export Command -->
+						<div class="cli-command-item">
+							<h4 class="command-title">Export to MP3</h4>
+							<div class="cli-command-wrapper">
+								<code class="cli-command">{mp3Command}</code>
+								<button class="copy-button" onclick={copyMp3Command}>
+									<div class="icon">
+										<Copy size={16} />
+									</div>
+									<span>{copyMp3ButtonText}</span>
+								</button>
+							</div>
+						</div>
 					</div>
-				</button>
-				{#if sourceCodeExpanded}
-					<div class="section-content">
-						{#if isLoadingSource}
-							<div class="loading-source">Loading source code...</div>
-						{:else}
-							<pre class="source-code">{codeWithoutDescription}</pre>
+
+					<!-- OR Divider -->
+					<div class="or-divider">
+						<span class="or-text">OR</span>
+					</div>
+
+					<!-- Download Ghost Button -->
+					<button class="download-ghost-button" onclick={handleDownloadClick}>
+						<Download size={18} strokeWidth={2} />
+						<span>Download sequence in .spsq</span>
+					</button>
+				</div>
+
+				<!-- Description Section -->
+				{#if description}
+					<div class="section-divider"></div>
+					<div class="description-section">
+						<h3 class="section-title">Description</h3>
+						<div
+							class="description-content"
+							class:collapsed={!descriptionExpanded && shouldShowReadMore}
+						>
+							{@html formattedDescription}
+						</div>
+						{#if shouldShowReadMore}
+							<button class="read-more-button" onclick={toggleDescription}>
+								{descriptionExpanded ? 'Read less' : 'Read more'}
+							</button>
 						{/if}
 					</div>
 				{/if}
+
+				<!-- Dependencies Section -->
+				{#if sequence.dependencies && sequence.dependencies.length > 0}
+					<div class="section-divider"></div>
+					<div class="collapsible-section">
+						<button class="section-toggle" onclick={toggleDependencies}>
+							<h3 class="section-title">Dependencies</h3>
+							<div class="icon chevron" class:expanded={dependenciesExpanded}>
+								<ChevronDown size={20} />
+							</div>
+						</button>
+						{#if dependenciesExpanded}
+							<div class="section-content">
+								<div class="dependencies-list">
+									{#each sequence.dependencies as dep}
+										<div class="dependency-item">
+											<span class="dependency-type">{dep.type}</span>
+											<a
+												href={dep.download_url}
+												class="dependency-name"
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												{dep.name}
+											</a>
+										</div>
+									{/each}
+								</div>
+							</div>
+						{/if}
+					</div>
+				{/if}
+
+				<!-- Source Code Section -->
+				<div class="section-divider"></div>
+				<div class="collapsible-section">
+					<button class="section-toggle" onclick={toggleSourceCode}>
+						<h3 class="section-title">Source Code</h3>
+						<div class="icon chevron" class:expanded={sourceCodeExpanded}>
+							<ChevronDown size={20} />
+						</div>
+					</button>
+					{#if sourceCodeExpanded}
+						<div class="section-content">
+							{#if isLoadingSource}
+								<div class="loading-source">Loading source code...</div>
+							{:else}
+								<pre class="source-code">{codeWithoutDescription}</pre>
+							{/if}
+						</div>
+					{/if}
+				</div>
 			</div>
-		</div>
+		{/if}
 	{/if}
 </div>
 
 <DownloadModal {sequence} bind:isOpen={isDownloadModalOpen} />
+
+<!-- Fullscreen Player -->
+{#if isPlayingInBrowser}
+	<SynapSeqPlayer
+		sequenceContent={processedSequenceContent}
+		sequenceName={sequence.name}
+		onClose={closePlayer}
+	/>
+{/if}
+
+<!-- Fullscreen Player -->
+{#if isPlayingInBrowser}
+	<SynapSeqPlayer
+		sequenceContent={processedSequenceContent}
+		sequenceName={sequence.name}
+		onClose={closePlayer}
+	/>
+{/if}
 
 <style>
 	.sequence-viewer {
@@ -1133,55 +1137,5 @@
 		.sequence-title {
 			font-size: 1.75rem;
 		}
-	}
-
-	/* Player Section */
-	.player-section {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		padding: 1rem;
-		background: linear-gradient(135deg, rgb(249 250 251), rgb(243 244 246));
-		border-radius: 1rem;
-		border: 1px solid rgb(229 231 235);
-	}
-
-	:global(.dark) .player-section {
-		background: linear-gradient(135deg, rgb(31 41 55), rgb(17 24 39));
-		border-color: rgb(55 65 81);
-	}
-
-	.close-player-button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.75rem 1.5rem;
-		background: white;
-		border: 1px solid rgb(229 231 235);
-		border-radius: 0.75rem;
-		color: rgb(107 114 128);
-		font-size: 0.875rem;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-
-	.close-player-button:hover {
-		background: rgb(249 250 251);
-		border-color: rgb(209 213 219);
-		color: rgb(55 65 81);
-	}
-
-	:global(.dark) .close-player-button {
-		background: rgb(55 65 81);
-		border-color: rgb(75 85 99);
-		color: rgb(209 213 219);
-	}
-
-	:global(.dark) .close-player-button:hover {
-		background: rgb(75 85 99);
-		border-color: rgb(107 114 128);
-		color: rgb(243 244 246);
 	}
 </style>

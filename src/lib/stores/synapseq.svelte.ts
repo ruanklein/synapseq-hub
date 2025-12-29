@@ -12,75 +12,51 @@ class SynapSeqPlayer {
 	version = $state<string>('');
 
 	private timeInterval: number | null = null;
-
-	private loadScript(src: string): Promise<void> {
-		return new Promise((resolve, reject) => {
-			// Check if script is already loaded
-			const existing = document.querySelector(`script[src="${src}"]`);
-			if (existing) {
-				resolve();
-				return;
-			}
-
-			const script = document.createElement('script');
-			script.src = src;
-			script.onload = () => resolve();
-			script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-			document.head.appendChild(script);
-		});
-	}
+	private initializationPromise: Promise<void> | null = null;
 
 	async initialize() {
 		if (typeof window === 'undefined') return;
 
-		try {
-			console.log('Starting SynapSeq initialization...');
+		// If already ready, just return
+		if (this.isReady) {
+			return;
+		}
 
-			// Test if WASM files are accessible
+		if (this.initializationPromise) {
+			await this.initializationPromise;
+			return;
+		}
+
+		// Start new initialization
+		this.initializationPromise = this._initialize();
+
+		try {
+			await this.initializationPromise;
+		} finally {
+			this.initializationPromise = null;
+		}
+	}
+
+	private async _initialize() {
+		try {
 			const wasmUrl = `${window.location.origin}/wasm/synapseq.wasm`;
 			const wasmExecUrl = `${window.location.origin}/wasm/wasm_exec.js`;
-			const jsUrl = `${window.location.origin}/wasm/synapseq.js`;
 
-			console.log('Testing WASM file access...');
-			console.log('WASM URL:', wasmUrl);
-			console.log('WASM Exec URL:', wasmExecUrl);
-			console.log('JS URL:', jsUrl);
-
-			// Test if files exist
-			try {
-				const testWasm = await fetch(wasmUrl, { method: 'HEAD' });
-				const testExec = await fetch(wasmExecUrl, { method: 'HEAD' });
-				console.log('WASM file status:', testWasm.status, testWasm.ok);
-				console.log('WASM Exec file status:', testExec.status, testExec.ok);
-
-				if (!testWasm.ok || !testExec.ok) {
-					throw new Error('WASM files not accessible');
-				}
-			} catch (err) {
-				console.error('Failed to access WASM files:', err);
-				throw new Error('Cannot access WASM files. Make sure they are in the /wasm/ directory.');
-			}
-
-			// Load the SynapSeq script dynamically
-			await this.loadScript(jsUrl);
-
-			// Access the global SynapSeq constructor
 			const SynapSeq = (window as any).SynapSeq;
 
 			if (!SynapSeq) {
 				throw new Error('SynapSeq constructor not found on window object');
 			}
 
-			console.log('SynapSeq constructor loaded:', SynapSeq);
-
 			this.instance = new SynapSeq({
 				wasmPath: wasmUrl,
 				wasmExecPath: wasmExecUrl
 			});
 
-			console.log('SynapSeq instance created:', this.instance);
+			if (!this.instance) {
+				throw new Error('Failed to create SynapSeq instance');
+			}
 
-			// Setup event handlers BEFORE waiting for ready
 			this.instance.onloaded = () => {
 				this.state = 'idle';
 			};
@@ -110,21 +86,13 @@ class SynapSeqPlayer {
 				this.stopTimeTracking();
 			};
 
-			// Wait for WASM to be ready with polling and timeout
-			console.log('Waiting for WASM to be ready...');
-			const startTime = Date.now();
-			const timeout = 30000; // 30 seconds
-
+			// Wait for WASM to be ready using the library's isReady() method
 			while (!this.instance.isReady()) {
-				if (Date.now() - startTime > timeout) {
-					throw new Error('Timeout waiting for WASM to initialize');
-				}
 				await new Promise((resolve) => setTimeout(resolve, 100));
 			}
 
 			this.isReady = true;
 			this.version = await this.instance.getVersion();
-			console.log('SynapSeq initialized successfully. Version:', this.version);
 		} catch (err) {
 			console.error('Failed to initialize SynapSeq:', err);
 			this.error = err instanceof Error ? err.message : 'Failed to initialize SynapSeq';
@@ -170,12 +138,31 @@ class SynapSeqPlayer {
 			throw new Error('SynapSeq not initialized');
 		}
 
+		// Ensure any previous playback is fully stopped
+		this.stop();
+
+		// Give time for stop to complete
+		await new Promise((resolve) => setTimeout(resolve, 100));
+
 		try {
 			await this.instance.play();
+			// Clear any previous errors if play succeeded
+			this.error = null;
 		} catch (err) {
-			this.error = err instanceof Error ? err.message : 'Failed to play';
-			this.state = 'error';
-			throw err;
+			const errorMessage = err instanceof Error ? err.message : 'Failed to play';
+
+			// Wait a bit to check if playback actually started despite the error
+			await new Promise((resolve) => setTimeout(resolve, 300));
+
+			// Only set error state if we're not already playing
+			// This handles the case where the error is thrown but playback actually started
+			if (this.state !== 'playing') {
+				this.error = errorMessage;
+				this.state = 'error';
+				console.error('Play failed:', errorMessage);
+				throw err;
+			}
+			// If playing, silently ignore the error since audio is working
 		}
 	}
 
@@ -209,6 +196,14 @@ class SynapSeqPlayer {
 			this.instance = null;
 		}
 		this.isReady = false;
+		this.initializationPromise = null;
+	}
+
+	// Reset method to clear instance and force re-initialization
+	reset() {
+		this.destroy();
+		this.error = null;
+		this.state = 'idle';
 	}
 }
 
