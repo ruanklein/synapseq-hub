@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { ArrowLeft, Copy, ChevronDown, Play, Download } from 'lucide-svelte';
-	import type { ManifestEntry } from '$lib/types';
+	import type { ManifestEntry, Dependency } from '$lib/types';
 	import DownloadModal from './DownloadModal.svelte';
+	import SynapSeqPlayer from './SynapSeqPlayer.svelte';
+	import { synapseqPlayer } from '$lib/stores/synapseq.svelte';
 
 	let {
 		sequence,
@@ -23,6 +25,8 @@
 	let copyWavButtonText = $state('Copy');
 	let copyMp3ButtonText = $state('Copy');
 	let isDownloadModalOpen = $state(false);
+	let isPlayingInBrowser = $state(false);
+	let processedSequenceContent = $state<string>('');
 
 	const playCommand = $derived(`synapseq -play -hub-get ${sequence.id}`);
 	const wavCommand = $derived(`synapseq -hub-get ${sequence.id}`);
@@ -157,7 +161,7 @@
 	}
 
 	// Track play action
-	function playBrowser(id: string) {
+	async function playBrowser(id: string) {
 		const controller = new AbortController();
 		const timeout = setTimeout(() => controller.abort(), 3000);
 
@@ -194,7 +198,54 @@
 				clearTimeout(timeout);
 			});
 
-		window.open(`https://synapseq.ruan.sh/?id=${id}`, '_blank');
+		// Process dependencies and load into player
+		await processSequenceDependencies();
+		isPlayingInBrowser = true;
+	}
+
+	// Process sequence dependencies: replace @presetlist and @background with URLs
+	async function processSequenceDependencies() {
+		try {
+			let processed = codeWithoutDescription;
+
+			// Process each dependency
+			for (const dep of sequence.dependencies) {
+				if (dep.type === 'presetlist') {
+					// Replace @presetlist <filename>.spsq with @presetlist <url>
+					const regex = new RegExp(`@presetlist\\s+${dep.name}\\.spsq`, 'g');
+					processed = processed.replace(regex, `@presetlist ${dep.download_url}`);
+				} else if (dep.type === 'background') {
+					// Replace @background <filename>.wav with @background <url>
+					const regex = new RegExp(`@background\\s+${dep.name}\\.wav`, 'g');
+					processed = processed.replace(regex, `@background ${dep.download_url}`);
+				}
+			}
+
+			processedSequenceContent = processed;
+
+			// Initialize player if not ready
+			console.log('Player isReady:', synapseqPlayer.isReady);
+			if (!synapseqPlayer.isReady) {
+				console.log('Initializing player...');
+				await synapseqPlayer.initialize();
+				console.log('Player initialized, isReady:', synapseqPlayer.isReady);
+			}
+
+			// Load into player (spsq format is text-based)
+			console.log('Loading sequence into player...');
+			await synapseqPlayer.loadSequence(processedSequenceContent, 'text');
+			console.log('Sequence loaded successfully');
+		} catch (error) {
+			console.error('Failed to process and load sequence:', error);
+			alert(
+				'Failed to load sequence: ' + (error instanceof Error ? error.message : 'Unknown error')
+			);
+		}
+	}
+
+	function closePlayer() {
+		synapseqPlayer.stop();
+		isPlayingInBrowser = false;
 	}
 </script>
 
@@ -225,17 +276,24 @@
 			</div>
 
 			<!-- Primary CTA Section -->
-			<div class="cta-section">
-				<button class="play-button-primary" onclick={() => playBrowser(sequence.id)}>
-					<div class="play-icon-wrapper">
-						<Play size={24} strokeWidth={2.5} fill="currentColor" />
-					</div>
-					<div class="play-text">
-						<span class="play-label">Play in Browser</span>
-						<span class="play-subtitle">Experience instantly in the Playground</span>
-					</div>
-				</button>
-			</div>
+			{#if !isPlayingInBrowser}
+				<div class="cta-section">
+					<button class="play-button-primary" onclick={() => playBrowser(sequence.id)}>
+						<div class="play-icon-wrapper">
+							<Play size={24} strokeWidth={2.5} fill="currentColor" />
+						</div>
+						<div class="play-text">
+							<span class="play-label">Play in Browser</span>
+							<span class="play-subtitle">Experience instantly in the Playground</span>
+						</div>
+					</button>
+				</div>
+			{:else}
+				<div class="player-section">
+					<SynapSeqPlayer showControls={true} />
+					<button class="close-player-button" onclick={closePlayer}> Close Player </button>
+				</div>
+			{/if}
 		</div>
 
 		<!-- Main Content Card -->
@@ -1075,5 +1133,55 @@
 		.sequence-title {
 			font-size: 1.75rem;
 		}
+	}
+
+	/* Player Section */
+	.player-section {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding: 1rem;
+		background: linear-gradient(135deg, rgb(249 250 251), rgb(243 244 246));
+		border-radius: 1rem;
+		border: 1px solid rgb(229 231 235);
+	}
+
+	:global(.dark) .player-section {
+		background: linear-gradient(135deg, rgb(31 41 55), rgb(17 24 39));
+		border-color: rgb(55 65 81);
+	}
+
+	.close-player-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.75rem 1.5rem;
+		background: white;
+		border: 1px solid rgb(229 231 235);
+		border-radius: 0.75rem;
+		color: rgb(107 114 128);
+		font-size: 0.875rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.close-player-button:hover {
+		background: rgb(249 250 251);
+		border-color: rgb(209 213 219);
+		color: rgb(55 65 81);
+	}
+
+	:global(.dark) .close-player-button {
+		background: rgb(55 65 81);
+		border-color: rgb(75 85 99);
+		color: rgb(209 213 219);
+	}
+
+	:global(.dark) .close-player-button:hover {
+		background: rgb(75 85 99);
+		border-color: rgb(107 114 128);
+		color: rgb(243 244 246);
 	}
 </style>
