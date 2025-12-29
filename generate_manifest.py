@@ -15,7 +15,7 @@ from datetime import datetime, UTC
 RAW_BASE = f"https://synapseq-hub.ruan.sh"
 
 # Package directory
-PACKAGES_DIR = "packages"
+PACKAGES_DIR = "static/packages"
 
 # Manifest configuration
 MANIFEST_FILE = "manifest.json"
@@ -207,6 +207,8 @@ def walk_files():
         
         filepath = os.path.join(PACKAGES_DIR, file)
         relpath = os.path.relpath(filepath)
+        # Remove 'static/' prefix from path since it's the root in production
+        relpath = relpath.replace('static/', '', 1)
         validate_file_size(filepath)
 
         id = get_id(file)
@@ -268,10 +270,10 @@ def main():
         "entries": entries
     }
 
-    with open(f"static/{MANIFEST_FILE}", "w", encoding="utf-8") as f:
+    with open(f"src/lib/data/{MANIFEST_FILE}", "w", encoding="utf-8") as f:
         json.dump(manifest_data, f, ensure_ascii=False, indent=2)
 
-    print(f"Manifest built successfully with {len(entries)} entries -> static/{MANIFEST_FILE}")
+    print(f"Manifest built successfully with {len(entries)} entries -> src/lib/data/{MANIFEST_FILE}")
     print(f"   Version: {manifest_data['version']} | Updated: {manifest_data['lastUpdated']}")
 
 
