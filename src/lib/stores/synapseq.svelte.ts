@@ -40,19 +40,19 @@ class SynapSeqPlayer {
 			const wasmUrl = `${window.location.origin}/wasm/synapseq.wasm`;
 			const wasmExecUrl = `${window.location.origin}/wasm/wasm_exec.js`;
 			const jsUrl = `${window.location.origin}/wasm/synapseq.js`;
-			
+
 			console.log('Testing WASM file access...');
 			console.log('WASM URL:', wasmUrl);
 			console.log('WASM Exec URL:', wasmExecUrl);
 			console.log('JS URL:', jsUrl);
-			
+
 			// Test if files exist
 			try {
 				const testWasm = await fetch(wasmUrl, { method: 'HEAD' });
 				const testExec = await fetch(wasmExecUrl, { method: 'HEAD' });
 				console.log('WASM file status:', testWasm.status, testWasm.ok);
 				console.log('WASM Exec file status:', testExec.status, testExec.ok);
-				
+
 				if (!testWasm.ok || !testExec.ok) {
 					throw new Error('WASM files not accessible');
 				}
@@ -60,13 +60,13 @@ class SynapSeqPlayer {
 				console.error('Failed to access WASM files:', err);
 				throw new Error('Cannot access WASM files. Make sure they are in the /wasm/ directory.');
 			}
-			
+
 			// Load the SynapSeq script dynamically
 			await this.loadScript(jsUrl);
-			
+
 			// Access the global SynapSeq constructor
 			const SynapSeq = (window as any).SynapSeq;
-			
+
 			if (!SynapSeq) {
 				throw new Error('SynapSeq constructor not found on window object');
 			}
