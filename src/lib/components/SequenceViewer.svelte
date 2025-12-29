@@ -162,41 +162,46 @@
 
 	// Track play action
 	async function playBrowser(id: string) {
-		const controller = new AbortController();
-		const timeout = setTimeout(() => controller.abort(), 3000);
+		// Only track in production
+		const isDevelopment = import.meta.env.MODE === 'development';
 
-		fetch('https://us-central1-synapseq-hub.cloudfunctions.net/trackDownload', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-SYNAPSEQ-SOURCE': 'WEB',
-				'X-SYNAPSEQ-ACTION': 'PLAY'
-			},
-			body: JSON.stringify({ id }),
-			signal: controller.signal
-		})
-			.then(async (res) => {
-				if (!res.ok) {
-					console.warn(`Tracking failed: HTTP ${res.status}`);
-					return;
-				}
+		if (!isDevelopment) {
+			const controller = new AbortController();
+			const timeout = setTimeout(() => controller.abort(), 3000);
 
-				res.json().then((data) => {
-					if (!data.success) {
-						console.warn('Tracking returned non-success:', data);
+			fetch('https://us-central1-synapseq-hub.cloudfunctions.net/trackDownload', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-SYNAPSEQ-SOURCE': 'WEB',
+					'X-SYNAPSEQ-ACTION': 'PLAY'
+				},
+				body: JSON.stringify({ id }),
+				signal: controller.signal
+			})
+				.then(async (res) => {
+					if (!res.ok) {
+						console.warn(`Tracking failed: HTTP ${res.status}`);
+						return;
 					}
+
+					res.json().then((data) => {
+						if (!data.success) {
+							console.warn('Tracking returned non-success:', data);
+						}
+					});
+				})
+				.catch((err) => {
+					if (err.name === 'AbortError') {
+						console.warn('Tracking request timed out');
+					} else {
+						console.error('Tracking request failed:', err);
+					}
+				})
+				.finally(() => {
+					clearTimeout(timeout);
 				});
-			})
-			.catch((err) => {
-				if (err.name === 'AbortError') {
-					console.warn('Tracking request timed out');
-				} else {
-					console.error('Tracking request failed:', err);
-				}
-			})
-			.finally(() => {
-				clearTimeout(timeout);
-			});
+		}
 
 		// Process dependencies and load into player
 		await processSequenceDependencies();
