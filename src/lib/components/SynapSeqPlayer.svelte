@@ -16,7 +16,6 @@
 	let mounted = $state(false);
 
 	onMount(async () => {
-		// Player já foi inicializado pelo SequenceViewer, apenas marca como montado
 		mounted = true;
 
 		if (autoLoad && sequenceUrl) {
@@ -25,7 +24,6 @@
 	});
 
 	onDestroy(() => {
-		// Não destruir o player aqui, ele será gerenciado pelo store
 		// synapseqPlayer.destroy();
 	});
 
@@ -35,7 +33,6 @@
 	}
 
 	async function handlePlay() {
-		// Se há URL e não está carregado, carrega primeiro
 		if (sequenceUrl && synapseqPlayer.state === 'idle' && !synapseqPlayer.instance?.isLoaded()) {
 			await loadSequence();
 		}
