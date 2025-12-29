@@ -277,8 +277,8 @@
 							<Play size={24} strokeWidth={2.5} fill="currentColor" />
 						</div>
 						<div class="play-text">
-							<span class="play-label">Play in Browser</span>
-							<span class="play-subtitle">Experience instantly in the Playground</span>
+							<span class="play-label">Listen Now</span>
+							<span class="play-subtitle">Stream instantly in your browser</span>
 						</div>
 					</button>
 				</div>
