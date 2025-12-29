@@ -138,6 +138,29 @@
 	const progress = $derived(
 		totalDuration > 0 ? (synapseqPlayer.currentTime / totalDuration) * 100 : 0
 	);
+
+	// Watch for state changes and auto-close when playback ends
+	let previousState = $state<string>('');
+
+	$effect(() => {
+		const currentState = synapseqPlayer.state;
+
+		// Detect when state changes from 'playing' to 'stopped' or 'idle' (playback ended)
+		if (
+			previousState === 'playing' &&
+			(currentState === 'stopped' || currentState === 'idle') &&
+			mounted
+		) {
+			// Audio finished playing, close the player after a brief moment
+			setTimeout(() => {
+				if (onClose) {
+					onClose();
+				}
+			}, 500);
+		}
+
+		previousState = currentState;
+	});
 </script>
 
 {#if !mounted}
