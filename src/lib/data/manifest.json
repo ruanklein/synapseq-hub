@@ -1,7 +1,39 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-12-29T00:24:47Z",
+  "lastUpdated": "2025-12-29T00:39:26Z",
   "entries": [
+    {
+      "id": "ruan.relaxation.calm-state",
+      "name": "calm-state",
+      "author": "ruan",
+      "path": "packages/relaxation-ruan-calm-state.spsq",
+      "category": "relaxation",
+      "download_url": "https://synapseq-hub.ruan.sh/packages/relaxation-ruan-calm-state.spsq",
+      "updated_at": "2025-12-28T21:39:16-03:00",
+      "dependencies": [
+        {
+          "type": "background",
+          "name": "freesound-163612",
+          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-163612.wav"
+        }
+      ]
+    },
+    {
+      "id": "ruan.meditation.quiet-descent",
+      "name": "quiet-descent",
+      "author": "ruan",
+      "path": "packages/meditation-ruan-quiet-descent.spsq",
+      "category": "meditation",
+      "download_url": "https://synapseq-hub.ruan.sh/packages/meditation-ruan-quiet-descent.spsq",
+      "updated_at": "2025-12-28T21:38:32-03:00",
+      "dependencies": [
+        {
+          "type": "background",
+          "name": "freesound-611626",
+          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-611626.wav"
+        }
+      ]
+    },
     {
       "id": "ruan.focus.alert-flow",
       "name": "alert-flow",
@@ -9,12 +41,28 @@
       "path": "packages/focus-ruan-alert-flow.spsq",
       "category": "focus",
       "download_url": "https://synapseq-hub.ruan.sh/packages/focus-ruan-alert-flow.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:38:05-03:00",
       "dependencies": [
         {
           "type": "background",
           "name": "freesound-620005",
           "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-620005.wav"
+        }
+      ]
+    },
+    {
+      "id": "ruan.relaxation.neutral-relax",
+      "name": "neutral-relax",
+      "author": "ruan",
+      "path": "packages/relaxation-ruan-neutral-relax.spsq",
+      "category": "relaxation",
+      "download_url": "https://synapseq-hub.ruan.sh/packages/relaxation-ruan-neutral-relax.spsq",
+      "updated_at": "2025-12-28T21:37:05-03:00",
+      "dependencies": [
+        {
+          "type": "background",
+          "name": "freesound-697608",
+          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-697608.wav"
         }
       ]
     },
@@ -25,7 +73,7 @@
       "path": "packages/samples-synapseq-background-pulse.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-background-pulse.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "background",
@@ -41,7 +89,7 @@
       "path": "packages/samples-synapseq-background-spin.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-background-spin.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "background",
@@ -57,24 +105,8 @@
       "path": "packages/samples-synapseq-binaural.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-binaural.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
-    },
-    {
-      "id": "ruan.relaxation.calm-state",
-      "name": "calm-state",
-      "author": "ruan",
-      "path": "packages/relaxation-ruan-calm-state.spsq",
-      "category": "relaxation",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/relaxation-ruan-calm-state.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
-      "dependencies": [
-        {
-          "type": "background",
-          "name": "freesound-163612",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-163612.wav"
-        }
-      ]
     },
     {
       "id": "synapseq.samples.focus-one",
@@ -83,7 +115,7 @@
       "path": "packages/samples-synapseq-focus-one.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-focus-one.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
@@ -99,7 +131,7 @@
       "path": "packages/samples-synapseq-focus-two.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-focus-two.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
@@ -115,7 +147,7 @@
       "path": "packages/samples-synapseq-genesis.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-genesis.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
@@ -136,7 +168,7 @@
       "path": "packages/samples-synapseq-isochronic.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-isochronic.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
     {
@@ -146,7 +178,7 @@
       "path": "packages/samples-synapseq-ladder.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-ladder.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
     {
@@ -156,24 +188,8 @@
       "path": "packages/samples-synapseq-monaural.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-monaural.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
-    },
-    {
-      "id": "ruan.relaxation.neutral-relax",
-      "name": "neutral-relax",
-      "author": "ruan",
-      "path": "packages/relaxation-ruan-neutral-relax.spsq",
-      "category": "relaxation",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/relaxation-ruan-neutral-relax.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
-      "dependencies": [
-        {
-          "type": "background",
-          "name": "freesound-697608",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-697608.wav"
-        }
-      ]
     },
     {
       "id": "synapseq.samples.noise",
@@ -182,24 +198,8 @@
       "path": "packages/samples-synapseq-noise.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-noise.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
-    },
-    {
-      "id": "ruan.meditation.quiet-descent",
-      "name": "quiet-descent",
-      "author": "ruan",
-      "path": "packages/meditation-ruan-quiet-descent.spsq",
-      "category": "meditation",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/meditation-ruan-quiet-descent.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
-      "dependencies": [
-        {
-          "type": "background",
-          "name": "freesound-611626",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-611626.wav"
-        }
-      ]
     },
     {
       "id": "synapseq.samples.relax-one",
@@ -208,7 +208,7 @@
       "path": "packages/samples-synapseq-relax-one.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-relax-one.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
@@ -224,7 +224,7 @@
       "path": "packages/samples-synapseq-relax-two.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-relax-two.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
@@ -240,7 +240,7 @@
       "path": "packages/samples-synapseq-test.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-test.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
     {
@@ -250,7 +250,7 @@
       "path": "packages/samples-synapseq-transitions.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-transitions.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
     {
@@ -260,7 +260,7 @@
       "path": "packages/samples-synapseq-waveform.spsq",
       "category": "samples",
       "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-waveform.spsq",
-      "updated_at": "2025-12-29T00:24:47Z",
+      "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     }
   ]
