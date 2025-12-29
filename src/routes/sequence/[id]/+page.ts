@@ -1,8 +1,14 @@
-import type { PageLoad } from './$types';
+import type { PageLoad, EntryGenerator } from './$types';
 import type { ManifestEntry } from '$lib/types';
+import manifest from '$lib/data/manifest.json';
 
-// Disable prerendering for this dynamic route
-export const prerender = false;
+export const prerender = true;
+
+export const entries: EntryGenerator = async () => {
+	return manifest.entries.map((entry) => ({
+		id: entry.id
+	}));
+};
 
 export const load: PageLoad = async ({ params, fetch }) => {
 	try {
