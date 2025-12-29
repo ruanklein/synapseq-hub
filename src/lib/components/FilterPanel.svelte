@@ -17,7 +17,7 @@
 <div class="space-y-3">
 	<button
 		onclick={togglePanel}
-		class="w-full flex items-center justify-between gap-2 px-4 py-3.5 border text-gray-700 dark:text-gray-200 rounded-lg transition-all duration-200 text-sm font-medium"
+		class="w-full flex items-center justify-between gap-2 px-4 py-3.5 border text-gray-700 dark:text-gray-200 rounded-lg transition-all duration-200 text-sm font-medium cursor-pointer"
 		class:bg-blue-50={isOpen}
 		class:bg-gray-50={!isOpen}
 		class:border-blue-300={isOpen}

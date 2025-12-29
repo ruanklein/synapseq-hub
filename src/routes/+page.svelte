@@ -288,7 +288,7 @@
 					</div>
 					<button
 						onclick={goToSequences}
-						class="group inline-flex items-center gap-2 px-6 py-3 text-blue-600 dark:text-cyan-400 hover:text-blue-700 dark:hover:text-cyan-300 font-bold text-lg transition-colors"
+						class="group inline-flex items-center gap-2 px-6 py-3 text-blue-600 dark:text-cyan-400 hover:text-blue-700 dark:hover:text-cyan-300 font-bold text-lg transition-colors cursor-pointer"
 					>
 						View All Sequences
 						<ArrowRight class="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -299,7 +299,7 @@
 					{#each lastSequences as sequence}
 						<button
 							onclick={() => goToSequence(sequence.id)}
-							class="group relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-cyan-500 p-8 hover:shadow-2xl transition-all duration-300 text-left overflow-hidden"
+							class="group relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-cyan-500 p-8 hover:shadow-2xl transition-all duration-300 text-left overflow-hidden cursor-pointer"
 						>
 							<!-- Gradient overlay on hover -->
 							<div

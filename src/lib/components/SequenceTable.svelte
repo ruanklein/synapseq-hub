@@ -37,7 +37,7 @@
 			{#each $filteredSequences as sequence}
 				<button
 					onclick={() => handleCardClick(sequence.id)}
-					class="sequence-card group relative bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl p-5 text-left hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-cyan-500/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+					class="sequence-card group relative bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl p-5 text-left hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-cyan-500/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer"
 				>
 					<!-- Gradient overlay on hover -->
 					<div
