@@ -77,6 +77,12 @@
 	}
 
 	async function trackDownload(id: string) {
+		// Only track downloads in production
+		if (import.meta.env.DEV) {
+			console.log('[DEV] Download tracking skipped for:', id);
+			return;
+		}
+
 		const controller = new AbortController();
 		const timeout = setTimeout(() => controller.abort(), 3000);
 
@@ -278,13 +284,70 @@
 				<div class="step">
 					<span class="step-number">3</span>
 					<div class="step-content">
-						<p><strong>Generate the WAV file:</strong></p>
+						<p><strong>Use SynapSeq 3.5+:</strong></p>
+
+						<p class="step-label">Play audio directly:</p>
+						<div class="code-wrapper">
+							<code>synapseq -play {sequenceName}.spsq</code>
+							<button
+								class="copy-code-btn"
+								onclick={(e) => copyCode(`synapseq -play ${sequenceName}.spsq`, e)}
+								aria-label="Copy play command"
+							>
+								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+									<rect
+										x="4"
+										y="4"
+										width="8"
+										height="10"
+										rx="1"
+										stroke="currentColor"
+										stroke-width="1.5"
+									/>
+									<path
+										d="M12 4V2.5C12 1.67 11.33 1 10.5 1H5.5C4.67 1 4 1.67 4 2.5V4"
+										stroke="currentColor"
+										stroke-width="1.5"
+									/>
+								</svg>
+							</button>
+						</div>
+
+						<p class="step-label">Or generate WAV file:</p>
 						<div class="code-wrapper">
 							<code>{generateCommand}</code>
 							<button
 								class="copy-code-btn"
 								onclick={(e) => copyCode(generateCommand, e)}
-								aria-label="Copy generate command"
+								aria-label="Copy WAV command"
+							>
+								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+									<rect
+										x="4"
+										y="4"
+										width="8"
+										height="10"
+										rx="1"
+										stroke="currentColor"
+										stroke-width="1.5"
+									/>
+									<path
+										d="M12 4V2.5C12 1.67 11.33 1 10.5 1H5.5C4.67 1 4 1.67 4 2.5V4"
+										stroke="currentColor"
+										stroke-width="1.5"
+									/>
+								</svg>
+							</button>
+						</div>
+
+						<p class="step-label">Or generate MP3 file:</p>
+						<div class="code-wrapper">
+							<code>synapseq -mp3 {sequenceName}.spsq {sequenceName}.mp3</code>
+							<button
+								class="copy-code-btn"
+								onclick={(e) =>
+									copyCode(`synapseq -mp3 ${sequenceName}.spsq ${sequenceName}.mp3`, e)}
+								aria-label="Copy MP3 command"
 							>
 								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
 									<rect
