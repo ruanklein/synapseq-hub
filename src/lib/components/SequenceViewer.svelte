@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowLeft, Copy, ChevronDown, Play, Download } from 'lucide-svelte';
+	import { ArrowLeft, Copy, Play, Download, Terminal, Info, Package, Code } from 'lucide-svelte';
 	import type { ManifestEntry, Dependency } from '$lib/types';
 	import DownloadModal from './DownloadModal.svelte';
 	import SynapSeqPlayer from './SynapSeqPlayer.svelte';
@@ -13,9 +13,7 @@
 		onBack: () => void;
 	} = $props();
 
-	let descriptionExpanded = $state(false);
-	let dependenciesExpanded = $state(false);
-	let sourceCodeExpanded = $state(false);
+	let activeTab = $state<'cli' | 'description' | 'dependencies' | 'source'>('description');
 	let sourceCode = $state<string>('');
 	let description = $state<string>('');
 	let descriptionLines = $state<string[]>([]);
@@ -83,21 +81,6 @@
 		loadSourceCode();
 	});
 
-	function toggleSourceCode() {
-		sourceCodeExpanded = !sourceCodeExpanded;
-		if (sourceCodeExpanded) {
-			loadSourceCode();
-		}
-	}
-
-	function toggleDependencies() {
-		dependenciesExpanded = !dependenciesExpanded;
-	}
-
-	function toggleDescription() {
-		descriptionExpanded = !descriptionExpanded;
-	}
-
 	async function copyPlayCommand() {
 		try {
 			await navigator.clipboard.writeText(playCommand);
@@ -133,9 +116,6 @@
 			console.error('Failed to copy:', error);
 		}
 	}
-
-	// Check if description is long (more than 6 lines)
-	const shouldShowReadMore = $derived(descriptionLines.length > 6);
 
 	// Convert URLs in description to clickable links
 	function formatDescriptionWithLinks(text: string): string {
@@ -259,168 +239,144 @@
 	{:else}
 		<!-- Header Card -->
 		<div class="header-card">
-			<div class="header-content">
-				<div class="title-section">
-					<div class="metadata-top">
-						<span class="category-badge">{sequence.category}</span>
-						<span class="author">by {sequence.author}</span>
-					</div>
-					<h1 class="sequence-title">{sequence.name}</h1>
+			<div class="header-top">
+				<div class="metadata-top">
+					<span class="category-badge">{sequence.category}</span>
+					<span class="author">by {sequence.author}</span>
 				</div>
+				<h1 class="sequence-title">{sequence.name}</h1>
 			</div>
 
-			<!-- Primary CTA Section -->
+			<!-- Primary Actions -->
 			{#if !isPlayingInBrowser}
-				<div class="cta-section">
-					<button class="play-button-primary" onclick={() => playBrowser(sequence.id)}>
-						<div class="play-icon-wrapper">
-							<Play size={24} strokeWidth={2.5} fill="currentColor" />
-						</div>
-						<div class="play-text">
-							<span class="play-label">Listen Now</span>
-							<span class="play-subtitle">Stream instantly in your browser</span>
-						</div>
+				<div class="actions-grid">
+					<button class="action-button primary" onclick={() => playBrowser(sequence.id)}>
+						<Play size={20} strokeWidth={2.5} fill="currentColor" />
+						<span>Listen Now</span>
+					</button>
+					<button class="action-button secondary" onclick={handleDownloadClick}>
+						<Download size={20} strokeWidth={2} />
+						<span>Download .spsq</span>
 					</button>
 				</div>
 			{/if}
 		</div>
 
 		{#if !isPlayingInBrowser}
-			<!-- Main Content Card -->
-			<div class="content-card">
-				<!-- CLI Command Section -->
-				<div class="cli-section">
-					<h3 class="section-title">Run via CLI</h3>
-					<p class="section-subtitle">
-						Choose one of the following commands (requires SynapSeq v3.5+):
-					</p>
-
-					<div class="cli-commands-grid">
-						<!-- Play Command -->
-						<div class="cli-command-item">
-							<h4 class="command-title">Play Sequence</h4>
-							<div class="cli-command-wrapper">
-								<code class="cli-command">{playCommand}</code>
-								<button class="copy-button" onclick={copyPlayCommand}>
-									<div class="icon">
-										<Copy size={16} />
-									</div>
-									<span>{copyPlayButtonText}</span>
-								</button>
-							</div>
-						</div>
-
-						<!-- WAV Export Command -->
-						<div class="cli-command-item">
-							<h4 class="command-title">Export to WAV</h4>
-							<div class="cli-command-wrapper">
-								<code class="cli-command">{wavCommand}</code>
-								<button class="copy-button" onclick={copyWavCommand}>
-									<div class="icon">
-										<Copy size={16} />
-									</div>
-									<span>{copyWavButtonText}</span>
-								</button>
-							</div>
-						</div>
-
-						<!-- MP3 Export Command -->
-						<div class="cli-command-item">
-							<h4 class="command-title">Export to MP3</h4>
-							<div class="cli-command-wrapper">
-								<code class="cli-command">{mp3Command}</code>
-								<button class="copy-button" onclick={copyMp3Command}>
-									<div class="icon">
-										<Copy size={16} />
-									</div>
-									<span>{copyMp3ButtonText}</span>
-								</button>
-							</div>
-						</div>
-					</div>
-
-					<!-- OR Divider -->
-					<div class="or-divider">
-						<span class="or-text">OR</span>
-					</div>
-
-					<!-- Download Ghost Button -->
-					<button class="download-ghost-button" onclick={handleDownloadClick}>
-						<Download size={18} strokeWidth={2} />
-						<span>Download sequence in .spsq</span>
+			<!-- Tabs Navigation -->
+			<div class="tabs-container">
+				<div class="tabs">
+					<button
+						class="tab"
+						class:active={activeTab === 'description'}
+						onclick={() => (activeTab = 'description')}
+					>
+						<Info size={18} />
+						<span>About</span>
 					</button>
-				</div>
-
-				<!-- Description Section -->
-				{#if description}
-					<div class="section-divider"></div>
-					<div class="description-section">
-						<h3 class="section-title">Description</h3>
-						<div
-							class="description-content"
-							class:collapsed={!descriptionExpanded && shouldShowReadMore}
+					<button
+						class="tab"
+						class:active={activeTab === 'cli'}
+						onclick={() => (activeTab = 'cli')}
+					>
+						<Terminal size={18} />
+						<span>CLI</span>
+					</button>
+					{#if sequence.dependencies && sequence.dependencies.length > 0}
+						<button
+							class="tab"
+							class:active={activeTab === 'dependencies'}
+							onclick={() => (activeTab = 'dependencies')}
 						>
-							{@html formattedDescription}
-						</div>
-						{#if shouldShowReadMore}
-							<button class="read-more-button" onclick={toggleDescription}>
-								{descriptionExpanded ? 'Read less' : 'Read more'}
-							</button>
-						{/if}
-					</div>
-				{/if}
-
-				<!-- Dependencies Section -->
-				{#if sequence.dependencies && sequence.dependencies.length > 0}
-					<div class="section-divider"></div>
-					<div class="collapsible-section">
-						<button class="section-toggle" onclick={toggleDependencies}>
-							<h3 class="section-title">Dependencies</h3>
-							<div class="icon chevron" class:expanded={dependenciesExpanded}>
-								<ChevronDown size={20} />
-							</div>
+							<Package size={18} />
+							<span>Dependencies</span>
 						</button>
-						{#if dependenciesExpanded}
-							<div class="section-content">
-								<div class="dependencies-list">
-									{#each sequence.dependencies as dep}
-										<div class="dependency-item">
-											<span class="dependency-type">{dep.type}</span>
-											<a
-												href={dep.download_url}
-												class="dependency-name"
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												{dep.name}
-											</a>
-										</div>
-									{/each}
-								</div>
+					{/if}
+					<button
+						class="tab"
+						class:active={activeTab === 'source'}
+						onclick={() => (activeTab = 'source')}
+					>
+						<Code size={18} />
+						<span>Source</span>
+					</button>
+				</div>
+			</div>
+
+			<!-- Tab Content -->
+			<div class="tab-content">
+				{#if activeTab === 'description'}
+					<div class="description-tab">
+						{#if description}
+							<div class="description-text">
+								{@html formattedDescription}
 							</div>
+						{:else}
+							<p class="empty-state">No description available.</p>
 						{/if}
 					</div>
-				{/if}
+				{:else if activeTab === 'cli'}
+					<div class="cli-tab">
+						<p class="tab-intro">
+							Use these commands with SynapSeq v3.5+ to run or export the sequence:
+						</p>
 
-				<!-- Source Code Section -->
-				<div class="section-divider"></div>
-				<div class="collapsible-section">
-					<button class="section-toggle" onclick={toggleSourceCode}>
-						<h3 class="section-title">Source Code</h3>
-						<div class="icon chevron" class:expanded={sourceCodeExpanded}>
-							<ChevronDown size={20} />
+						<div class="cli-commands">
+							<div class="cli-item">
+								<div class="cli-header">
+									<h4>Play Sequence</h4>
+									<button class="copy-btn" onclick={copyPlayCommand}>
+										<Copy size={14} />
+										<span>{copyPlayButtonText}</span>
+									</button>
+								</div>
+								<code class="cli-code">{playCommand}</code>
+							</div>
+
+							<div class="cli-item">
+								<div class="cli-header">
+									<h4>Export to WAV</h4>
+									<button class="copy-btn" onclick={copyWavCommand}>
+										<Copy size={14} />
+										<span>{copyWavButtonText}</span>
+									</button>
+								</div>
+								<code class="cli-code">{wavCommand}</code>
+							</div>
+
+							<div class="cli-item">
+								<div class="cli-header">
+									<h4>Export to MP3</h4>
+									<button class="copy-btn" onclick={copyMp3Command}>
+										<Copy size={14} />
+										<span>{copyMp3ButtonText}</span>
+									</button>
+								</div>
+								<code class="cli-code">{mp3Command}</code>
+							</div>
 						</div>
-					</button>
-					{#if sourceCodeExpanded}
-						<div class="section-content">
-							{#if isLoadingSource}
-								<div class="loading-source">Loading source code...</div>
-							{:else}
-								<pre class="source-code">{codeWithoutDescription}</pre>
-							{/if}
+					</div>
+				{:else if activeTab === 'dependencies'}
+					<div class="dependencies-tab">
+						<div class="dependencies-grid">
+							{#each sequence.dependencies as dep}
+								<a
+									href={dep.download_url}
+									class="dependency-card"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<div class="dep-type">{dep.type}</div>
+									<div class="dep-name">{dep.name}</div>
+								</a>
+							{/each}
 						</div>
-					{/if}
-				</div>
+					</div>
+				{:else if activeTab === 'source'}
+					<div class="source-tab">
+						<pre class="source-code">{codeWithoutDescription}</pre>
+					</div>
+				{/if}
 			</div>
 		{/if}
 	{/if}
@@ -492,29 +448,24 @@
 
 	/* Header Card */
 	.header-card {
-		background: linear-gradient(135deg, rgb(249 250 251) 0%, white 100%);
+		background: white;
 		border: 1px solid rgb(229 231 235);
 		border-radius: 1.5rem;
-		padding: 2.5rem;
+		padding: 2rem;
 		margin-bottom: 1.5rem;
-		box-shadow:
-			0 4px 6px rgb(0 0 0 / 0.05),
-			0 1px 3px rgb(0 0 0 / 0.1);
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
 	}
 
 	:global(.dark) .header-card {
-		background: linear-gradient(135deg, rgb(31 41 55) 0%, rgb(17 24 39) 100%);
+		background: rgb(31 41 55);
 		border-color: rgb(55 65 81);
 	}
 
-	.header-content {
-		margin-bottom: 2rem;
-	}
-
-	.title-section {
+	.header-top {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.metadata-top {
@@ -525,12 +476,11 @@
 	}
 
 	.sequence-title {
-		font-size: 2.5rem;
-		font-weight: 800;
+		font-size: 2rem;
+		font-weight: 700;
 		color: rgb(17 24 39);
 		margin: 0;
 		line-height: 1.2;
-		letter-spacing: -0.02em;
 	}
 
 	:global(.dark) .sequence-title {
@@ -539,11 +489,11 @@
 
 	.category-badge {
 		display: inline-flex;
-		padding: 0.5rem 1rem;
-		background: linear-gradient(135deg, rgb(219 234 254), rgb(191 219 254));
+		padding: 0.375rem 0.75rem;
+		background: rgb(219 234 254);
 		color: rgb(30 64 175);
-		border-radius: 0.75rem;
-		font-size: 0.875rem;
+		border-radius: 0.5rem;
+		font-size: 0.75rem;
 		font-weight: 700;
 		border: 1px solid rgb(191 219 254);
 		text-transform: uppercase;
@@ -551,14 +501,14 @@
 	}
 
 	:global(.dark) .category-badge {
-		background: linear-gradient(135deg, rgb(30 58 138 / 0.4), rgb(30 64 175 / 0.2));
+		background: rgb(30 58 138 / 0.3);
 		color: rgb(147 197 253);
 		border-color: rgb(59 130 246 / 0.3);
 	}
 
 	.author {
 		color: rgb(107 114 128);
-		font-size: 0.9375rem;
+		font-size: 0.875rem;
 		font-weight: 500;
 	}
 
@@ -566,456 +516,301 @@
 		color: rgb(156 163 175);
 	}
 
-	/* CTA Section */
-	.cta-section {
-		display: flex;
+	/* Actions Grid */
+	.actions-grid {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
 		gap: 1rem;
-		align-items: center;
-		flex-wrap: wrap;
 	}
 
-	.play-button-primary {
-		flex: 1;
-		min-width: 280px;
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		padding: 1.25rem 1.75rem;
-		background: linear-gradient(135deg, rgb(79 70 229), rgb(59 130 246));
-		color: white;
-		border: none;
-		border-radius: 1rem;
-		font-size: 1rem;
-		font-weight: 700;
-		cursor: pointer;
-		transition: all 0.3s ease;
-		box-shadow:
-			0 10px 15px -3px rgb(79 70 229 / 0.3),
-			0 4px 6px -4px rgb(79 70 229 / 0.3);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.play-button-primary::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
-		opacity: 0;
-		transition: opacity 0.3s ease;
-	}
-
-	.play-button-primary:hover::before {
-		opacity: 1;
-	}
-
-	.play-button-primary:hover {
-		transform: translateY(-2px);
-		box-shadow:
-			0 20px 25px -5px rgb(79 70 229 / 0.4),
-			0 8px 10px -6px rgb(79 70 229 / 0.4);
-	}
-
-	:global(.dark) .play-button-primary {
-		background: linear-gradient(135deg, rgb(99 102 241), rgb(59 130 246));
-		box-shadow:
-			0 10px 15px -3px rgb(99 102 241 / 0.4),
-			0 4px 6px -4px rgb(99 102 241 / 0.4);
-	}
-
-	:global(.dark) .play-button-primary:hover {
-		box-shadow:
-			0 20px 25px -5px rgb(99 102 241 / 0.5),
-			0 8px 10px -6px rgb(99 102 241 / 0.5);
-	}
-
-	.play-icon-wrapper {
+	.action-button {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 2.5rem;
-		height: 2.5rem;
-		background: rgba(255, 255, 255, 0.2);
-		border-radius: 0.5rem;
-		flex-shrink: 0;
+		gap: 0.5rem;
+		padding: 1rem 1.5rem;
+		border: none;
+		border-radius: 0.75rem;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
 	}
 
-	.play-text {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 0.125rem;
-		text-align: left;
+	.action-button.primary {
+		background: linear-gradient(135deg, rgb(59 130 246), rgb(37 99 235));
+		color: white;
+		box-shadow: 0 4px 6px rgb(59 130 246 / 0.3);
 	}
 
-	.play-label {
-		font-size: 1.125rem;
-		font-weight: 800;
-		line-height: 1.2;
+	.action-button.primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 12px rgb(59 130 246 / 0.4);
 	}
 
-	.play-subtitle {
-		font-size: 0.8125rem;
-		font-weight: 400;
-		opacity: 0.85;
+	.action-button.secondary {
+		background: white;
+		color: rgb(55 65 81);
+		border: 1.5px solid rgb(229 231 235);
 	}
 
-	/* Main Content Card */
-	.content-card {
+	.action-button.secondary:hover {
+		border-color: rgb(209 213 219);
+		background: rgb(249 250 251);
+	}
+
+	:global(.dark) .action-button.primary {
+		background: linear-gradient(135deg, rgb(99 102 241), rgb(79 70 229));
+	}
+
+	:global(.dark) .action-button.secondary {
+		background: rgb(17 24 39);
+		color: rgb(229 231 235);
+		border-color: rgb(55 65 81);
+	}
+
+	:global(.dark) .action-button.secondary:hover {
+		background: rgb(31 41 55);
+		border-color: rgb(75 85 99);
+	}
+
+	/* Tabs */
+	.tabs-container {
 		background: white;
 		border: 1px solid rgb(229 231 235);
-		border-radius: 1rem;
-		padding: 2rem;
-		box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+		border-radius: 1rem 1rem 0 0;
+		padding: 0.5rem;
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.05);
 	}
 
-	:global(.dark) .content-card {
+	:global(.dark) .tabs-container {
 		background: rgb(31 41 55);
 		border-color: rgb(55 65 81);
 	}
 
-	.section-title {
-		font-size: 1.25rem;
-		font-weight: 600;
-		color: rgb(17 24 39);
-		margin: 0;
+	.tabs {
+		display: flex;
+		gap: 0.25rem;
 	}
 
-	:global(.dark) .section-title {
-		color: rgb(243 244 246);
-	}
-
-	.section-subtitle {
+	.tab {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 0.75rem 1rem;
+		background: transparent;
+		border: none;
+		border-radius: 0.5rem;
 		color: rgb(107 114 128);
 		font-size: 0.875rem;
-		margin: 0.5rem 0 1rem 0;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s;
 	}
 
-	:global(.dark) .section-subtitle {
+	.tab:hover {
+		background: rgb(249 250 251);
+		color: rgb(55 65 81);
+	}
+
+	.tab.active {
+		background: rgb(59 130 246);
+		color: white;
+	}
+
+	:global(.dark) .tab {
 		color: rgb(156 163 175);
 	}
 
-	.section-divider {
-		height: 1px;
-		background: rgb(229 231 235);
-		margin: 2rem 0;
-	}
-
-	:global(.dark) .section-divider {
+	:global(.dark) .tab:hover {
 		background: rgb(55 65 81);
+		color: rgb(229 231 235);
 	}
 
-	/* CLI Section */
-	.cli-section {
-		margin-bottom: 0;
+	:global(.dark) .tab.active {
+		background: rgb(99 102 241);
+		color: white;
 	}
 
-	.cli-commands-grid {
+	/* Tab Content */
+	.tab-content {
+		background: white;
+		border: 1px solid rgb(229 231 235);
+		border-top: none;
+		border-radius: 0 0 1rem 1rem;
+		padding: 2rem;
+		min-height: 300px;
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.05);
+	}
+
+	:global(.dark) .tab-content {
+		background: rgb(31 41 55);
+		border-color: rgb(55 65 81);
+	}
+
+	/* Description Tab */
+	.description-tab {
+		line-height: 1.7;
+	}
+
+	.description-text {
+		color: rgb(55 65 81);
+		font-size: 0.9375rem;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+	}
+
+	:global(.dark) .description-text {
+		color: rgb(209 213 219);
+	}
+
+	.description-text :global(.description-link) {
+		color: rgb(59 130 246);
+		text-decoration: underline;
+		transition: color 0.2s;
+	}
+
+	.description-text :global(.description-link:hover) {
+		color: rgb(37 99 235);
+	}
+
+	:global(.dark) .description-text :global(.description-link) {
+		color: rgb(147 197 253);
+	}
+
+	.empty-state {
+		text-align: center;
+		color: rgb(156 163 175);
+		font-size: 0.875rem;
+		padding: 2rem;
+	}
+
+	/* CLI Tab */
+	.cli-tab {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.tab-intro {
+		color: rgb(107 114 128);
+		font-size: 0.875rem;
+		margin: 0;
+	}
+
+	:global(.dark) .tab-intro {
+		color: rgb(156 163 175);
+	}
+
+	.cli-commands {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 	}
 
-	.cli-command-item {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.command-title {
-		font-size: 0.875rem;
-		font-weight: 600;
-		color: rgb(75 85 99);
-		margin: 0;
-		text-transform: uppercase;
-		letter-spacing: 0.025em;
-	}
-
-	:global(.dark) .command-title {
-		color: rgb(156 163 175);
-	}
-
-	.cli-command-wrapper {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
+	.cli-item {
 		background: rgb(249 250 251);
 		border: 1px solid rgb(229 231 235);
 		border-radius: 0.75rem;
-		padding: 1rem 1.25rem;
+		padding: 1rem;
 	}
 
-	:global(.dark) .cli-command-wrapper {
+	:global(.dark) .cli-item {
 		background: rgb(17 24 39);
 		border-color: rgb(55 65 81);
 	}
 
-	.cli-command {
-		flex: 1;
+	.cli-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.75rem;
+	}
+
+	.cli-header h4 {
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: rgb(107 114 128);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin: 0;
+	}
+
+	:global(.dark) .cli-header h4 {
+		color: rgb(156 163 175);
+	}
+
+	.copy-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		padding: 0.375rem 0.75rem;
+		background: rgb(59 130 246);
+		color: white;
+		border: none;
+		border-radius: 0.375rem;
+		font-size: 0.75rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.copy-btn:hover {
+		background: rgb(37 99 235);
+	}
+
+	.cli-code {
+		display: block;
 		font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 		font-size: 0.875rem;
 		color: rgb(30 64 175);
 		word-break: break-all;
 	}
 
-	:global(.dark) .cli-command {
+	:global(.dark) .cli-code {
 		color: rgb(147 197 253);
 	}
 
-	.copy-button {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.375rem;
-		padding: 0.5rem 0.875rem;
-		background: rgb(59 130 246);
-		color: white;
-		border: none;
-		border-radius: 0.5rem;
-		font-size: 0.875rem;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all 0.2s;
-		white-space: nowrap;
-	}
-
-	.copy-button:hover {
-		background: rgb(37 99 235);
-	}
-
-	.copy-button .icon {
-		display: flex;
-	}
-
-	/* OR Divider */
-	.or-divider {
-		display: flex;
-		align-items: center;
+	/* Dependencies Tab */
+	.dependencies-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 		gap: 1rem;
-		margin: 1.5rem 0 1rem 0;
 	}
 
-	.or-divider::before,
-	.or-divider::after {
-		content: '';
-		flex: 1;
-		height: 1px;
-		background: rgb(229 231 235);
-	}
-
-	:global(.dark) .or-divider::before,
-	:global(.dark) .or-divider::after {
-		background: rgb(55 65 81);
-	}
-
-	.or-text {
-		color: rgb(156 163 175);
-		font-size: 0.875rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	:global(.dark) .or-text {
-		color: rgb(107 114 128);
-	}
-
-	/* Download Ghost Button */
-	.download-ghost-button {
-		width: 100%;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		padding: 0.875rem 1.25rem;
-		background: transparent;
-		border: 1.5px dashed rgb(209 213 219);
-		color: rgb(107 114 128);
-		border-radius: 0.75rem;
-		font-size: 0.9375rem;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-
-	.download-ghost-button:hover {
-		border-color: rgb(59 130 246);
-		border-style: solid;
-		color: rgb(59 130 246);
-		background: rgb(239 246 255);
-	}
-
-	:global(.dark) .download-ghost-button {
-		border-color: rgb(75 85 99);
-		color: rgb(156 163 175);
-	}
-
-	:global(.dark) .download-ghost-button:hover {
-		border-color: rgb(99 102 241);
-		border-style: solid;
-		color: rgb(147 197 253);
-		background: rgb(30 58 138 / 0.15);
-	}
-
-	/* Description Section */
-	.description-section {
-		margin-bottom: 0;
-	}
-
-	.description-content {
-		color: rgb(55 65 81);
-		line-height: 1.7;
-		font-size: 0.9375rem;
-		position: relative;
-		white-space: pre-wrap;
-		margin-top: 0.75rem;
-		word-wrap: break-word;
-		overflow-wrap: break-word;
-		word-break: break-word;
-	}
-
-	.description-content.collapsed {
-		max-height: 6rem;
-		overflow: hidden;
-	}
-
-	.description-content.collapsed::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: 2rem;
-		background: linear-gradient(to bottom, transparent, white);
-		pointer-events: none;
-	}
-
-	:global(.dark) .description-content.collapsed::after {
-		background: linear-gradient(to bottom, transparent, rgb(31 41 55));
-	}
-
-	:global(.dark) .description-content {
-		color: rgb(209 213 219);
-	}
-
-	.read-more-button {
-		margin-top: 0.75rem;
-		color: rgb(59 130 246);
-		background: none;
-		border: none;
-		font-size: 0.875rem;
-		font-weight: 500;
-		cursor: pointer;
-		padding: 0;
-		transition: color 0.2s;
-	}
-
-	.read-more-button:hover {
-		color: rgb(37 99 235);
-		text-decoration: underline;
-	}
-
-	:global(.dark) .read-more-button {
-		color: rgb(147 197 253);
-	}
-
-	/* Description Links */
-	.description-content :global(.description-link) {
-		color: rgb(59 130 246);
-		text-decoration: underline;
-		text-underline-offset: 2px;
-		transition: all 0.2s ease;
-		word-break: break-all;
-	}
-
-	.description-content :global(.description-link:visited) {
-		color: rgb(139 92 246);
-	}
-
-	.description-content :global(.description-link:hover) {
-		color: rgb(37 99 235);
-	}
-
-	:global(.dark) .description-content :global(.description-link) {
-		color: rgb(147 197 253);
-	}
-
-	:global(.dark) .description-content :global(.description-link:visited) {
-		color: rgb(196 181 253);
-	}
-
-	:global(.dark) .description-content :global(.description-link:hover) {
-		color: rgb(96 165 250);
-	}
-
-	/* lor: rgb(147 197 253);
-	}
-
-	/* Collapsible Sections */
-	.collapsible-section {
-		margin-bottom: 0;
-	}
-
-	.section-toggle {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0;
-		background: none;
-		border: none;
-		cursor: pointer;
-		transition: opacity 0.2s;
-	}
-
-	.section-toggle:hover {
-		opacity: 0.7;
-	}
-
-	.section-toggle .icon.chevron {
-		display: flex;
-		color: rgb(107 114 128);
-		transition: transform 0.2s;
-	}
-
-	.section-toggle .icon.chevron.expanded {
-		transform: rotate(180deg);
-	}
-
-	:global(.dark) .section-toggle .icon.chevron {
-		color: rgb(156 163 175);
-	}
-
-	.section-content {
-		padding-top: 1rem;
-	}
-
-	/* Dependencies */
-	.dependencies-list {
+	.dependency-card {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
-	}
-
-	.dependency-item {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		padding: 0.75rem;
+		gap: 0.5rem;
+		padding: 1rem;
 		background: rgb(249 250 251);
 		border: 1px solid rgb(229 231 235);
-		border-radius: 0.5rem;
+		border-radius: 0.75rem;
+		text-decoration: none;
+		transition: all 0.2s;
 	}
 
-	:global(.dark) .dependency-item {
+	.dependency-card:hover {
+		border-color: rgb(59 130 246);
+		box-shadow: 0 4px 6px rgb(0 0 0 / 0.05);
+		transform: translateY(-2px);
+	}
+
+	:global(.dark) .dependency-card {
 		background: rgb(17 24 39);
 		border-color: rgb(55 65 81);
 	}
 
-	.dependency-type {
-		padding: 0.25rem 0.625rem;
+	:global(.dark) .dependency-card:hover {
+		border-color: rgb(99 102 241);
+	}
+
+	.dep-type {
+		display: inline-block;
+		width: fit-content;
+		padding: 0.25rem 0.5rem;
 		background: rgb(219 234 254);
 		color: rgb(30 64 175);
 		border-radius: 0.25rem;
@@ -1024,44 +819,22 @@
 		text-transform: uppercase;
 	}
 
-	:global(.dark) .dependency-type {
+	:global(.dark) .dep-type {
 		background: rgb(30 58 138 / 0.5);
 		color: rgb(147 197 253);
 	}
 
-	.dependency-name {
-		font-size: 0.875rem;
+	.dep-name {
 		color: rgb(16 185 129);
+		font-size: 0.875rem;
 		font-weight: 500;
-		text-decoration: none;
-		transition: color 0.2s ease;
 	}
 
-	.dependency-name:hover {
-		color: rgb(5 150 105);
-		text-decoration: underline;
-	}
-
-	:global(.dark) .dependency-name {
+	:global(.dark) .dep-name {
 		color: rgb(52 211 153);
 	}
 
-	:global(.dark) .dependency-name:hover {
-		color: rgb(110 231 183);
-	}
-
-	/* Source Code */
-	.loading-source {
-		text-align: center;
-		padding: 2rem;
-		color: rgb(107 114 128);
-		font-size: 0.875rem;
-	}
-
-	:global(.dark) .loading-source {
-		color: rgb(156 163 175);
-	}
-
+	/* Source Tab */
 	.source-code {
 		background: rgb(17 24 39);
 		color: rgb(229 231 235);
@@ -1117,30 +890,42 @@
 
 	/* Responsive */
 	@media (max-width: 640px) {
-		.cta-section {
-			flex-direction: column;
+		.sequence-viewer {
+			padding: 1rem 0;
 		}
 
-		.play-button-primary {
-			min-width: 100%;
-		}
-
-		.cli-command-wrapper {
-			flex-direction: column;
-			align-items: stretch;
-		}
-
-		.cli-commands-grid {
-			gap: 1.25rem;
-		}
-
-		.copy-button {
-			width: 100%;
-			justify-content: center;
+		.header-card {
+			padding: 1.5rem;
 		}
 
 		.sequence-title {
-			font-size: 1.75rem;
+			font-size: 1.5rem;
+		}
+
+		.actions-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.tabs {
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+
+		.tabs::-webkit-scrollbar {
+			display: none;
+		}
+
+		.tab {
+			flex-shrink: 0;
+			white-space: nowrap;
+		}
+
+		.tab-content {
+			padding: 1.5rem;
+		}
+
+		.dependencies-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
