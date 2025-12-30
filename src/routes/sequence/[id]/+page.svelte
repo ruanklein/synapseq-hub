@@ -27,11 +27,11 @@
 		data.sequence ? `${toTitleCase(data.sequence.name)} | SynapSeq Hub` : 'SynapSeq Hub'
 	);
 	const pageDescription = $derived(getCleanDescription(data.sequence));
-	const pageUrl = $derived(`https://synapseq-hub.ruan.sh/sequence/${data.sequence?.id || ''}`);
+	const pageUrl = $derived(`${window.location.origin}/sequence/${data.sequence?.id || ''}`);
 	const pageImage = $derived(
 		data.sequence?.thumbnail
-			? `https://synapseq-hub.ruan.sh/${data.sequence.thumbnail}`
-			: 'https://synapseq-hub.ruan.sh/default-thumbnail.webp'
+			? `${window.location.origin}/${data.sequence.thumbnail}`
+			: `${window.location.origin}/default-thumbnail.webp`
 	);
 </script>
 
