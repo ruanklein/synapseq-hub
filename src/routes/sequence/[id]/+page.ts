@@ -24,8 +24,20 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			};
 		}
 
+		// Check if thumbnail exists, fallback to default if not
+		let thumbnailExists = false;
+		try {
+			const thumbnailResponse = await fetch(`/${sequence.thumbnail}`, { method: 'HEAD' });
+			thumbnailExists = thumbnailResponse.ok;
+		} catch {
+			thumbnailExists = false;
+		}
+
 		return {
-			sequence
+			sequence: {
+				...sequence,
+				thumbnail: thumbnailExists ? sequence.thumbnail : 'default-thumbnail.webp'
+			}
 		};
 	} catch (error) {
 		return {

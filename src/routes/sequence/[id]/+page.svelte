@@ -27,6 +27,11 @@
 	);
 	const pageDescription = $derived(getCleanDescription(data.sequence));
 	const pageUrl = $derived(`https://synapseq-hub.ruan.sh/sequence/${data.sequence?.id || ''}`);
+	const pageImage = $derived(
+		data.sequence?.thumbnail
+			? `https://synapseq-hub.ruan.sh/${data.sequence.thumbnail}`
+			: 'https://synapseq-hub.ruan.sh/default-thumbnail.webp'
+	);
 </script>
 
 <svelte:head>
@@ -38,7 +43,7 @@
 	<meta property="og:url" content={pageUrl} />
 	<meta property="og:title" content={pageTitle} />
 	<meta property="og:description" content={pageDescription} />
-	<meta property="og:image" content="https://synapseq-hub.ruan.sh/logo.png" />
+	<meta property="og:image" content={pageImage} />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 
@@ -47,7 +52,7 @@
 	<meta property="twitter:url" content={pageUrl} />
 	<meta property="twitter:title" content={pageTitle} />
 	<meta property="twitter:description" content={pageDescription} />
-	<meta property="twitter:image" content="https://synapseq-hub.ruan.sh/logo.png" />
+	<meta property="twitter:image" content={pageImage} />
 </svelte:head>
 
 <div
