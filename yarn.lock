@@ -884,6 +884,11 @@ safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
 
+schema-dts@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/schema-dts/-/schema-dts-1.1.5.tgz#9237725d305bac3469f02b292a035107595dc324"
+  integrity sha512-RJr9EaCmsLzBX2NDiO5Z3ux2BVosNZN5jo0gWgsyKvxKIUL5R3swNvoorulAeL9kLB0iTSX7V6aokhla2m7xbg==
+
 set-cookie-parser@^2.6.0:
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/set-cookie-parser/-/set-cookie-parser-2.7.2.tgz#ccd08673a9ae5d2e44ea2a2de25089e67c7edf68"
@@ -925,6 +930,13 @@ svelte-check@^4.3.4:
     fdir "^6.2.0"
     picocolors "^1.0.0"
     sade "^1.7.4"
+
+svelte-meta-tags@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/svelte-meta-tags/-/svelte-meta-tags-4.5.0.tgz#7dd98736476718aefedcee75180399655e7f1fb5"
+  integrity sha512-E1/ULp4j8qwYFQeYBR0WypgOIsZkOnywAExFhufyl07eTvyCDQVW1HaNTSA0n2sX/Hw0jtti+TKuOml5dt2v9A==
+  dependencies:
+    schema-dts "^1.1.5"
 
 svelte@^5.43.8:
   version "5.43.14"

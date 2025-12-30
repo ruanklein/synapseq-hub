@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { MetaTags } from 'svelte-meta-tags';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import SequenceViewer from '$lib/components/SequenceViewer.svelte';
@@ -37,23 +38,35 @@
 <svelte:head>
 	<title>{pageTitle}</title>
 	<meta name="description" content={pageDescription} />
-
-	<!-- Open Graph / Facebook -->
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content={pageUrl} />
-	<meta property="og:title" content={pageTitle} />
-	<meta property="og:description" content={pageDescription} />
-	<meta property="og:image" content={pageImage} />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
-
-	<!-- Twitter -->
-	<meta property="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content={pageUrl} />
-	<meta property="twitter:title" content={pageTitle} />
-	<meta property="twitter:description" content={pageDescription} />
-	<meta property="twitter:image" content={pageImage} />
 </svelte:head>
+
+<MetaTags
+	title={pageTitle}
+	description={pageDescription}
+	canonical={pageUrl}
+	openGraph={{
+		type: 'website',
+		url: pageUrl,
+		title: pageTitle,
+		description: pageDescription,
+		images: [
+			{
+				url: pageImage,
+				width: 1200,
+				height: 630,
+				alt: toTitleCase(data.sequence?.name || 'SynapSeq Sequence')
+			}
+		],
+		siteName: 'SynapSeq Hub'
+	}}
+	twitter={{
+		cardType: 'summary_large_image',
+		title: pageTitle,
+		description: pageDescription,
+		image: pageImage,
+		imageAlt: toTitleCase(data.sequence?.name || 'SynapSeq Sequence')
+	}}
+/>
 
 <div
 	class="min-h-screen bg-linear-to-br from-gray-50 via-blue-50/30 to-cyan-50/30 dark:bg-linear-to-br dark:from-gray-950 dark:via-gray-950 dark:to-gray-900 transition-colors duration-200"
