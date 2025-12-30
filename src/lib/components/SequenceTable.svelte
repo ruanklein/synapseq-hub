@@ -38,15 +38,25 @@
 			{#each $filteredSequences as sequence}
 				<button
 					onclick={() => handleCardClick(sequence.id)}
-					class="sequence-card group relative bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl p-5 text-left hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-cyan-500/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer"
+					class="sequence-card group relative bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden text-left hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-cyan-500/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer"
 				>
-					<!-- Gradient overlay on hover -->
-					<div
-						class="absolute inset-0 bg-linear-to-br from-blue-500/5 via-cyan-500/5 to-indigo-500/5 dark:from-blue-500/10 dark:via-cyan-500/10 dark:to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
-					></div>
+					<!-- Thumbnail -->
+					<div class="relative w-full h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
+						<img
+							src="/{sequence.thumbnail}"
+							alt={sequence.name}
+							onerror={(e) =>
+								((e.currentTarget as HTMLImageElement).src = '/default-thumbnail.webp')}
+							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+						/>
+						<!-- Gradient overlay -->
+						<div
+							class="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"
+						></div>
+					</div>
 
 					<!-- Content -->
-					<div class="relative z-10 space-y-4">
+					<div class="relative z-10 p-5 space-y-4">
 						<!-- Header with category and author -->
 						<div class="flex items-start justify-between gap-3">
 							<span

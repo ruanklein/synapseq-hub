@@ -232,34 +232,41 @@
 					{#each lastSequences as sequence}
 						<button
 							onclick={() => goToSequence(sequence.id)}
-							class="group relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-cyan-500 p-8 hover:shadow-2xl transition-all duration-300 text-left overflow-hidden cursor-pointer"
+							class="group relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-cyan-500 hover:shadow-2xl transition-all duration-300 text-left overflow-hidden cursor-pointer"
 						>
-							<!-- Gradient overlay on hover -->
-							<div
-								class="absolute inset-0 bg-linear-to-br from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 dark:group-hover:from-blue-500/10 dark:group-hover:to-cyan-500/10 transition-all duration-300 rounded-2xl"
-							></div>
-
-							<div class="relative z-10 space-y-5">
-								<!-- Category Badge -->
-								<div class="flex items-start justify-between gap-3">
+							<!-- Thumbnail -->
+							<div class="relative w-full h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
+								<img
+									src="/{sequence.thumbnail}"
+									alt={sequence.name}
+									onerror={(e) =>
+										((e.currentTarget as HTMLImageElement).src = '/default-thumbnail.webp')}
+									class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+								/>
+								<!-- Gradient overlay -->
+								<div
+									class="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"
+								></div>
+								<!-- Category Badge on Thumbnail -->
+								<div class="absolute top-3 left-3 z-10">
 									<span
-										class="px-3 py-1.5 text-xs font-bold bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-cyan-300 rounded-lg border border-blue-200 dark:border-cyan-700/50 uppercase tracking-wide"
+										class="px-3 py-1.5 text-xs font-bold bg-blue-600/90 dark:bg-cyan-600/90 backdrop-blur-sm text-white rounded-lg border border-blue-400/50 dark:border-cyan-400/50 uppercase tracking-wide shadow-lg"
 									>
 										{sequence.category}
 									</span>
 								</div>
+							</div>
 
+							<!-- Content -->
+							<div class="relative z-10 p-6 space-y-4">
 								<!-- Title -->
 								<h3
-									class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2 leading-tight"
+									class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2 leading-tight"
 								>
 									{toTitleCase(sequence.name)}
 								</h3>
 
-								<!-- Author -->
-								<p class="text-sm text-gray-600 dark:text-gray-400">
-									<!-- Updated -->
-								</p>
+								<!-- Updated -->
 								<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
 									<Clock class="w-4 h-4" />
 									<span>{formatRelativeTime(sequence.updated_at)}</span>

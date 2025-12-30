@@ -216,6 +216,10 @@ def walk_files():
         category = get_category(file)
         author = get_author(file)
         deps = extract_dependencies(filepath)
+        
+        # Generate thumbnail path: same directory as path + id + .webp
+        path_dir = os.path.dirname(relpath)
+        thumbnail = f"{path_dir}/{id}.webp"
 
         entries.append({
             "id": id,
@@ -224,6 +228,7 @@ def walk_files():
             "path": relpath,
             "category": category,
             "download_url": f"{RAW_BASE}/{relpath}",
+            "thumbnail": thumbnail,
             "updated_at": get_updated_at(filepath),
             "dependencies": deps
         })

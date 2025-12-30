@@ -11,6 +11,7 @@ export interface ManifestEntry {
 	path: string;
 	category: string;
 	download_url: string;
+	thumbnail: string;
 	updated_at: string;
 	dependencies: Dependency[];
 }
