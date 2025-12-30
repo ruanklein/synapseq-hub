@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import SequenceViewer from '$lib/components/SequenceViewer.svelte';
@@ -10,7 +11,45 @@
 	function handleBack() {
 		goto('/sequences');
 	}
+
+	// Gerar descrição limpa para meta tags
+	const getCleanDescription = (sequence: any) => {
+		if (!sequence) return 'Listen to brainwave entrainment sequences on SynapSeq Hub';
+
+		const category = sequence.category || 'Sequence';
+		const author = sequence.author || 'SynapSeq';
+		return `${category} sequence by ${author}. Stream or download this brainwave entrainment audio on SynapSeq Hub.`;
+	};
+
+	const pageTitle = $derived(
+		data.sequence ? `${data.sequence.name} | SynapSeq Hub` : 'SynapSeq Hub'
+	);
+	const pageDescription = $derived(getCleanDescription(data.sequence));
+	const pageUrl = $derived(
+		`https://synapseq.ruanmartinelli.com/sequence/${data.sequence?.id || ''}`
+	);
 </script>
+
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content={pageUrl} />
+	<meta property="og:title" content={pageTitle} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:image" content="https://synapseq-hub.ruan.sh/logo.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content={pageUrl} />
+	<meta property="twitter:title" content={pageTitle} />
+	<meta property="twitter:description" content={pageDescription} />
+	<meta property="twitter:image" content="https://synapseq-hub.ruan.sh/logo.png" />
+</svelte:head>
 
 <div
 	class="min-h-screen bg-linear-to-br from-gray-50 via-blue-50/30 to-cyan-50/30 dark:bg-linear-to-br dark:from-gray-950 dark:via-gray-950 dark:to-gray-900 transition-colors duration-200"

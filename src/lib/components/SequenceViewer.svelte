@@ -1,5 +1,15 @@
 <script lang="ts">
-	import { ArrowLeft, Copy, Play, Download, Terminal, Info, Package, Code } from 'lucide-svelte';
+	import {
+		ArrowLeft,
+		Copy,
+		Play,
+		Download,
+		Terminal,
+		Info,
+		Package,
+		Code,
+		Share2
+	} from 'lucide-svelte';
 	import type { ManifestEntry, Dependency } from '$lib/types';
 	import DownloadModal from './DownloadModal.svelte';
 	import SynapSeqPlayer from './SynapSeqPlayer.svelte';
@@ -25,10 +35,42 @@
 	let isDownloadModalOpen = $state(false);
 	let isPlayingInBrowser = $state(false);
 	let processedSequenceContent = $state<string>('');
+	let shareButtonText = $state('Share');
 
 	const playCommand = $derived(`synapseq -play -hub-get ${sequence.id}`);
 	const wavCommand = $derived(`synapseq -hub-get ${sequence.id}`);
 	const mp3Command = $derived(`synapseq -mp3 -hub-get ${sequence.id}`);
+
+	async function handleShare() {
+		const shareUrl = window.location.href;
+		const shareTitle = sequence.name;
+		const shareText = `Check out "${sequence.name}" on SynapSeq Hub`;
+
+		// Try native Web Share API first (mobile)
+		if (navigator.share) {
+			try {
+				await navigator.share({
+					title: shareTitle,
+					text: shareText,
+					url: shareUrl
+				});
+				return;
+			} catch (err) {
+				// User cancelled or error, fallback to copy
+			}
+		}
+
+		// Fallback: copy to clipboard
+		try {
+			await navigator.clipboard.writeText(shareUrl);
+			shareButtonText = 'Copied!';
+			setTimeout(() => {
+				shareButtonText = 'Share';
+			}, 2000);
+		} catch (error) {
+			console.error('Failed to share:', error);
+		}
+	}
 
 	async function loadSourceCode() {
 		if (sourceCode) return;
@@ -243,6 +285,9 @@
 				<div class="metadata-top">
 					<span class="category-badge">{sequence.category}</span>
 					<span class="author">by {sequence.author}</span>
+					<button class="share-icon-button" onclick={handleShare} title="Share sequence">
+						<Share2 size={16} />
+					</button>
 				</div>
 				<h1 class="sequence-title">{sequence.name}</h1>
 			</div>
@@ -514,6 +559,40 @@
 
 	:global(.dark) .author {
 		color: rgb(156 163 175);
+	}
+
+	.share-icon-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		background: rgb(249 250 251);
+		border: 1px solid rgb(229 231 235);
+		border-radius: 0.5rem;
+		color: rgb(107 114 128);
+		cursor: pointer;
+		transition: all 0.2s;
+		margin-left: auto;
+	}
+
+	.share-icon-button:hover {
+		background: rgb(59 130 246);
+		color: white;
+		border-color: rgb(59 130 246);
+		transform: translateY(-1px);
+	}
+
+	:global(.dark) .share-icon-button {
+		background: rgb(17 24 39);
+		border-color: rgb(55 65 81);
+		color: rgb(156 163 175);
+	}
+
+	:global(.dark) .share-icon-button:hover {
+		background: rgb(99 102 241);
+		color: white;
+		border-color: rgb(99 102 241);
 	}
 
 	/* Actions Grid */
