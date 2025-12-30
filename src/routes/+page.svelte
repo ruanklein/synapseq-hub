@@ -94,75 +94,6 @@
 			</div>
 		</section>
 
-		<!-- Playground Spotlight -->
-		<section
-			class="relative overflow-hidden bg-linear-to-br from-indigo-600 via-blue-600 to-cyan-600 dark:from-indigo-700 dark:via-blue-700 dark:to-cyan-700 rounded-3xl p-12 md:p-16 shadow-2xl"
-		>
-			<div
-				class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40"
-			></div>
-
-			<div class="relative z-10 max-w-4xl mx-auto text-center space-y-8 text-white">
-				<div
-					class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm border border-white/30"
-				>
-					<Zap class="w-4 h-4" />
-					<span class="text-sm font-semibold">Try it Now</span>
-				</div>
-
-				<h2 class="text-4xl md:text-5xl font-black leading-tight">SynapSeq Playground</h2>
-
-				<p class="text-xl md:text-2xl text-blue-50 font-light max-w-3xl mx-auto leading-relaxed">
-					Experience sequences instantly in your browser with our live editor and realtime audio
-					playback, no installation required
-				</p>
-				<div class="grid md:grid-cols-3 gap-6 pt-6 text-left">
-					<div
-						class="p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/15 transition-colors"
-					>
-						<Wand2 class="w-8 h-8 mb-4" />
-						<h3 class="text-lg font-bold mb-2">Live Editor</h3>
-						<p class="text-blue-100 text-sm leading-relaxed">
-							Tweak parameters and see changes in real time
-						</p>
-					</div>
-
-					<div
-						class="p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/15 transition-colors"
-					>
-						<Play class="w-8 h-8 mb-4" />
-						<h3 class="text-lg font-bold mb-2">Instant Playback</h3>
-						<p class="text-blue-100 text-sm leading-relaxed">
-							Preview binaural, isochronic, and monaural beats instantly
-						</p>
-					</div>
-
-					<div
-						class="p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/15 transition-colors"
-					>
-						<AudioWaveform class="w-8 h-8 mb-4" />
-						<h3 class="text-lg font-bold mb-2">Hub Integration</h3>
-						<p class="text-blue-100 text-sm leading-relaxed">
-							Open any Hub sequence directly in the Playground
-						</p>
-					</div>
-				</div>
-
-				<div class="pt-4">
-					<a
-						href="https://synapseq.ruan.sh"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="group inline-flex items-center gap-4 px-10 py-5 bg-white text-blue-600 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-3xl transition-all duration-200 hover:scale-105"
-					>
-						<Play class="w-6 h-6" />
-						Open Playground
-						<ArrowRight class="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-					</a>
-				</div>
-			</div>
-		</section>
-
 		<!-- Features Grid -->
 		<section class="space-y-12">
 			<div class="text-center space-y-4">
@@ -250,9 +181,10 @@
 					>
 						2
 					</div>
-					<h3 class="text-2xl font-bold text-gray-900 dark:text-white">Play or Generate</h3>
+					<h3 class="text-2xl font-bold text-gray-900 dark:text-white">Listen or Generate</h3>
 					<p class="text-gray-700 dark:text-gray-300 leading-relaxed">
-						Click "Play in Browser" for instant playback, or use the CLI to generate WAV files
+						Stream instantly in your browser or use the CLI to generate WAV/MP3 files and play via
+						terminal
 					</p>
 				</div>
 

@@ -38,15 +38,6 @@
 						<List class="w-4 h-4" />
 						Sequences
 					</a>
-					<a
-						href="https://synapseq.ruan.sh"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors"
-					>
-						<AudioWaveform class="w-4 h-4" />
-						Playground
-					</a>
 				</nav>
 			</div>
 

@@ -97,18 +97,6 @@
 						<List class="w-4 h-4" />
 						Sequences
 					</a>
-					<a
-						href="https://synapseq.ruan.sh"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors {$page
-							.url.pathname === '/playground'
-							? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
-							: 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}"
-					>
-						<AudioWaveform class="w-4 h-4" />
-						Playground
-					</a>
 				</nav>
 
 				<!-- Theme Toggle -->
@@ -153,19 +141,6 @@
 					>
 						<List class="w-5 h-5" />
 						Sequences
-					</a>
-					<a
-						href="https://synapseq.ruan.sh"
-						target="_blank"
-						rel="noopener noreferrer"
-						onclick={closeMobileMenu}
-						class="flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors {$page
-							.url.pathname === '/playground'
-							? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
-							: 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}"
-					>
-						<AudioWaveform class="w-5 h-5" />
-						Playground
 					</a>
 				</nav>
 			</div>
