@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { Square, Loader2, AlertCircle } from 'lucide-svelte';
+	import { Square, Loader2, AlertCircle, Headphones } from 'lucide-svelte';
 	import { synapseqPlayer } from '$lib/stores/synapseq.svelte';
 
 	let {
@@ -184,32 +184,11 @@
 {:else}
 	<div class="fullscreen-player">
 		<div class="player-content">
-			<!-- Animated wave icon -->
-			<div class="wave-icon">
-				<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-					<circle cx="50" cy="50" r="45" class="wave-circle" />
-					<path
-						d="M 25 50 Q 35 35, 50 50 T 75 50"
-						class="wave-line wave-1"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="3"
-					/>
-					<path
-						d="M 25 50 Q 35 65, 50 50 T 75 50"
-						class="wave-line wave-2"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="3"
-					/>
-					<path
-						d="M 30 50 Q 40 40, 50 50 T 70 50"
-						class="wave-line wave-3"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-					/>
-				</svg>
+			<!-- Animated headphones icon -->
+			<div class="icon-container">
+				<div class="headphones-icon">
+					<Headphones class="main-icon" size={120} strokeWidth={1.5} />
+				</div>
 			</div>
 
 			<!-- Status and title -->
@@ -329,62 +308,45 @@
 		gap: 3rem;
 	}
 
-	.wave-icon {
+	.icon-container {
+		position: relative;
 		width: 200px;
 		height: 200px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.headphones-icon {
+		position: relative;
+		z-index: 2;
 		color: #22d3ee;
 		filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.5));
+		animation: headphones-float 3s ease-in-out infinite;
 	}
 
-	.wave-icon svg {
-		width: 100%;
-		height: 100%;
+	.headphones-icon :global(.main-icon) {
+		animation: headphones-pulse 2s ease-in-out infinite;
 	}
 
-	.wave-circle {
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
-		opacity: 0.3;
-		animation: pulse 2s ease-in-out infinite;
-	}
-
-	.wave-line {
-		animation: wave 2s ease-in-out infinite;
-	}
-
-	.wave-1 {
-		animation-delay: 0s;
-	}
-
-	.wave-2 {
-		animation-delay: 0.2s;
-	}
-
-	.wave-3 {
-		animation-delay: 0.4s;
-		opacity: 0.6;
-	}
-
-	@keyframes pulse {
+	@keyframes headphones-float {
 		0%,
 		100% {
-			opacity: 0.3;
-			transform: scale(1);
+			transform: translateY(0);
 		}
 		50% {
-			opacity: 0.6;
-			transform: scale(1.05);
+			transform: translateY(-10px);
 		}
 	}
 
-	@keyframes wave {
+	@keyframes headphones-pulse {
 		0%,
 		100% {
-			d: path('M 25 50 Q 35 35, 50 50 T 75 50');
+			opacity: 0.9;
 		}
 		50% {
-			d: path('M 25 50 Q 35 65, 50 50 T 75 50');
+			opacity: 1;
+			filter: drop-shadow(0 0 25px rgba(34, 211, 238, 0.8));
 		}
 	}
 
