@@ -25,9 +25,7 @@
 		data.sequence ? `${data.sequence.name} | SynapSeq Hub` : 'SynapSeq Hub'
 	);
 	const pageDescription = $derived(getCleanDescription(data.sequence));
-	const pageUrl = $derived(
-		`https://synapseq.ruanmartinelli.com/sequence/${data.sequence?.id || ''}`
-	);
+	const pageUrl = $derived(`https://synapseq-hub.ruan.sh/sequence/${data.sequence?.id || ''}`);
 </script>
 
 <svelte:head>
