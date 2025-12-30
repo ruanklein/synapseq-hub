@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { Clock, ListFilter, ArrowRight } from 'lucide-svelte';
 	import { filteredSequences, formatRelativeTime, formatFullDate } from '$lib/store';
+	import { toTitleCase } from '$lib/utils/formatters';
 
 	function handleCardClick(sequenceId: string) {
 		goto(`/sequence/${sequenceId}`);
@@ -69,7 +70,7 @@
 							<h3
 								class="text-lg font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors duration-300 line-clamp-2"
 							>
-								{sequence.name}
+								{toTitleCase(sequence.name)}
 							</h3>
 						</div>
 

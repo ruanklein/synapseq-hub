@@ -14,6 +14,7 @@
 	import DownloadModal from './DownloadModal.svelte';
 	import SynapSeqPlayer from './SynapSeqPlayer.svelte';
 	import { synapseqPlayer } from '$lib/stores/synapseq.svelte';
+	import { toTitleCase } from '$lib/utils/formatters';
 
 	let {
 		sequence,
@@ -43,8 +44,8 @@
 
 	async function handleShare() {
 		const shareUrl = window.location.href;
-		const shareTitle = sequence.name;
-		const shareText = `Check out "${sequence.name}" on SynapSeq Hub`;
+		const shareTitle = toTitleCase(sequence.name);
+		const shareText = `Check out "${toTitleCase(sequence.name)}" on SynapSeq Hub`;
 
 		// Try native Web Share API first (mobile)
 		if (navigator.share) {
@@ -289,7 +290,7 @@
 						<Share2 size={16} />
 					</button>
 				</div>
-				<h1 class="sequence-title">{sequence.name}</h1>
+				<h1 class="sequence-title">{toTitleCase(sequence.name)}</h1>
 			</div>
 
 			<!-- Primary Actions -->
@@ -433,16 +434,7 @@
 {#if isPlayingInBrowser}
 	<SynapSeqPlayer
 		sequenceContent={processedSequenceContent}
-		sequenceName={sequence.name}
-		onClose={closePlayer}
-	/>
-{/if}
-
-<!-- Fullscreen Player -->
-{#if isPlayingInBrowser}
-	<SynapSeqPlayer
-		sequenceContent={processedSequenceContent}
-		sequenceName={sequence.name}
+		sequenceName={toTitleCase(sequence.name)}
 		onClose={closePlayer}
 	/>
 {/if}

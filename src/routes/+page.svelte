@@ -18,6 +18,7 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import { loadManifest, sequences, formatRelativeTime } from '$lib/store';
 	import type { ManifestEntry } from '$lib/types';
+	import { toTitleCase } from '$lib/utils/formatters';
 
 	let isLoading = $state(true);
 	let lastSequences = $state<ManifestEntry[]>([]);
@@ -252,17 +253,13 @@
 								<h3
 									class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-2 leading-tight"
 								>
-									{sequence.name}
+									{toTitleCase(sequence.name)}
 								</h3>
 
 								<!-- Author -->
 								<p class="text-sm text-gray-600 dark:text-gray-400">
-									by <span class="font-semibold text-gray-900 dark:text-gray-200"
-										>{sequence.author}</span
-									>
+									<!-- Updated -->
 								</p>
-
-								<!-- Updated -->
 								<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
 									<Clock class="w-4 h-4" />
 									<span>{formatRelativeTime(sequence.updated_at)}</span>

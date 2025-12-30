@@ -5,6 +5,7 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import SequenceViewer from '$lib/components/SequenceViewer.svelte';
 	import type { PageData } from './$types';
+	import { toTitleCase } from '$lib/utils/formatters';
 
 	let { data }: { data: PageData } = $props();
 
@@ -22,7 +23,7 @@
 	};
 
 	const pageTitle = $derived(
-		data.sequence ? `${data.sequence.name} | SynapSeq Hub` : 'SynapSeq Hub'
+		data.sequence ? `${toTitleCase(data.sequence.name)} | SynapSeq Hub` : 'SynapSeq Hub'
 	);
 	const pageDescription = $derived(getCleanDescription(data.sequence));
 	const pageUrl = $derived(`https://synapseq-hub.ruan.sh/sequence/${data.sequence?.id || ''}`);
