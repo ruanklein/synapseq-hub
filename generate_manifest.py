@@ -12,7 +12,7 @@ import json, os, re, sys, subprocess
 from datetime import datetime, UTC
 
 # Repository configuration
-RAW_BASE = f"https://synapseq-hub.ruan.sh"
+RAW_BASE = f"https://hub.synapseq.org"
 
 # Package directory
 PACKAGES_DIR = "static/packages"

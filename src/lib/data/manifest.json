@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-12-30T12:53:29Z",
+  "lastUpdated": "2025-12-31T00:59:28Z",
   "entries": [
     {
       "id": "ruan.relaxation.calm-state",
@@ -8,14 +8,14 @@
       "author": "ruan",
       "path": "packages/relaxation-ruan-calm-state.spsq",
       "category": "relaxation",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/relaxation-ruan-calm-state.spsq",
+      "download_url": "https://hub.synapseq.org/packages/relaxation-ruan-calm-state.spsq",
       "thumbnail": "packages/ruan.relaxation.calm-state.webp",
       "updated_at": "2025-12-28T21:39:16-03:00",
       "dependencies": [
         {
           "type": "background",
           "name": "freesound-163612",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-163612.wav"
+          "download_url": "https://hub.synapseq.org/packages/freesound-163612.wav"
         }
       ]
     },
@@ -25,14 +25,14 @@
       "author": "ruan",
       "path": "packages/meditation-ruan-quiet-descent.spsq",
       "category": "meditation",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/meditation-ruan-quiet-descent.spsq",
+      "download_url": "https://hub.synapseq.org/packages/meditation-ruan-quiet-descent.spsq",
       "thumbnail": "packages/ruan.meditation.quiet-descent.webp",
       "updated_at": "2025-12-28T21:38:32-03:00",
       "dependencies": [
         {
           "type": "background",
           "name": "freesound-611626",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-611626.wav"
+          "download_url": "https://hub.synapseq.org/packages/freesound-611626.wav"
         }
       ]
     },
@@ -42,14 +42,14 @@
       "author": "ruan",
       "path": "packages/focus-ruan-alert-flow.spsq",
       "category": "focus",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/focus-ruan-alert-flow.spsq",
+      "download_url": "https://hub.synapseq.org/packages/focus-ruan-alert-flow.spsq",
       "thumbnail": "packages/ruan.focus.alert-flow.webp",
       "updated_at": "2025-12-28T21:38:05-03:00",
       "dependencies": [
         {
           "type": "background",
           "name": "freesound-620005",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-620005.wav"
+          "download_url": "https://hub.synapseq.org/packages/freesound-620005.wav"
         }
       ]
     },
@@ -59,14 +59,14 @@
       "author": "ruan",
       "path": "packages/relaxation-ruan-neutral-relax.spsq",
       "category": "relaxation",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/relaxation-ruan-neutral-relax.spsq",
+      "download_url": "https://hub.synapseq.org/packages/relaxation-ruan-neutral-relax.spsq",
       "thumbnail": "packages/ruan.relaxation.neutral-relax.webp",
       "updated_at": "2025-12-28T21:37:05-03:00",
       "dependencies": [
         {
           "type": "background",
           "name": "freesound-697608",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/freesound-697608.wav"
+          "download_url": "https://hub.synapseq.org/packages/freesound-697608.wav"
         }
       ]
     },
@@ -76,14 +76,14 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-background-pulse.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-background-pulse.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-background-pulse.spsq",
       "thumbnail": "packages/synapseq.samples.background-pulse.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "background",
           "name": "synapseq-pink-noise",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/synapseq-pink-noise.wav"
+          "download_url": "https://hub.synapseq.org/packages/synapseq-pink-noise.wav"
         }
       ]
     },
@@ -93,14 +93,14 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-background-spin.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-background-spin.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-background-spin.spsq",
       "thumbnail": "packages/synapseq.samples.background-spin.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "background",
           "name": "synapseq-pink-noise",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/synapseq-pink-noise.wav"
+          "download_url": "https://hub.synapseq.org/packages/synapseq-pink-noise.wav"
         }
       ]
     },
@@ -110,7 +110,7 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-binaural.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-binaural.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-binaural.spsq",
       "thumbnail": "packages/synapseq.samples.binaural.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
@@ -121,14 +121,14 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-focus-one.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-focus-one.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-focus-one.spsq",
       "thumbnail": "packages/synapseq.samples.focus-one.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
           "name": "presets-synapseq-focus",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/presets-synapseq-focus.spsq"
+          "download_url": "https://hub.synapseq.org/packages/presets-synapseq-focus.spsq"
         }
       ]
     },
@@ -138,14 +138,14 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-focus-two.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-focus-two.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-focus-two.spsq",
       "thumbnail": "packages/synapseq.samples.focus-two.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
           "name": "presets-synapseq-focus",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/presets-synapseq-focus.spsq"
+          "download_url": "https://hub.synapseq.org/packages/presets-synapseq-focus.spsq"
         }
       ]
     },
@@ -155,19 +155,19 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-genesis.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-genesis.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-genesis.spsq",
       "thumbnail": "packages/synapseq.samples.genesis.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
           "name": "presets-synapseq-relax",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/presets-synapseq-relax.spsq"
+          "download_url": "https://hub.synapseq.org/packages/presets-synapseq-relax.spsq"
         },
         {
           "type": "presetlist",
           "name": "presets-synapseq-focus",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/presets-synapseq-focus.spsq"
+          "download_url": "https://hub.synapseq.org/packages/presets-synapseq-focus.spsq"
         }
       ]
     },
@@ -177,7 +177,7 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-isochronic.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-isochronic.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-isochronic.spsq",
       "thumbnail": "packages/synapseq.samples.isochronic.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
@@ -188,7 +188,7 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-ladder.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-ladder.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-ladder.spsq",
       "thumbnail": "packages/synapseq.samples.ladder.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
@@ -199,7 +199,7 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-monaural.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-monaural.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-monaural.spsq",
       "thumbnail": "packages/synapseq.samples.monaural.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
@@ -210,7 +210,7 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-noise.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-noise.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-noise.spsq",
       "thumbnail": "packages/synapseq.samples.noise.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
@@ -221,14 +221,14 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-relax-one.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-relax-one.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-relax-one.spsq",
       "thumbnail": "packages/synapseq.samples.relax-one.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
           "name": "presets-synapseq-relax",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/presets-synapseq-relax.spsq"
+          "download_url": "https://hub.synapseq.org/packages/presets-synapseq-relax.spsq"
         }
       ]
     },
@@ -238,14 +238,14 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-relax-two.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-relax-two.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-relax-two.spsq",
       "thumbnail": "packages/synapseq.samples.relax-two.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
           "type": "presetlist",
           "name": "presets-synapseq-relax",
-          "download_url": "https://synapseq-hub.ruan.sh/packages/presets-synapseq-relax.spsq"
+          "download_url": "https://hub.synapseq.org/packages/presets-synapseq-relax.spsq"
         }
       ]
     },
@@ -255,7 +255,7 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-test.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-test.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-test.spsq",
       "thumbnail": "packages/synapseq.samples.test.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
@@ -266,7 +266,7 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-transitions.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-transitions.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-transitions.spsq",
       "thumbnail": "packages/synapseq.samples.transitions.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
@@ -277,7 +277,7 @@
       "author": "synapseq",
       "path": "packages/samples-synapseq-waveform.spsq",
       "category": "samples",
-      "download_url": "https://synapseq-hub.ruan.sh/packages/samples-synapseq-waveform.spsq",
+      "download_url": "https://hub.synapseq.org/packages/samples-synapseq-waveform.spsq",
       "thumbnail": "packages/synapseq.samples.waveform.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
