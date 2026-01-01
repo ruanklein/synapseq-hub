@@ -234,7 +234,7 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: #000000;
+		background: linear-gradient(to bottom right, #020617, #020617, #0f172a);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -242,57 +242,6 @@
 		z-index: 9999;
 		color: white;
 		overflow: hidden;
-	}
-
-	/* Liquid glass background layers */
-	.fullscreen-player::before {
-		content: '';
-		position: absolute;
-		inset: -10%;
-		background:
-			radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
-			radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
-			radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.4) 0%, transparent 80%);
-		animation: liquid-flow 15s ease-in-out infinite;
-	}
-
-	.fullscreen-player::after {
-		content: '';
-		position: absolute;
-		inset: -10%;
-		background: radial-gradient(ellipse at 60% 40%, rgba(96, 165, 250, 0.08) 0%, transparent 60%);
-		animation: liquid-shift 20s ease-in-out infinite reverse;
-	}
-
-	@keyframes liquid-flow {
-		0%,
-		100% {
-			transform: scale(1) translate(0, 0);
-			opacity: 1;
-		}
-		33% {
-			transform: scale(1.05) translate(1%, -1%);
-			opacity: 0.8;
-		}
-		66% {
-			transform: scale(1.02) translate(-1%, 1%);
-			opacity: 0.9;
-		}
-	}
-
-	@keyframes liquid-shift {
-		0%,
-		100% {
-			transform: translate(0, 0) rotate(0deg);
-		}
-		50% {
-			transform: translate(1.5%, -1.5%) rotate(0.5deg);
-		}
-	}
-
-	.fullscreen-player.loading,
-	.fullscreen-player.error {
-		background: #0a0a0a;
 	}
 
 	.loading-content,
