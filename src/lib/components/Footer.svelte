@@ -80,10 +80,10 @@
 			</p>
 			<p class="text-sm text-gray-500 dark:text-gray-400">
 				<a
-					href="https://ruan.sh"
+					href="https://synapseq.org"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-blue-600 dark:text-cyan-400 hover:underline font-medium">ruan.sh</a
+					class="text-blue-600 dark:text-cyan-400 hover:underline font-medium">synapseq.org</a
 				>
 			</p>
 		</div>
