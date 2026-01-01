@@ -328,32 +328,6 @@
 		z-index: 2;
 		color: #22d3ee;
 		filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.5));
-		animation: headphones-float 3s ease-in-out infinite;
-	}
-
-	.headphones-icon :global(.main-icon) {
-		animation: headphones-pulse 2s ease-in-out infinite;
-	}
-
-	@keyframes headphones-float {
-		0%,
-		100% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(-10px);
-		}
-	}
-
-	@keyframes headphones-pulse {
-		0%,
-		100% {
-			opacity: 0.9;
-		}
-		50% {
-			opacity: 1;
-			filter: drop-shadow(0 0 25px rgba(34, 211, 238, 0.8));
-		}
 	}
 
 	.status-section {
