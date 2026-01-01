@@ -8,10 +8,5 @@ export default defineConfig({
 		fs: {
 			allow: ['static']
 		}
-	},
-	build: {
-		rollupOptions: {
-			external: ['/wasm/synapseq.js']
-		}
 	}
 });

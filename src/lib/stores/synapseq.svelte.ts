@@ -39,9 +39,7 @@ class SynapSeqPlayer {
 
 	private async _initialize() {
 		try {
-			const wasmUrl = `${window.location.origin}/wasm/synapseq.wasm`;
-			const wasmExecUrl = `${window.location.origin}/wasm/wasm_exec.js`;
-
+			// Wait for SynapSeq to be available on window
 			const SynapSeq = (window as any).SynapSeq;
 
 			if (!SynapSeq) {
@@ -49,8 +47,8 @@ class SynapSeqPlayer {
 			}
 
 			this.instance = new SynapSeq({
-				wasmPath: wasmUrl,
-				wasmExecPath: wasmExecUrl
+				wasmPath: 'https://synapseq.org/lib/synapseq.wasm',
+				wasmExecPath: 'https://synapseq.org/lib/wasm_exec.js'
 			});
 
 			if (!this.instance) {
