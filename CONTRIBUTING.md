@@ -28,6 +28,7 @@ All files (`.spsq` sequences and `.wav` backgrounds) are stored in the `packages
 - **Sequences:** `<category>-<namespace>-<name>.spsq`
 - **Preset lists:** `presets-<namespace>-<name>.spsq`
 - **Background audio:** `<namespace>-<name>.wav`
+- **Thumbnails (optional):** `<category>-<namespace>-<name>.webp`
 
 ### Examples
 
@@ -39,9 +40,12 @@ packages/presets-janedoe-focus-collection.spsq
 packages/presets-neurofocus-relax-set.spsq
 packages/janedoe-ocean-waves.wav
 packages/neurofocus-rain-ambience.wav
+packages/neurofocus-ocean-waves.webp
+packages/johndoe-mindfulness.webp
 ```
 
 **Official examples (samples category - reserved):**
+
 ```
 packages/samples-synapseq-binaural.spsq
 packages/samples-synapseq-focus-one.spsq
@@ -125,20 +129,24 @@ Brainwave audio **cannot** reproduce the effects of drugs, medications, or chemi
 
 - `.spsq` → Sequence or preset list (UTF‑8)
 - `.wav` → Optional background audio (PCM WAV, 8/16/24‑bit, stereo)
+- `.webp` → Optional thumbnail (recommended dimensions: 320x180)
 
 ### 2. Size limits
 
 - `.spsq` files: **max 32 KB**
 - `.wav` backgrounds: **max 10 MB**
+- `.webp` thumbnails: **max 200 KB**
 
 ### 3. Dependency rules
 
 - All `@presetlist` files must follow the pattern `presets-<namespace>-<name>.spsq`
 - All `@background` files must follow the pattern `<namespace>-<name>.wav`
+- All thumbnail files must follow the pattern `<category>-<namespace>-<name>.webp`
 - All files must be stored in `packages/` directory
 - External URLs are not allowed
 - All referenced files must exist in the `packages/` directory
 - Your namespace must be consistent across all your files (sequences, presets, and backgrounds)
+- Thumbnails are optional; if not provided, a default image will be used
 
 ### 4. Licensing
 
@@ -191,9 +199,10 @@ Each `.spsq` file must include a header using `##` comment lines:
 2. Clone your fork
 3. Add your `.spsq` file(s) to the `packages/` directory following the naming convention
 4. Add any background `.wav` files to the `packages/` directory
-5. Validate locally by running `python3 generate_manifest.py`
-6. Commit and push
-7. Open a Pull Request
+5. (Optional) Add a thumbnail `.webp` file (320x180) to the `packages/` directory
+6. Validate locally by running `python3 generate_manifest.py`
+7. Commit and push
+8. Open a Pull Request
 
 ---
 
