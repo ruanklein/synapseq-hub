@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-12-31T00:59:28Z",
+  "lastUpdated": "2026-01-01T23:29:24Z",
   "entries": [
     {
       "id": "ruan.relaxation.calm-state",
@@ -9,7 +9,7 @@
       "path": "packages/relaxation-ruan-calm-state.spsq",
       "category": "relaxation",
       "download_url": "https://hub.synapseq.org/packages/relaxation-ruan-calm-state.spsq",
-      "thumbnail": "packages/ruan.relaxation.calm-state.webp",
+      "thumbnail": "packages/relaxation-ruan-calm-state.webp",
       "updated_at": "2025-12-28T21:39:16-03:00",
       "dependencies": [
         {
@@ -26,7 +26,7 @@
       "path": "packages/meditation-ruan-quiet-descent.spsq",
       "category": "meditation",
       "download_url": "https://hub.synapseq.org/packages/meditation-ruan-quiet-descent.spsq",
-      "thumbnail": "packages/ruan.meditation.quiet-descent.webp",
+      "thumbnail": "packages/meditation-ruan-quiet-descent.webp",
       "updated_at": "2025-12-28T21:38:32-03:00",
       "dependencies": [
         {
@@ -43,7 +43,7 @@
       "path": "packages/focus-ruan-alert-flow.spsq",
       "category": "focus",
       "download_url": "https://hub.synapseq.org/packages/focus-ruan-alert-flow.spsq",
-      "thumbnail": "packages/ruan.focus.alert-flow.webp",
+      "thumbnail": "packages/focus-ruan-alert-flow.webp",
       "updated_at": "2025-12-28T21:38:05-03:00",
       "dependencies": [
         {
@@ -60,7 +60,7 @@
       "path": "packages/relaxation-ruan-neutral-relax.spsq",
       "category": "relaxation",
       "download_url": "https://hub.synapseq.org/packages/relaxation-ruan-neutral-relax.spsq",
-      "thumbnail": "packages/ruan.relaxation.neutral-relax.webp",
+      "thumbnail": "packages/relaxation-ruan-neutral-relax.webp",
       "updated_at": "2025-12-28T21:37:05-03:00",
       "dependencies": [
         {
@@ -77,7 +77,7 @@
       "path": "packages/samples-synapseq-background-pulse.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-background-pulse.spsq",
-      "thumbnail": "packages/synapseq.samples.background-pulse.webp",
+      "thumbnail": "packages/samples-synapseq-background-pulse.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
@@ -94,7 +94,7 @@
       "path": "packages/samples-synapseq-background-spin.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-background-spin.spsq",
-      "thumbnail": "packages/synapseq.samples.background-spin.webp",
+      "thumbnail": "packages/samples-synapseq-background-spin.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
@@ -111,7 +111,7 @@
       "path": "packages/samples-synapseq-binaural.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-binaural.spsq",
-      "thumbnail": "packages/synapseq.samples.binaural.webp",
+      "thumbnail": "packages/samples-synapseq-binaural.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
@@ -122,7 +122,7 @@
       "path": "packages/samples-synapseq-focus-one.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-focus-one.spsq",
-      "thumbnail": "packages/synapseq.samples.focus-one.webp",
+      "thumbnail": "packages/samples-synapseq-focus-one.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
@@ -139,7 +139,7 @@
       "path": "packages/samples-synapseq-focus-two.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-focus-two.spsq",
-      "thumbnail": "packages/synapseq.samples.focus-two.webp",
+      "thumbnail": "packages/samples-synapseq-focus-two.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
@@ -156,7 +156,7 @@
       "path": "packages/samples-synapseq-genesis.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-genesis.spsq",
-      "thumbnail": "packages/synapseq.samples.genesis.webp",
+      "thumbnail": "packages/samples-synapseq-genesis.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
@@ -178,7 +178,7 @@
       "path": "packages/samples-synapseq-isochronic.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-isochronic.spsq",
-      "thumbnail": "packages/synapseq.samples.isochronic.webp",
+      "thumbnail": "packages/samples-synapseq-isochronic.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
@@ -189,7 +189,7 @@
       "path": "packages/samples-synapseq-ladder.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-ladder.spsq",
-      "thumbnail": "packages/synapseq.samples.ladder.webp",
+      "thumbnail": "packages/samples-synapseq-ladder.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
@@ -200,7 +200,7 @@
       "path": "packages/samples-synapseq-monaural.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-monaural.spsq",
-      "thumbnail": "packages/synapseq.samples.monaural.webp",
+      "thumbnail": "packages/samples-synapseq-monaural.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
@@ -211,7 +211,7 @@
       "path": "packages/samples-synapseq-noise.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-noise.spsq",
-      "thumbnail": "packages/synapseq.samples.noise.webp",
+      "thumbnail": "packages/samples-synapseq-noise.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
@@ -222,7 +222,7 @@
       "path": "packages/samples-synapseq-relax-one.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-relax-one.spsq",
-      "thumbnail": "packages/synapseq.samples.relax-one.webp",
+      "thumbnail": "packages/samples-synapseq-relax-one.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
@@ -239,7 +239,7 @@
       "path": "packages/samples-synapseq-relax-two.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-relax-two.spsq",
-      "thumbnail": "packages/synapseq.samples.relax-two.webp",
+      "thumbnail": "packages/samples-synapseq-relax-two.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": [
         {
@@ -256,7 +256,7 @@
       "path": "packages/samples-synapseq-test.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-test.spsq",
-      "thumbnail": "packages/synapseq.samples.test.webp",
+      "thumbnail": "packages/samples-synapseq-test.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
@@ -267,7 +267,7 @@
       "path": "packages/samples-synapseq-transitions.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-transitions.spsq",
-      "thumbnail": "packages/synapseq.samples.transitions.webp",
+      "thumbnail": "packages/samples-synapseq-transitions.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     },
@@ -278,7 +278,7 @@
       "path": "packages/samples-synapseq-waveform.spsq",
       "category": "samples",
       "download_url": "https://hub.synapseq.org/packages/samples-synapseq-waveform.spsq",
-      "thumbnail": "packages/synapseq.samples.waveform.webp",
+      "thumbnail": "packages/samples-synapseq-waveform.webp",
       "updated_at": "2025-12-28T21:31:10-03:00",
       "dependencies": []
     }

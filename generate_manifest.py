@@ -219,7 +219,7 @@ def walk_files():
         
         # Generate thumbnail path: same directory as path + id + .webp
         path_dir = os.path.dirname(relpath)
-        thumbnail = f"{path_dir}/{id}.webp"
+        thumbnail = f"{path_dir}/{category}-{author}-{name}.webp"
 
         entries.append({
             "id": id,
