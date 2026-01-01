@@ -1,14 +1,14 @@
 # SynapSeq Hub
 
 **The official repository of sequences, presets, and soundscapes for
-[SynapSeq](https://github.com/ruanklein/synapseq).**
+[SynapSeq](https://synapseq.org).**
 
-SynapSeq Hub is the curated archive for official and community-created
+[SynapSeq Hub](https://hub.synapseq.org) is the curated archive for official and community-created
 `.spsq` sequences, structured compositions designed to guide
 brainwave states for relaxation, focus, meditation, and creative
 exploration.
 
-All sequences hosted here are written using the [SynapSeq text syntax](https://github.com/ruanklein/synapseq/blob/main/docs/USAGE.md),
+All sequences hosted here are written using the [SynapSeq text syntax](https://synapseq.org/docs/#syntax),
 ensuring full compatibility and reproducibility.
 
 ---
@@ -60,6 +60,5 @@ They can be rendered locally or streamed via SynapSeq HTTP streaming endpoint.
 
 ## Learn More
 
-- [SynapSeq Project](https://github.com/ruanklein/synapseq)
-- [Usage Guide](https://github.com/ruanklein/synapseq/blob/main/docs/USAGE.md)
-- [FAQ](https://github.com/ruanklein/synapseq/blob/main/docs/FAQ.md)
+- [SynapSeq Project](https://synapseq.org)
+- [Documentation](https://synapseq.org/docs/#introduction)
