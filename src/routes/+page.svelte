@@ -1,18 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import {
-		Brain,
-		Zap,
-		Github,
-		ArrowRight,
-		Clock,
-		AudioWaveform,
-		Play,
-		Wand2,
-		Users,
-		Download
-	} from 'lucide-svelte';
+	import { Brain, Zap, Github, ArrowRight, Clock, Users } from 'lucide-svelte';
 
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
