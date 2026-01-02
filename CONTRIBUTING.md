@@ -34,14 +34,14 @@ All files (`.spsq` sequences and `.wav` backgrounds) are stored in the `packages
 
 ```
 packages/focus-janedoe-deep-work.spsq
+packages/focus-janedoe-deep-work.webp
 packages/relax-neurofocus-ocean-waves.spsq
+packages/relax-neurofocus-ocean-waves.webp
 packages/meditation-johndoe-mindfulness.spsq
 packages/presets-janedoe-focus-collection.spsq
 packages/presets-neurofocus-relax-set.spsq
 packages/janedoe-ocean-waves.wav
 packages/neurofocus-rain-ambience.wav
-packages/neurofocus-ocean-waves.webp
-packages/johndoe-mindfulness.webp
 ```
 
 **Official examples (samples category - reserved):**
