@@ -1,7 +1,6 @@
 import type { PageLoad, EntryGenerator } from './$types';
 import type { ManifestEntry } from '$lib/types';
 import manifest from '$lib/data/manifest.json';
-import { definePageMetaTags } from 'svelte-meta-tags';
 import { toTitleCase } from '$lib/utils/formatters';
 
 export const prerender = true;
@@ -35,7 +34,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			thumbnailExists = false;
 		}
 
-		// Generate meta tags
+		// Generate meta tags data
 		const pageTitle = `${toTitleCase(sequence.name)} | SynapSeq Hub`;
 		const pageDescription = `${sequence.category || 'Sequence'} sequence by ${sequence.author || 'SynapSeq'}. Stream or download this brainwave entrainment audio on SynapSeq Hub.`;
 		const pageUrl = `https://hub.synapseq.org/sequence/${sequence.id}`;
@@ -43,39 +42,17 @@ export const load: PageLoad = async ({ params, fetch }) => {
 			? `https://hub.synapseq.org/${sequence.thumbnail}`
 			: 'https://hub.synapseq.org/logo.png';
 
-		const pageTags = definePageMetaTags({
-			title: pageTitle,
-			description: pageDescription,
-			canonical: pageUrl,
-			openGraph: {
-				type: 'website',
-				url: pageUrl,
-				title: pageTitle,
-				description: pageDescription,
-				images: [
-					{
-						url: pageImage,
-						width: 1200,
-						height: 630,
-						alt: toTitleCase(sequence.name)
-					}
-				],
-				siteName: 'SynapSeq Hub'
-			},
-			twitter: {
-				cardType: 'summary_large_image',
-				title: pageTitle,
-				description: pageDescription,
-				image: pageImage,
-				imageAlt: toTitleCase(sequence.name)
-			}
-		});
-
 		return {
-			...pageTags,
 			sequence: {
 				...sequence,
 				thumbnail: thumbnailExists ? sequence.thumbnail : 'default-thumbnail.webp'
+			},
+			meta: {
+				title: pageTitle,
+				description: pageDescription,
+				url: pageUrl,
+				image: pageImage,
+				imageAlt: toTitleCase(sequence.name)
 			}
 		};
 	} catch (error) {
